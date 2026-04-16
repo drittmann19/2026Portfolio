@@ -108,6 +108,35 @@ function renderBlock(block: Block, idx: number) {
         </div>
       );
 
+    case "video":
+      return (
+        <div key={idx} style={{ margin: "32px 0" }}>
+          <ScrollFadeIn>
+            <video
+              src={block.src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                width: "100%",
+                borderRadius: "10px",
+                border: "1px solid var(--color-border-subtle)",
+                display: "block",
+              }}
+            />
+            {block.caption && (
+              <p
+                className="font-mono"
+                style={{ fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "10px" }}
+              >
+                {block.caption}
+              </p>
+            )}
+          </ScrollFadeIn>
+        </div>
+      );
+
     case "image":
       return (
         <div key={idx} style={{ margin: "32px 0" }}>
@@ -417,7 +446,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               <img
                 src={study.heroImage}
                 alt={`${study.title} hero`}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "left center" }}
               />
             ) : (
               <div style={{ textAlign: "center" }}>

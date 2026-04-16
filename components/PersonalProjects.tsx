@@ -13,6 +13,10 @@ function ProjectCard({
   onClick: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
+  const hasColor = !!project.cardColor;
+  const darkText = project.cardTextDark;
+  const textColor = hasColor ? (darkText ? "rgba(0,0,0,0.85)" : "#ffffff") : "var(--color-text-primary)";
+  const textColorSecondary = hasColor ? (darkText ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.75)") : "var(--color-text-secondary)";
 
   return (
     <button
@@ -24,25 +28,34 @@ function ProjectCard({
         flexDirection: "column",
         width: "100%",
         textAlign: "left",
-        background: "var(--color-card)",
+        background: project.cardColor ?? "var(--color-card)",
         borderRadius: "12px",
         overflow: "hidden",
         cursor: "pointer",
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
         boxShadow: hovered
-          ? "0 8px 24px rgba(0,0,0,0.06), inset 0 0 0 2px var(--color-border-hover)"
-          : "0 1px 4px rgba(0,0,0,0.02)",
+          ? "0 8px 24px rgba(0,0,0,0.12), inset 0 0 0 2px rgba(255,255,255,0.25)"
+          : "0 1px 4px rgba(0,0,0,0.06)",
         transition: "transform 200ms ease-out, box-shadow 200ms ease-out",
       }}
     >
-      {/* Image placeholder */}
+      {/* Image area */}
       <div
         style={{
           aspectRatio: "16 / 9",
-          background: "var(--color-surface)",
+          background: hasColor ? (darkText ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)") : "var(--color-surface)",
           flexShrink: 0,
+          overflow: "hidden",
         }}
-      />
+      >
+        {project.image && (
+          <img
+            src={project.image}
+            alt={project.title}
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: project.imagePadding ?? "24px" }}
+          />
+        )}
+      </div>
 
       {/* Content */}
       <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "8px", flexGrow: 1 }}>
@@ -50,7 +63,7 @@ function ProjectCard({
           style={{
             fontSize: "16px",
             fontWeight: 700,
-            color: "var(--color-text-primary)",
+            color: textColor,
             lineHeight: 1.3,
           }}
         >
@@ -59,7 +72,7 @@ function ProjectCard({
         <p
           style={{
             fontSize: "13px",
-            color: "var(--color-text-secondary)",
+            color: textColorSecondary,
             lineHeight: 1.5,
             flexGrow: 1,
           }}
@@ -73,12 +86,12 @@ function ProjectCard({
               style={{
                 display: "inline-block",
                 padding: "3px 9px",
-                background: "var(--color-accent-ghost)",
-                border: "1px solid var(--color-accent-ghost-border)",
+                background: hasColor ? (darkText ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.15)") : "var(--color-accent-ghost)",
+                border: `1px solid ${hasColor ? (darkText ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.3)") : "var(--color-accent-ghost-border)"}`,
                 borderRadius: "100px",
                 fontSize: "10px",
                 fontWeight: 500,
-                color: "var(--color-accent)",
+                color: hasColor ? (darkText ? "rgba(0,0,0,0.75)" : "#ffffff") : "var(--color-accent)",
                 fontFamily: "var(--font-jetbrains-mono), monospace",
                 letterSpacing: "0.03em",
               }}
@@ -157,8 +170,29 @@ function Popover({
             background: "var(--color-surface)",
             borderRadius: "16px 16px 0 0",
             flexShrink: 0,
+            overflow: "hidden",
           }}
-        />
+        >
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "16px 16px 0 0" }}
+            />
+          ) : (
+            <div style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <p style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: "11px", color: "var(--color-text-tertiary)" }}>
+                Coming soon
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Body */}
         <div style={{ padding: "28px" }}>
@@ -252,6 +286,25 @@ function Popover({
               </p>
             </div>
           ))}
+
+          {/* Popover images */}
+          {project.popoverImages && project.popoverImages.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+              {project.popoverImages.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`${project.title} screenshot ${i + 1}`}
+                  style={{
+                    width: "100%",
+                    borderRadius: "8px",
+                    border: "1px solid var(--color-border-subtle)",
+                    display: "block",
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Optional external link */}
           {project.link && (

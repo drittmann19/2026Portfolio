@@ -83,7 +83,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
-  padding-top: 72px;
+  padding-top: 96px;
+  padding-bottom: 96px;
   border-top: 1px solid var(--color-border-subtle);
 }
 

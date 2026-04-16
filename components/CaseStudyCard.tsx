@@ -9,9 +9,15 @@ interface CaseStudyCardProps {
   subtitle: string;
   tags: string[];
   color: string;
+  cardImage?: string;
+  cardImageFit?: "cover" | "contain";
+  cardImagePadding?: string;
+  heroImage?: string;
 }
 
-export default function CaseStudyCard({ slug, title, subtitle, tags, color }: CaseStudyCardProps) {
+export default function CaseStudyCard({ slug, title, subtitle, tags, color, cardImage, cardImageFit, cardImagePadding, heroImage }: CaseStudyCardProps) {
+  const image = cardImage ?? heroImage;
+  const fit = cardImageFit ?? "cover";
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -40,8 +46,17 @@ export default function CaseStudyCard({ slug, title, subtitle, tags, color }: Ca
             aspectRatio: "16 / 10",
             background: "rgba(255,255,255,0.06)",
             flexShrink: 0,
+            overflow: "hidden",
           }}
-        />
+        >
+          {image && (
+            <img
+              src={image}
+              alt={title}
+              style={{ width: "100%", height: "100%", objectFit: fit, objectPosition: "center", padding: cardImagePadding }}
+            />
+          )}
+        </div>
 
         {/* Content */}
         <div
