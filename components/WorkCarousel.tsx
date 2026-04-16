@@ -95,7 +95,7 @@ export default function WorkCarousel() {
             lineHeight: 1.1,
           }}
         >
-          Work
+          Selected Work
         </h2>
 
         <div style={{ display: "flex", gap: "8px" }}>

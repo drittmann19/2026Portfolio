@@ -48,8 +48,8 @@ export default function RootLayout({
         <MobileNav />
 
         {/* Main content */}
-        <main className="lg:pl-[280px]" style={{ maxWidth: "1800px" }}>
-          <div className="px-12 pt-10">
+        <main className="lg:ml-[280px]">
+          <div className="px-12 pt-10 mx-auto" style={{ maxWidth: "1800px" }}>
             {children}
           </div>
         </main>

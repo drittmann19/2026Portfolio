@@ -13,6 +13,16 @@ export interface PersonalProject {
 
 export const personalProjects: PersonalProject[] = [
   {
+    id: "collectiviz",
+    title: "Collectiviz",
+    shortDescription: "A full-stack web app that transformed scattered alumni career data into an explorable data visualization for prospective design students.",
+    tags: ["Data Viz", "Full-Stack", "Firebase"],
+    overview:
+      "Prospective students at CU's CTD program had no way to understand where the degree actually leads. Collectiviz is a two-page web app — an alumni data collection form and a public-facing visualization — that filled that gap with real data and real stories.",
+    role: "Designer and developer. Owned end-to-end from research through full-stack implementation using Bootstrap, Firebase, and Chart.js.",
+    outcome: "3 rounds of user testing shaped the final product. Adopted by CU's ATLAS Institute communications team as part of their alumni outreach workflow.",
+  },
+  {
     id: "portfolio",
     title: "This Portfolio",
     shortDescription: "Designed and built with Next.js, Tailwind, and Claude Code.",

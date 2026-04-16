@@ -306,7 +306,7 @@ export default function PersonalProjects() {
               marginBottom: "40px",
             }}
           >
-            Personal Projects
+            Side Projects
           </h2>
         </ScrollFadeIn>
 

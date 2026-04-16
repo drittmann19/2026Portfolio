@@ -14,9 +14,9 @@ type NavItem =
 
 const LINKS: NavItem[] = [
   { kind: "anchor",   label: "Overview",          href: "#hero" },
-  { kind: "anchor",   label: "Work",              href: "#work" },
+  { kind: "anchor",   label: "Selected Work",      href: "#work" },
   { kind: "anchor",   label: "About Me",          href: "#about" },
-  { kind: "anchor",   label: "Personal Projects", href: "#personal-projects" },
+  { kind: "anchor",   label: "Side Projects",     href: "#personal-projects" },
   { kind: "external", label: "LinkedIn",          href: "https://www.linkedin.com/in/damean-rittmann/" },
   { kind: "external", label: "Contact Me",        href: "mailto:dameanrittmann@gmail.com" },
   { kind: "external", label: "Resume",            href: "/DameanRittmann_Resume.pdf", download: true },

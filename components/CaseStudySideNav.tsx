@@ -15,13 +15,14 @@ const ArrowLeft = () => (
   </svg>
 );
 
-const SECTION_IDS = ["overview", "discovery", "approach", "design", "impact", "reflection"];
+const SECTION_IDS = ["overview", "discovery", "insight", "approach", "solution", "impact", "reflection"];
 
 const SECTION_LABELS: Record<string, string> = {
   overview: "Overview",
   discovery: "Discovery",
+  insight: "Insight",
   approach: "Approach",
-  design: "Design",
+  solution: "Solution",
   impact: "Impact",
   reflection: "Reflection",
 };

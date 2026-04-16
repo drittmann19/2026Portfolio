@@ -112,16 +112,40 @@ function renderBlock(block: Block, idx: number) {
       return (
         <div key={idx} style={{ margin: "32px 0" }}>
           <ScrollFadeIn>
-            <img
-              src={block.src}
-              alt={block.alt}
-              style={{
-                width: "100%",
-                borderRadius: "10px",
-                border: "1px solid var(--color-border-subtle)",
-                display: "block",
-              }}
-            />
+            {block.src ? (
+              <img
+                src={block.src}
+                alt={block.alt}
+                style={{
+                  width: "100%",
+                  borderRadius: "10px",
+                  border: "1px solid var(--color-border-subtle)",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  height: "320px",
+                  borderRadius: "10px",
+                  border: "1px solid var(--color-border-subtle)",
+                  backgroundColor: "var(--color-surface)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                }}
+              >
+                <p className="font-mono" style={{ fontSize: "12px", color: "var(--color-text-tertiary)" }}>
+                  Image placeholder
+                </p>
+                <p className="font-mono" style={{ fontSize: "11px", color: "var(--color-border-default)" }}>
+                  {block.alt.replace("Placeholder: ", "")}
+                </p>
+              </div>
+            )}
           </ScrollFadeIn>
         </div>
       );
@@ -344,7 +368,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               lineHeight: 1.1,
               letterSpacing: "-0.02em",
               marginBottom: "24px",
-              maxWidth: "820px",
             }}
           >
             {study.title}
@@ -360,7 +383,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               color: "var(--color-text-secondary)",
               lineHeight: 1.7,
               marginBottom: "28px",
-              maxWidth: "680px",
             }}
           >
             {study.subtitle}
