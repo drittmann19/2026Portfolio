@@ -6,7 +6,8 @@ export type Block =
   | { type: "list"; items: string[] }
   | { type: "metric"; metric: string; label: string; sublabel?: string }
   | { type: "metrics_grid"; items: { metric: string; label: string; sublabel?: string }[] }
-  | { type: "image"; src: string; alt: string };
+  | { type: "image"; src: string; alt: string }
+  | { type: "video"; src: string; caption?: string };
 
 export interface CaseStudySection {
   id: "overview" | "discovery" | "insight" | "approach" | "solution" | "impact" | "reflection";
@@ -22,6 +23,9 @@ export interface CaseStudy {
   metrics: string;
   tags: string[];
   color: string;
+  cardImage?: string;
+  cardImageFit?: "cover" | "contain";
+  cardImagePadding?: string;
   heroImage?: string;
   sections: CaseStudySection[];
 }
@@ -36,7 +40,10 @@ export const caseStudies: CaseStudy[] = [
     metrics: "60% faster order creation · 2x transaction volume · 10,000+ users",
     tags: ["Enterprise", "Systems Thinking", "Design Leadership"],
     color: "#23556C",
-    heroImage: undefined,
+    cardImage: "/images/case-studies/agriculture-workflow-optimization/card.png",
+    cardImageFit: "contain",
+    cardImagePadding: "0 24px",
+    heroImage: "/images/case-studies/agriculture-workflow-optimization/hero.png",
     sections: [
       {
         id: "discovery",
@@ -57,8 +64,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: worker using mobile phone in field",
+            src: "/images/case-studies/agriculture-workflow-optimization/Discovery.png",
+            alt: "Field consultant using the Nutrien mobile app in a greenhouse",
           },
         ],
       },
@@ -81,8 +88,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: roadmap",
+            src: "/images/case-studies/agriculture-workflow-optimization/Roadmap.png",
+            alt: "Nutrien business roadmap showing Improved Sales Document Workflow as a new strategic priority",
           },
         ],
       },
@@ -135,9 +142,9 @@ export const caseStudies: CaseStudy[] = [
             text: "I transformed the ordering experience from a 14-click desktop-dependent flow to an 8-click mobile-optimized process that consultants could complete directly in the field with customers. Through user behavior analysis, I identified optimal defaults like delivery dates, high-inventory SKUs, and suggested retail prices that users selected over 80% of the time. This data-driven approach to smart defaults, combined with multi-select functionality, eliminated redundant interactions while maintaining information integrity. The redesign enabled consultants to complete orders on-site, reducing office visits and maximizing customer face time.",
           },
           {
-            type: "image",
-            src: "",
-            alt: "Placeholder: mobile order user flow animation",
+            type: "video",
+            src: "/images/case-studies/agriculture-workflow-optimization/Userflows.mov",
+            caption: "Mobile quick order user flow",
           },
           {
             type: "h3",
@@ -152,9 +159,9 @@ export const caseStudies: CaseStudy[] = [
             text: "I worked with the team to find a solution that preserved the user experience while meeting technical constraints. Our research showed that 80% of users already knew their target products, so implementing a three-character search activation threshold would limit results to manageable sets without impacting usability. For the 20% who needed to browse, the full catalog drawer remained available. This compromise maintained the streamlined workflow while keeping the system performant.",
           },
           {
-            type: "image",
-            src: "",
-            alt: "Placeholder: inline editing demo",
+            type: "video",
+            src: "/images/case-studies/agriculture-workflow-optimization/InlineProtoDemo.mov",
+            caption: "Desktop inline editing with three-character search activation",
           },
           {
             type: "h3",
@@ -165,14 +172,19 @@ export const caseStudies: CaseStudy[] = [
             text: "I established a universal reference pattern that scaled across document types, enabling consultants to track product status, source relevant context inline, and quickly add items to new workflows. This created seamless connections between contracted products, active orders, and planning documents, bridging the gap between yearly planning and daily execution.",
           },
           {
-            type: "image",
-            src: "",
-            alt: "Placeholder: reference tracking demo",
+            type: "video",
+            src: "/images/case-studies/agriculture-workflow-optimization/ReferenceFlow.mov",
+            caption: "Universal product reference pattern across document types",
+          },
+          {
+            type: "video",
+            src: "/images/case-studies/agriculture-workflow-optimization/orderflowvidPAdding.mov",
+            caption: "Mobile quick order flow — 8-click field-optimized process",
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: final mockup and full flow",
+            src: "/images/case-studies/agriculture-workflow-optimization/iphonemock.jpeg",
+            alt: "Final Nutrien mobile app home screen mockup",
           },
         ],
       },
@@ -223,7 +235,10 @@ export const caseStudies: CaseStudy[] = [
     metrics: "85% faster payments · 50% fewer errors · 2,000+ users · 90% satisfaction",
     tags: ["Fintech", "UX Design", "Payments"],
     color: "#4F5D6D",
-    heroImage: undefined,
+    cardImage: "/images/case-studies/customer-financial-hub/card.png",
+    cardImageFit: "contain",
+    cardImagePadding: "24px 0",
+    heroImage: "/images/case-studies/customer-financial-hub/hero.png",
     sections: [
       {
         id: "discovery",
@@ -248,8 +263,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: confusion image",
+            src: "/images/case-studies/customer-financial-hub/discovery.png",
+            alt: "Fragmented balance screens causing customer confusion",
           },
         ],
       },
@@ -268,8 +283,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: zoom in of currently due card",
+            src: "/images/case-studies/customer-financial-hub/insight.png",
+            alt: "Currently due card showing transparent invoice breakdown",
           },
         ],
       },
@@ -300,8 +315,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: dynamic model",
+            src: "/images/case-studies/customer-financial-hub/dynamic-model.png",
+            alt: "Information architecture and payment flow diagram",
           },
           {
             type: "h3",
@@ -352,8 +367,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: mockup of payment flow",
+            src: "/images/case-studies/customer-financial-hub/payment-flow.png",
+            alt: "Three-step payment flow: account selection, balance, and payment confirmation",
           },
           {
             type: "h3",
@@ -377,8 +392,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: mockup of financial hub",
+            src: "/images/case-studies/customer-financial-hub/account-hub-final.png",
+            alt: "Final account dashboard consolidating balances, records, and payment history",
           },
         ],
       },
@@ -435,7 +450,8 @@ export const caseStudies: CaseStudy[] = [
     metrics: "10 designers onboarded · 5 modules · Org-wide adoption",
     tags: ["Design Systems", "Onboarding"],
     color: "#480B3F",
-    heroImage: undefined,
+    cardImage: "/images/case-studies/design-system-onboarding/card.png",
+    heroImage: "/images/case-studies/design-system-onboarding/hero.png",
     sections: [
       {
         id: "discovery",
@@ -452,8 +468,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: service blueprint",
+            src: "/images/case-studies/design-system-onboarding/service-blueprint.png",
+            alt: "Design system service blueprint mapping phases and pain points across contributing roles",
           },
         ],
       },
@@ -487,8 +503,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: value matrix",
+            src: "/images/case-studies/design-system-onboarding/value-matrix.png",
+            alt: "Value vs effort priority matrix used to scope onboarding learning objectives",
           },
           {
             type: "p",
@@ -515,8 +531,8 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "image",
-            src: "",
-            alt: "Placeholder: final onboarding file",
+            src: "/images/case-studies/design-system-onboarding/module-overview.png",
+            alt: "Overview of all five onboarding modules in the interactive Figma file",
           },
         ],
       },

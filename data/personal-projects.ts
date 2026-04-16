@@ -3,6 +3,11 @@ export interface PersonalProject {
   title: string;
   shortDescription: string;
   tags: string[];
+  image?: string;
+  imagePadding?: string;
+  cardColor?: string;
+  cardTextDark?: boolean;
+  popoverImages?: string[];
   // Popover detail fields
   overview: string;
   role: string;
@@ -17,6 +22,9 @@ export const personalProjects: PersonalProject[] = [
     title: "Collectiviz",
     shortDescription: "A full-stack web app that transformed scattered alumni career data into an explorable data visualization for prospective design students.",
     tags: ["Data Viz", "Full-Stack", "Firebase"],
+    image: "/images/projects/collectiviz/card.png",
+    imagePadding: "0px",
+    cardColor: "#000000",
     overview:
       "Prospective students at CU's CTD program had no way to understand where the degree actually leads. Collectiviz is a two-page web app — an alumni data collection form and a public-facing visualization — that filled that gap with real data and real stories.",
     role: "Designer and developer. Owned end-to-end from research through full-stack implementation using Bootstrap, Firebase, and Chart.js.",
@@ -37,6 +45,9 @@ export const personalProjects: PersonalProject[] = [
     title: "GasCast",
     shortDescription: "Coming soon.",
     tags: ["Product Design"],
+    image: "/images/projects/gascast/card.png",
+    cardColor: "#4EBC53",
+    cardTextDark: true,
     overview: "Coming soon.",
     role: "Coming soon.",
     outcome: "Coming soon.",
@@ -46,6 +57,9 @@ export const personalProjects: PersonalProject[] = [
     title: "Glow",
     shortDescription: "Figma Makeathon project — a wellness check-in tool built entirely in Figma Make.",
     tags: ["Figma Make", "Wellness"],
+    image: "/images/projects/glow/card.png",
+    cardColor: "#F9C823",
+    cardTextDark: true,
     overview:
       "Built during a Figma Makeathon, Glow is a lightweight daily mood and energy check-in tool. The goal was to see how far Figma Make could take a real interactive product.",
     role: "Design and build. Used Figma Make for the full interactive experience.",
@@ -58,6 +72,9 @@ export const personalProjects: PersonalProject[] = [
     title: "AI Chat Aside",
     shortDescription: "Coming soon.",
     tags: ["AI", "Product Design"],
+    image: "/images/projects/ai-chat-aside/card.png",
+    cardColor: "#ffffff",
+    cardTextDark: true,
     overview: "Coming soon.",
     role: "Coming soon.",
     outcome: "Coming soon.",
@@ -67,6 +84,8 @@ export const personalProjects: PersonalProject[] = [
     title: "Crypto Onboarding",
     shortDescription: "Redesigning the onboarding experience for a crypto wallet app.",
     tags: ["Fintech", "Mobile"],
+    image: "/images/projects/crypto-onboarding/card.png",
+    cardColor: "#0251FF",
     overview:
       "An exploration into making crypto wallets less intimidating for first-time users — focusing on progressive disclosure and trust-building through transparency.",
     role: "Solo designer. Research, wireframes, high-fidelity Figma prototype.",
@@ -77,6 +96,9 @@ export const personalProjects: PersonalProject[] = [
     title: "Ontask",
     shortDescription: "Research-driven productivity app for students managing coursework.",
     tags: ["Education", "Product Design"],
+    image: "/images/projects/ontask/card.png",
+    cardColor: "#C5B3E5",
+    cardTextDark: true,
     overview:
       "End-to-end product design for a student productivity app, from generative research through to a high-fidelity prototype. Focused on reducing cognitive load during high-stress academic periods.",
     role: "Solo designer. User interviews, affinity mapping, IA, wireframes, prototype.",
