@@ -24,15 +24,11 @@ const values = [
   },
 ];
 
-function ImagePlaceholder({ style }: { style?: React.CSSProperties }) {
+function AboutImage({ src, alt, style }: { src: string; alt: string; style?: React.CSSProperties }) {
   return (
-    <div
-      style={{
-        background: "var(--color-surface)",
-        borderRadius: "12px",
-        ...style,
-      }}
-    />
+    <div style={{ borderRadius: "12px", overflow: "hidden", ...style }}>
+      <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+    </div>
   );
 }
 
@@ -71,34 +67,31 @@ export default function About() {
             marginBottom: "56px",
           }}
         >
-          {/* Two-column: text left, big image right */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "40px",
-              alignItems: "start",
-              marginBottom: "24px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {/* Text with floated headshot */}
+          <div style={{ marginBottom: "24px" }}>
+            <AboutImage
+              src="/images/about/LinkedInHeadshot.png"
+              alt="Damean Rittmann"
+              style={{ float: "right", width: "calc((100% - 24px) / 3)", aspectRatio: "3 / 4", marginLeft: "32px", marginBottom: "16px" }}
+            />
+            <div>
               {storyParagraphs.map((p, i) => (
-                <p key={i} style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
+                <p key={i} style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
                   {p}
                 </p>
               ))}
-              <p style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7, marginTop: "8px" }}>
+              <p style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
                 {hobbies}
               </p>
             </div>
-            <ImagePlaceholder style={{ aspectRatio: "4 / 3" }} />
+            <div style={{ clear: "both" }} />
           </div>
 
           {/* 3 small images row */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>
-            <ImagePlaceholder style={{ aspectRatio: "4 / 3" }} />
-            <ImagePlaceholder style={{ aspectRatio: "4 / 3" }} />
-            <ImagePlaceholder style={{ aspectRatio: "4 / 3" }} />
+            <AboutImage src="/images/about/Plane.png" alt="Traveling" style={{ aspectRatio: "4 / 3" }} />
+            <AboutImage src="/images/about/festival.png" alt="Festival" style={{ aspectRatio: "4 / 3" }} />
+            <AboutImage src="/images/about/cats.png" alt="Rotary, Axl, and Piper" style={{ aspectRatio: "4 / 3" }} />
           </div>
         </div>
       </ScrollFadeIn>

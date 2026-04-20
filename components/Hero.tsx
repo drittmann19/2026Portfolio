@@ -37,7 +37,7 @@ export default function Hero() {
               ...fadeUp(0),
             }}
           >
-            Designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process, from research to functional prototype.
+            Designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.
           </h1>
 
           {/* Metrics row */}

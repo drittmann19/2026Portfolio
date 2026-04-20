@@ -125,14 +125,6 @@ function renderBlock(block: Block, idx: number) {
                 display: "block",
               }}
             />
-            {block.caption && (
-              <p
-                className="font-mono"
-                style={{ fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "10px" }}
-              >
-                {block.caption}
-              </p>
-            )}
           </ScrollFadeIn>
         </div>
       );
@@ -244,27 +236,6 @@ function Section({
 
 // ── Metric chip ───────────────────────────────────────────────────────────────
 
-function MetricChip({ label }: { label: string }) {
-  return (
-    <span
-      className="font-mono"
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        fontSize: "12px",
-        fontWeight: 500,
-        color: "var(--color-metric)",
-        background: "var(--color-metric-ghost)",
-        border: "1px solid rgba(240, 94, 59, 0.18)",
-        borderRadius: "100px",
-        padding: "5px 14px",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {label}
-    </span>
-  );
-}
 
 // ── Prev / Next card ──────────────────────────────────────────────────────────
 
@@ -418,11 +389,19 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </p>
         </ScrollFadeIn>
 
-        {/* Metric chips */}
+        {/* Metrics row */}
         <ScrollFadeIn delay={180}>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "40px" }}>
-            {metricChips.map((chip) => (
-              <MetricChip key={chip} label={chip.trim()} />
+          <div
+            className="font-mono"
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0", marginBottom: "40px", fontSize: "13px", fontWeight: 500 }}
+          >
+            {metricChips.map((chip, i) => (
+              <>
+                <span key={chip} style={{ color: "var(--color-metric)" }}>{chip.trim()}</span>
+                {i < metricChips.length - 1 && (
+                  <span key={`dot-${i}`} style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
+                )}
+              </>
             ))}
           </div>
         </ScrollFadeIn>
@@ -432,13 +411,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <div
             style={{
               width: "100%",
-              height: "clamp(300px, 40vw, 520px)",
               borderRadius: "14px",
-              backgroundColor: study.heroImage ? undefined : "var(--color-surface)",
+              backgroundColor: "var(--color-surface)",
               border: "1px solid var(--color-border-subtle)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               overflow: "hidden",
             }}
           >
@@ -446,7 +421,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               <img
                 src={study.heroImage}
                 alt={`${study.title} hero`}
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "left center" }}
+                style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}
               />
             ) : (
               <div style={{ textAlign: "center" }}>
