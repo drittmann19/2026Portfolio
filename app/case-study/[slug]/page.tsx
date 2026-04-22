@@ -396,7 +396,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         <ScrollFadeIn delay={180}>
           <div
             className="font-mono"
-            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0", marginBottom: "40px", fontSize: "13px", fontWeight: 500 }}
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0", marginBottom: "40px", fontSize: "16px", fontWeight: 500 }}
           >
             {metricChips.map((chip, i) => (
               <Fragment key={chip}>

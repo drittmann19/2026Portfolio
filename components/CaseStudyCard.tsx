@@ -34,7 +34,7 @@ export default function CaseStudyCard({ slug, title, subtitle, tags, color, year
           overflow: "hidden",
           transform: hovered ? "translateY(-2px)" : "translateY(0)",
           boxShadow: hovered
-            ? "0 8px 24px rgba(0,0,0,0.12), inset 0 0 0 2px #F05E3B"
+            ? "0 8px 24px rgba(0,0,0,0.12), inset 0 0 0 4px #F05E3B"
             : "0 1px 4px rgba(0,0,0,0.02)",
           transition: "transform 200ms ease-out, box-shadow 200ms ease-out",
           cursor: "pointer",

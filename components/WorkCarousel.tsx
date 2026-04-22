@@ -113,7 +113,7 @@ export default function WorkCarousel() {
       </div>
 
       {/* Track */}
-      <div ref={containerRef} style={{ overflow: "hidden" }}>
+      <div ref={containerRef} style={{ overflow: "hidden", paddingTop: "8px", marginTop: "-8px" }}>
         {cardWidth > 0 && (
           <div
             onTransitionEnd={onTransitionEnd}

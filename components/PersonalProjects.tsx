@@ -34,7 +34,7 @@ function ProjectCard({
         cursor: "pointer",
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
         boxShadow: hovered
-          ? "0 8px 24px rgba(0,0,0,0.12), inset 0 0 0 2px rgba(255,255,255,0.25)"
+          ? "0 8px 24px rgba(0,0,0,0.12), inset 0 0 0 4px #F05E3B"
           : "0 1px 4px rgba(0,0,0,0.06)",
         transition: "transform 200ms ease-out, box-shadow 200ms ease-out",
       }}
