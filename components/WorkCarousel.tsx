@@ -73,8 +73,8 @@ export default function WorkCarousel() {
     <section
       id="work"
       style={{
-        paddingTop: "80px",
-        paddingBottom: "80px",
+        paddingTop: "112px",
+        paddingBottom: "112px",
         borderTop: "1px solid var(--color-border-subtle)",
       }}
     >

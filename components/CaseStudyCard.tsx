@@ -9,13 +9,14 @@ interface CaseStudyCardProps {
   subtitle: string;
   tags: string[];
   color: string;
+  year?: number;
   cardImage?: string;
   cardImageFit?: "cover" | "contain";
   cardImagePadding?: string;
   heroImage?: string;
 }
 
-export default function CaseStudyCard({ slug, title, subtitle, tags, color, cardImage, cardImageFit, cardImagePadding, heroImage }: CaseStudyCardProps) {
+export default function CaseStudyCard({ slug, title, subtitle, tags, color, year, cardImage, cardImageFit, cardImagePadding, heroImage }: CaseStudyCardProps) {
   const image = cardImage ?? heroImage;
   const fit = cardImageFit ?? "cover";
   const [hovered, setHovered] = useState(false);
@@ -64,13 +65,26 @@ export default function CaseStudyCard({ slug, title, subtitle, tags, color, card
             padding: "32px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
+            gap: "16px",
             flexGrow: 1,
           }}
         >
+          {year && (
+            <p style={{
+              fontSize: "14px",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "#ffffff",
+              lineHeight: 1,
+              marginBottom: "4px",
+            }}>
+              {year}
+            </p>
+          )}
           <h3
             style={{
-              fontSize: "22px",
+              fontSize: "var(--text-card-title)",
               fontWeight: 700,
               color: "#ffffff",
               lineHeight: 1.3,
@@ -81,7 +95,7 @@ export default function CaseStudyCard({ slug, title, subtitle, tags, color, card
 
           <p
             style={{
-              fontSize: "16px",
+              fontSize: "var(--text-body)",
               color: "#ffffff",
               lineHeight: 1.5,
               flexGrow: 1,

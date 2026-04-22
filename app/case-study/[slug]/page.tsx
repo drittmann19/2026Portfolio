@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import MetricCallout from "@/components/MetricCallout";
@@ -19,7 +20,7 @@ function renderBlock(block: Block, idx: number) {
             marginBottom: "20px",
             color: "var(--color-text-secondary)",
             lineHeight: 1.8,
-            fontSize: "16px",
+            fontSize: "var(--text-body)",
           }}
         >
           {block.text}
@@ -32,12 +33,13 @@ function renderBlock(block: Block, idx: number) {
           key={idx}
           className="font-sans"
           style={{
-            fontSize: "20px",
-            fontWeight: 600,
+            fontSize: "clamp(30px, 3.2vw, 42px)",
+            fontWeight: 700,
             color: "var(--color-text-primary)",
-            marginTop: "40px",
-            marginBottom: "14px",
-            lineHeight: 1.3,
+            marginTop: "64px",
+            marginBottom: "24px",
+            lineHeight: 1.15,
+            letterSpacing: "-0.015em",
           }}
         >
           {block.text}
@@ -110,7 +112,7 @@ function renderBlock(block: Block, idx: number) {
 
     case "video":
       return (
-        <div key={idx} style={{ margin: "32px 0" }}>
+        <div key={idx} style={{ margin: "56px 0" }}>
           <ScrollFadeIn>
             <video
               src={block.src}
@@ -131,7 +133,7 @@ function renderBlock(block: Block, idx: number) {
 
     case "image":
       return (
-        <div key={idx} style={{ margin: "32px 0" }}>
+        <div key={idx} style={{ margin: "56px 0" }}>
           <ScrollFadeIn>
             {block.src ? (
               <img
@@ -195,11 +197,11 @@ function Section({
       <ScrollFadeIn>
         <div style={{ paddingTop: "6px" }}>
           <p
-            className="font-mono uppercase"
+            className="font-sans uppercase"
             style={{
-              fontSize: "11px",
+              fontSize: "13px",
               letterSpacing: "0.12em",
-              fontWeight: 500,
+              fontWeight: 600,
               color: "var(--color-accent)",
               lineHeight: 1,
             }}
@@ -215,11 +217,12 @@ function Section({
           <h2
             className="font-sans"
             style={{
-              fontSize: "28px",
-              fontWeight: 600,
+              fontSize: "clamp(30px, 3.2vw, 42px)",
+              fontWeight: 700,
               color: "var(--color-text-primary)",
-              lineHeight: 1.25,
-              marginBottom: "28px",
+              lineHeight: 1.15,
+              letterSpacing: "-0.015em",
+              marginBottom: "36px",
             }}
           >
             {heading}
@@ -396,12 +399,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0", marginBottom: "40px", fontSize: "13px", fontWeight: 500 }}
           >
             {metricChips.map((chip, i) => (
-              <>
-                <span key={chip} style={{ color: "var(--color-metric)" }}>{chip.trim()}</span>
+              <Fragment key={chip}>
+                <span style={{ color: "var(--color-metric)" }}>{chip.trim()}</span>
                 {i < metricChips.length - 1 && (
-                  <span key={`dot-${i}`} style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
+                  <span style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         </ScrollFadeIn>

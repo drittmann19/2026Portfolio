@@ -18,48 +18,59 @@ export default function Hero() {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+
+        .hero-section {
+          padding-top: 80px;
+          padding-bottom: 128px;
+        }
+
+        .hero-headline {
+          font-family: var(--font-jakarta);
+          font-weight: 900;
+          color: var(--color-text-primary);
+          font-size: clamp(32px, 5.4vw, 76px);
+          line-height: 1.08;
+          letter-spacing: -0.025em;
+        }
+
+        .hero-metrics {
+          margin-top: 40px;
+          font-size: clamp(16px, 1.6vw, 22px);
+          line-height: 1.4;
+          font-weight: 500;
+        }
+
+        .hero-metrics-dot {
+          color: var(--color-text-tertiary);
+          margin: 0 14px;
+        }
+
+        @media (max-width: 1023px) {
+          .hero-section {
+            padding-top: 56px;
+            padding-bottom: 96px;
+          }
+          .hero-metrics {
+            margin-top: 28px;
+          }
+        }
       `}</style>
 
-      <section
-        id="hero"
-        style={{ paddingTop: "120px", paddingBottom: "80px" }}
-      >
-        <div>
-          {/* Value proposition */}
-          <h1
-            style={{
-              fontFamily: "var(--font-jakarta)",
-              fontSize: "40px",
-              fontWeight: 800,
-              lineHeight: 1.2,
-              color: "var(--color-text-primary)",
-              marginBottom: "32px",
-              ...fadeUp(0),
-            }}
-          >
-            Designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.
-          </h1>
+      <section id="hero" className="hero-section">
+        <h1 className="hero-headline" style={fadeUp(0)}>
+          Hi, I&apos;m Damean,<br />a designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.
+        </h1>
 
-          {/* Metrics row */}
-          <div
-            className="font-mono flex items-center flex-wrap"
-            style={{
-              fontSize: "13px",
-              fontWeight: 500,
-              ...fadeUp(150),
-            }}
-          >
-            <span style={{ color: "var(--color-metric)" }}>
-              <CountUp target={60} delay={COUNT_UP_DELAY} />%+ faster execution
-            </span>
-            <span style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
-            <span style={{ color: "var(--color-metric)" }}>
-              <CountUp target={50} delay={COUNT_UP_DELAY} />%
-              {" "}fewer errors
-            </span>
-            <span style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
-            <span style={{ color: "var(--color-metric)" }}>$500M+ financial platform</span>
-          </div>
+        <div className="hero-metrics flex items-center flex-wrap" style={fadeUp(150)}>
+          <span style={{ color: "var(--color-metric)" }}>
+            <CountUp target={60} delay={COUNT_UP_DELAY} />%+ faster execution
+          </span>
+          <span className="hero-metrics-dot">·</span>
+          <span style={{ color: "var(--color-metric)" }}>
+            <CountUp target={50} delay={COUNT_UP_DELAY} />% fewer errors
+          </span>
+          <span className="hero-metrics-dot">·</span>
+          <span style={{ color: "var(--color-metric)" }}>$500M+ financial platform</span>
         </div>
       </section>
     </>

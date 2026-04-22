@@ -3,6 +3,7 @@ export interface PersonalProject {
   title: string;
   shortDescription: string;
   tags: string[];
+  year?: number;
   image?: string;
   imagePadding?: string;
   cardColor?: string;
@@ -17,6 +18,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "gascast",
     title: "GasCast",
+    year: 2026,
     shortDescription: "A native iOS app that turns Ethereum gas fees into a weather-style forecast instead of a dashboard of raw numbers.",
     tags: ["Fintech / Crypto", "SwiftUI + Claude Code", "Shipped iOS App"],
     image: "/images/projects/gascast/card.png",
@@ -36,6 +38,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "portfolio",
     title: "This Portfolio",
+    year: 2026,
     shortDescription: "Designed and built with Next.js, Tailwind, and Claude Code.",
     tags: ["Next.js", "AI-assisted"],
     problem:
@@ -46,6 +49,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "glow",
     title: "Glow",
+    year: 2026,
     shortDescription: "A shared pixel art night sky where messages live as fading stars and attention is the only input that matters.",
     tags: ["Interaction Design", "Figma Make", "Makeathon 2026"],
     image: "/images/projects/glow/card.png",
@@ -63,7 +67,8 @@ export const personalProjects: PersonalProject[] = [
   },
   {
     id: "aside",
-    title: "AI Chat Aside",
+    title: "Aside",
+    year: 2025,
     shortDescription: "A feature concept that lets users branch from any AI response without losing their place in the main conversation.",
     tags: ["AI UX", "Figma", "Concept"],
     image: "/images/projects/ai-chat-aside/card.png",
@@ -82,6 +87,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "crypto-onboarding",
     title: "Crypto Onboarding",
+    year: 2025,
     shortDescription: "A Coinbase concept that uses testnet coins to teach blockchain mechanics through practice rather than explanation.",
     tags: ["Fintech / Crypto", "Figma", "Concept"],
     image: "/images/projects/crypto-onboarding/card.png",
@@ -99,6 +105,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "collectiviz",
     title: "Collectiviz",
+    year: 2021,
     shortDescription: "A web app that turns CU Boulder alumni career data into a scrollable story so prospective students can see where a design degree leads.",
     tags: ["Data Visualization", "Firebase + Chart.js", "Team Project"],
     image: "/images/projects/collectiviz/card.png",
@@ -117,6 +124,7 @@ export const personalProjects: PersonalProject[] = [
   {
     id: "ontask",
     title: "OnTask",
+    year: 2021,
     shortDescription: "A concept productivity app that builds a daily schedule around how students actually study, then uses rewards as scaffolding to pull them through the day.",
     tags: ["Productivity", "Figma", "Concept"],
     image: "/images/projects/ontask/card.png",

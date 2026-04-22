@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Gasoek_One, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Gasoek_One } from "next/font/google";
 import NavShell from "@/components/NavShell";
 import MobileNav from "@/components/MobileNav";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-jakarta",
   display: "swap",
 });
@@ -15,13 +15,6 @@ const gasoekOne = Gasoek_One({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-gasoek",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -37,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${gasoekOne.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${gasoekOne.variable}`}>
 <body>
         {/* Desktop side nav */}
         <div className="hidden lg:block">

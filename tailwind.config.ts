@@ -25,7 +25,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-jakarta)", "sans-serif"],
-        mono: ["var(--font-jetbrains-mono)", "monospace"],
+        mono: ["var(--font-jakarta)", "sans-serif"],
         display: ["var(--font-gasoek)", "sans-serif"],
       },
     },

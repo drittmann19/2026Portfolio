@@ -15,7 +15,7 @@ function ProjectCard({
   const hasColor = !!project.cardColor;
   const darkText = project.cardTextDark;
   const textColor = hasColor ? (darkText ? "rgba(0,0,0,0.85)" : "#ffffff") : "var(--color-text-primary)";
-  const textColorSecondary = hasColor ? (darkText ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.75)") : "var(--color-text-secondary)";
+  const textColorSecondary = hasColor ? (darkText ? "rgba(0,0,0,0.85)" : "#ffffff") : "var(--color-text-primary)";
 
   return (
     <button
@@ -57,10 +57,23 @@ function ProjectCard({
       </div>
 
       <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "8px", flexGrow: 1 }}>
-        <h3 style={{ fontSize: "16px", fontWeight: 700, color: textColor, lineHeight: 1.3 }}>
+        {project.year && (
+          <p style={{
+            fontSize: "14px",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: hasColor ? (darkText ? "rgba(0,0,0,0.85)" : "#ffffff") : "var(--color-text-primary)",
+            lineHeight: 1,
+            marginBottom: "4px",
+          }}>
+            {project.year}
+          </p>
+        )}
+        <h3 style={{ fontSize: "var(--text-card-title)", fontWeight: 700, color: textColor, lineHeight: 1.3 }}>
           {project.title}
         </h3>
-        <p style={{ fontSize: "13px", color: textColorSecondary, lineHeight: 1.5, flexGrow: 1 }}>
+        <p style={{ fontSize: "var(--text-body)", color: textColorSecondary, lineHeight: 1.5, flexGrow: 1 }}>
           {project.shortDescription}
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", paddingTop: "4px" }}>
@@ -260,7 +273,7 @@ function Popover({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "16px",
+                fontSize: "var(--text-body)",
                 lineHeight: 1,
               }}
             >
@@ -303,12 +316,12 @@ function Popover({
                 fontWeight: 500,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
-                color: "var(--color-text-tertiary)",
+                color: "var(--color-accent)",
                 marginBottom: "6px",
               }}>
                 {label}
               </p>
-              <p style={{ fontSize: "14px", color: "var(--color-text-primary)", lineHeight: 1.65 }}>
+              <p style={{ fontSize: "16px", color: "#111827", lineHeight: 1.65 }}>
                 {value}
               </p>
             </div>
@@ -328,8 +341,8 @@ export default function PersonalProjects() {
       <section
         id="personal-projects"
         style={{
-          paddingTop: "80px",
-          paddingBottom: "80px",
+          paddingTop: "112px",
+          paddingBottom: "112px",
           borderTop: "1px solid var(--color-border-subtle)",
         }}
       >
@@ -348,7 +361,7 @@ export default function PersonalProjects() {
         </ScrollFadeIn>
 
         <div className="projects-grid">
-          {personalProjects.map((project, i) => (
+          {[...personalProjects].sort((a, b) => (b.year ?? 0) - (a.year ?? 0)).map((project, i) => (
             <ScrollFadeIn key={project.id} delay={i * 80} style={{ height: "100%" }}>
               <ProjectCard
                 project={project}

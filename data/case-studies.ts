@@ -23,6 +23,7 @@ export interface CaseStudy {
   metrics: string;
   tags: string[];
   color: string;
+  year?: number;
   cardImage?: string;
   cardImageFit?: "cover" | "contain";
   cardImagePadding?: string;
@@ -35,6 +36,7 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "agriculture-workflow-optimization",
+    year: 2025,
     title: "Matching Enterprise Tools to Field-First Work",
     subtitle: "Cut order creation time by 60% and doubled transaction volume by identifying a critical device strategy gap, then leading the redesign across 4 product squads serving 10,000+ users.",
     metrics: "60% faster order creation · 2x transaction volume · 4 product squads · 10,000+ users",
@@ -230,6 +232,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "customer-financial-hub",
+    year: 2023,
     title: "Building Trust in Agricultural Payments",
     subtitle: "Reduced payment time by 85% and cut errors by 50% on a $500M+ financial platform by redesigning complex payment flows into a clear, trustworthy experience.",
     metrics: "85% faster payments · 50% fewer errors · 2x digital adoption · $500M+ platform",
@@ -445,6 +448,7 @@ export const caseStudies: CaseStudy[] = [
 
   {
     slug: "design-system-onboarding",
+    year: 2024,
     title: "Interactive Design System Onboarding",
     subtitle: "Created the organization's first interactive design system training. Scaled adoption from the design team to product and engineering functions where it became the standard onboarding resource.",
     metrics: "10 designers onboarded · Scaled to PM + Engineering · Org-wide standard",

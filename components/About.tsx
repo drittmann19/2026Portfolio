@@ -37,8 +37,8 @@ export default function About() {
     <section
       id="about"
       style={{
-        paddingTop: "80px",
-        paddingBottom: "80px",
+        paddingTop: "112px",
+        paddingBottom: "112px",
         borderTop: "1px solid var(--color-border-subtle)",
       }}
     >
@@ -76,11 +76,11 @@ export default function About() {
             />
             <div>
               {storyParagraphs.map((p, i) => (
-                <p key={i} style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
+                <p key={i} style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
                   {p}
                 </p>
               ))}
-              <p style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
+              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
                 {hobbies}
               </p>
             </div>
@@ -130,7 +130,7 @@ export default function About() {
               >
                 {v.title}
               </p>
-              <p style={{ fontSize: "16px", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
+              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
                 {v.body}
               </p>
             </div>

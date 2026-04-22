@@ -66,7 +66,7 @@ export default function SideNav() {
 
       {/* AI Chat placeholder */}
       <div className="mt-5">
-        <p className="font-mono" style={{ fontSize: "11px", color: "var(--color-text-tertiary)" }}>
+        <p className="font-sans" style={{ fontSize: "11px", color: "var(--color-text-tertiary)" }}>
           AI Chat placeholder
         </p>
       </div>

@@ -59,14 +59,14 @@ export default function CaseStudySideNav() {
       {/* Identity */}
       <div>
         <p
-          className="font-sans font-bold leading-none"
+          className="font-display leading-none"
           style={{ fontSize: "38px", color: "var(--color-text-primary)" }}
         >
           Damean<br />Rittmann
         </p>
         <p
-          className="font-mono uppercase mt-3"
-          style={{ fontSize: "11px", letterSpacing: "0.08em", color: "var(--color-text-secondary)" }}
+          className="font-sans uppercase mt-3"
+          style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", color: "var(--color-text-secondary)" }}
         >
           Product Designer
         </p>

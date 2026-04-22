@@ -30,6 +30,20 @@
 
   /* Misc */
   --color-ai-glow: rgba(29, 92, 255, 0.35);
+
+  /* Alias: legacy mono variable now resolves to DM Sans so any inline
+     references continue to work without per-file edits. */
+  --font-jetbrains-mono: var(--font-jakarta);
+
+  --text-body: 16px;
+  --text-card-title: 20px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --text-body: 18px;
+    --text-card-title: 26px;
+  }
 }
 
 /* Carousel arrow buttons */
@@ -84,8 +98,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
-  padding-top: 96px;
-  padding-bottom: 96px;
+  padding-top: 128px;
+  padding-bottom: 128px;
   border-top: 1px solid var(--color-border-subtle);
 }
 
@@ -94,6 +108,13 @@
     grid-template-columns: 160px 1fr;
     gap: 56px;
     align-items: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .cs-section-grid {
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 }
 
