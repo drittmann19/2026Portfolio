@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        tablet: "768px",
+        desktop: "1024px",
+      },
       colors: {
         page: "var(--color-page)",
         card: "var(--color-card)",

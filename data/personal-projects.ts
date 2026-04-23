@@ -42,7 +42,7 @@ export const personalProjects: PersonalProject[] = [
     shortDescription: "Designed and built with Next.js, Tailwind, and Claude Code.",
     tags: ["Next.js", "AI-assisted"],
     problem:
-      "An experiment in AI-augmented development. I designed the system, wrote the spec, and used Claude Code to implement it — treating the AI as a collaborator rather than a generator.",
+      "An experiment in AI-augmented development. I designed the system, wrote the spec, and used Claude Code to implement it, treating the AI as a collaborator rather than a generator.",
     solution: "Designer and product owner. Claude Code handled implementation from a detailed spec.",
     reflection: "Shipped faster than any previous portfolio. The process itself became a proof of concept for AI-augmented design workflows.",
   },
@@ -61,7 +61,7 @@ export const personalProjects: PersonalProject[] = [
     problem:
       "Shared digital spaces run on the same worn patterns. Tap to like. Scroll to consume. Click a button to contribute. The interface does all the work and the content becomes background noise. I wanted to see what happens when the canvas itself is the only interface and attention is the only input that matters.",
     solution:
-      "Glow is a shared pixel art night sky where messages exist as stars that slowly fade over time. No buttons, no menus. Users press and hold empty sky to create a star, choosing a type — wish, gratitude, encouragement, or observation — through inline selection that appears where they held. Hovering over any star reveals its message and gradually restores its brightness. The longer you hover, the brighter it gets. When bright stars cluster together, a soft nebula glow forms behind them. Built in Figma Make for the 2026 Figma Makeathon.",
+      "Glow is a shared pixel art night sky where messages exist as stars that slowly fade over time. No buttons, no menus. Users press and hold empty sky to create a star, choosing a type (wish, gratitude, encouragement, or observation) through inline selection that appears where they held. Hovering over any star reveals its message and gradually restores its brightness. The longer you hover, the brighter it gets. When bright stars cluster together, a soft nebula glow forms behind them. Built in Figma Make for the 2026 Figma Makeathon.",
     reflection:
       "Every decision reinforced one idea. Strip the UI away and let the content and the space do the work. The decay mechanic was the piece I didn't expect to matter so much. It gives the experience a sense of time and care that static feeds never have.",
   },
@@ -80,7 +80,7 @@ export const personalProjects: PersonalProject[] = [
     problem:
       "Generative AI conversations become cluttered pillars of text where finding specific exchanges is frustrating. Asking a clarifying question mid-flow risks derailing your entire thought process. Existing branch solutions make this worse by treating each branch as a separate chat, fragmenting context instead of preserving it.",
     solution:
-      "I designed Asides, a concept that lets users branch from any response without breaking their main conversation. Instead of creating a new chat, Asides opens a modal overlay where users can ask unlimited follow-up questions and return to their primary thread with the context intact. The icon lives in the existing action menu and shifts through three states — empty, active, and intensified when five or more asides exist. It signals depth without demanding attention.",
+      "I designed Asides, a concept that lets users branch from any response without breaking their main conversation. Instead of creating a new chat, Asides opens a modal overlay where users can ask unlimited follow-up questions and return to their primary thread with the context intact. The icon lives in the existing action menu and shifts through three states: empty, active, and intensified when five or more asides exist. It signals depth without demanding attention.",
     reflection:
       "This was about respecting hierarchy. Branching is a supporting action, not a primary one, and designing it that way meant resisting the urge to make it visible everywhere. Context never gets lost, and the main thread stays the main thread.",
   },
@@ -134,10 +134,10 @@ export const personalProjects: PersonalProject[] = [
       "/images/projects/ontask/screen-1.png",
     ],
     problem:
-      "Remote learning during the pandemic left college students bored, distracted, and struggling to stay on task. Devices were the biggest source of distraction and the most-used tool for studying at the same time, which meant the usual advice — put your phone down, stick to a schedule — broke down immediately.",
+      "Remote learning during the pandemic left college students bored, distracted, and struggling to stay on task. Devices were the biggest source of distraction and the most-used tool for studying at the same time, which meant the usual advice to put your phone down and stick to a schedule broke down immediately.",
     solution:
       "I designed OnTask, a concept app that builds a daily schedule around a student's existing study habits and motivates follow-through through a rewards system. Onboarding asks questions about work patterns and energy levels, then generates a calendar with tasks attached to specific events. A study mode blocks notifications during focus blocks, and completing tasks unlocks rewards the user chooses themselves. Designed in Figma based on research with six college students.",
     reflection:
-      "The most interesting thing I learned was about motivation as a design material. Rewards bolted on as gamification didn't move the needle. Rewards tied to something the student actually wanted — and chose themselves — did. The difference isn't the mechanic. It's the ownership.",
+      "The most interesting thing I learned was about motivation as a design material. Rewards bolted on as gamification didn't move the needle. Rewards the student actually wanted and chose for themselves did. The difference isn't the mechanic. It's the ownership.",
   },
 ]

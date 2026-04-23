@@ -1,3 +1,4 @@
+"use client";
 import ScrollFadeIn from "./ScrollFadeIn";
 
 const storyParagraphs = [
@@ -59,6 +60,35 @@ export default function About() {
 
       {/* Story card */}
       <ScrollFadeIn>
+        <style dangerouslySetInnerHTML={{ __html: `
+          .about-story-layout {
+            overflow: hidden;
+            margin-bottom: 32px;
+          }
+          .about-headshot-desktop {
+            float: right;
+            width: 33.333%;
+            margin-left: 24px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 3 / 4;
+          }
+          .about-headshot-desktop img { width: 100%; height: 100%; object-fit: cover; display: block; }
+          .about-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          }
+          .about-headshot-mobile { display: none; }
+
+          @media (max-width: 1023px) {
+            .about-story-layout { margin-bottom: 32px; }
+            .about-headshot-desktop { display: none; }
+            .about-photos-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-headshot-mobile { display: block; }
+          }
+        ` }} />
         <div
           style={{
             background: "var(--color-card)",
@@ -67,31 +97,29 @@ export default function About() {
             marginBottom: "56px",
           }}
         >
-          {/* Text with floated headshot */}
-          <div style={{ marginBottom: "24px" }}>
-            <AboutImage
-              src="/images/about/LinkedInHeadshot.png"
-              alt="Damean Rittmann"
-              style={{ float: "right", width: "calc((100% - 24px) / 3)", aspectRatio: "3 / 4", marginLeft: "32px", marginBottom: "16px" }}
-            />
-            <div>
-              {storyParagraphs.map((p, i) => (
-                <p key={i} style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
-                  {p}
-                </p>
-              ))}
-              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
-                {hobbies}
-              </p>
+          {/* Float headshot right so text wraps around it */}
+          <div className="about-story-layout">
+            <div className="about-headshot-desktop">
+              <img src="/images/about/LinkedInHeadshot.png" alt="Damean Rittmann" />
             </div>
-            <div style={{ clear: "both" }} />
+            {storyParagraphs.map((p, i) => (
+              <p key={i} style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
+                {p}
+              </p>
+            ))}
+            <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
+              {hobbies}
+            </p>
           </div>
 
-          {/* 3 small images row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>
-            <AboutImage src="/images/about/Plane.png" alt="Traveling" style={{ aspectRatio: "4 / 3" }} />
-            <AboutImage src="/images/about/festival.png" alt="Festival" style={{ aspectRatio: "4 / 3" }} />
-            <AboutImage src="/images/about/cats.png" alt="Rotary, Axl, and Piper" style={{ aspectRatio: "4 / 3" }} />
+          {/* Photos: 3-col on desktop, 2-col on mobile (headshot joins here on mobile) */}
+          <div className="about-photos-grid">
+            <div className="about-headshot-mobile" style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "3 / 4" }}>
+              <img src="/images/about/LinkedInHeadshot.png" alt="Damean Rittmann" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+            <AboutImage src="/images/about/Plane.png" alt="Traveling" style={{ aspectRatio: "3 / 4" }} />
+            <AboutImage src="/images/about/festival.png" alt="Festival" style={{ aspectRatio: "3 / 4" }} />
+            <AboutImage src="/images/about/cats.png" alt="Rotary, Axl, and Piper" style={{ aspectRatio: "3 / 4" }} />
           </div>
         </div>
       </ScrollFadeIn>
@@ -109,7 +137,17 @@ export default function About() {
         >
           My Values
         </h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+        <style dangerouslySetInnerHTML={{ __html: `
+          .values-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          @media (min-width: 768px) {
+            .values-grid { grid-template-columns: repeat(3, 1fr); }
+          }
+        ` }} />
+        <div className="values-grid">
           {values.map((v, i) => (
             <div
               key={v.title}

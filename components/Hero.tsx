@@ -72,6 +72,12 @@ export default function Hero() {
           white-space: pre-line;
         }
 
+        @media (max-width: 1439px) {
+          .hero-headline {
+            font-size: clamp(32px, 4.0vw, 58px);
+          }
+        }
+
         .typewriter-hidden {
           opacity: 0;
         }

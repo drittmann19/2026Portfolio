@@ -583,8 +583,11 @@ export function getPrevNext(slug: string): {
   next: { slug: string; title: string; metrics: string } | null;
 } {
   const idx = caseStudies.findIndex((c) => c.slug === slug);
+  const n = caseStudies.length;
+  const prevStudy = caseStudies[(idx - 1 + n) % n];
+  const nextStudy = caseStudies[(idx + 1) % n];
   return {
-    prev: idx > 0 ? { slug: caseStudies[idx - 1].slug, title: caseStudies[idx - 1].title, metrics: caseStudies[idx - 1].metrics } : null,
-    next: idx < caseStudies.length - 1 ? { slug: caseStudies[idx + 1].slug, title: caseStudies[idx + 1].title, metrics: caseStudies[idx + 1].metrics } : null,
+    prev: { slug: prevStudy.slug, title: prevStudy.title, metrics: prevStudy.metrics },
+    next: { slug: nextStudy.slug, title: nextStudy.title, metrics: nextStudy.metrics },
   };
 }

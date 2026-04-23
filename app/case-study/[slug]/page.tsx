@@ -323,17 +323,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   return (
     <div style={{ width: "100%" }}>
 
-      {/* Back link — mobile only */}
-      <div className="block lg:hidden" style={{ marginBottom: "28px" }}>
-        <Link
-          href="/"
-          className="font-sans transition-colors duration-150"
-          style={{ fontSize: "14px", color: "var(--color-text-secondary)", textDecoration: "none" }}
-        >
-          ← Back to Home
-        </Link>
-      </div>
-
       {/* ── Hero ── */}
       <div id="overview" style={{ paddingBottom: "72px" }}>
 

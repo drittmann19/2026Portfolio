@@ -42,10 +42,11 @@ export default function RootLayout({
 
         {/* Main content */}
         <main className="lg:ml-[280px]">
-          <div className="px-12 pt-10 mx-auto" style={{ maxWidth: "1800px" }}>
+          <div className="px-4 tablet:px-12 pt-10 mx-auto" style={{ maxWidth: "1800px" }}>
             {children}
           </div>
         </main>
+
       </body>
     </html>
   );

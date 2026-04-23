@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import ScrollFadeIn from "./ScrollFadeIn";
 import { personalProjects, PersonalProject } from "@/data/personal-projects";
 
@@ -175,16 +176,16 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
           <button onClick={prev} aria-label="Previous" style={{
             position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)",
             width: "32px", height: "32px", borderRadius: "50%",
-            background: "rgba(0,0,0,0.45)", border: "none", color: "#fff",
+            background: "rgba(255,255,255,0.88)", border: "none", color: "#111",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "18px", backdropFilter: "blur(4px)",
+            fontSize: "18px", backdropFilter: "blur(8px)",
           }}>‹</button>
           <button onClick={next} aria-label="Next" style={{
             position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)",
             width: "32px", height: "32px", borderRadius: "50%",
-            background: "rgba(0,0,0,0.45)", border: "none", color: "#fff",
+            background: "rgba(255,255,255,0.88)", border: "none", color: "#111",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "18px", backdropFilter: "blur(4px)",
+            fontSize: "18px", backdropFilter: "blur(8px)",
           }}>›</button>
 
           <div style={{
@@ -245,40 +246,43 @@ function Popover({
     ? [project.image]
     : [];
 
-  return (
+  return createPortal(
     <div onClick={handleBackdrop} className="popover-backdrop">
       <div ref={ref} className="popover-dialog">
-        <div className="popover-handle" aria-hidden="true" />
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            zIndex: 10,
+            width: "32px",
+            height: "32px",
+            borderRadius: "50%",
+            border: "none",
+            background: "rgba(255,255,255,0.88)",
+            backdropFilter: "blur(8px)",
+            color: "#111",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "18px",
+            lineHeight: 1,
+          }}
+        >
+          ×
+        </button>
 
         <ImageCarousel images={carouselImages} title={project.title} />
 
         <div className="popover-body">
           {/* Header */}
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "16px" }}>
+          <div style={{ marginBottom: "16px" }}>
             <h2 style={{ fontSize: "22px", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.2 }}>
               {project.title}
             </h2>
-            <button
-              onClick={onClose}
-              aria-label="Close"
-              style={{
-                flexShrink: 0,
-                width: "32px",
-                height: "32px",
-                borderRadius: "50%",
-                border: "1px solid var(--color-border-default)",
-                background: "var(--color-surface)",
-                color: "var(--color-text-secondary)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "var(--text-body)",
-                lineHeight: 1,
-              }}
-            >
-              ×
-            </button>
           </div>
 
           {/* Tags */}
@@ -329,7 +333,8 @@ function Popover({
 
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
