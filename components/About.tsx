@@ -110,27 +110,51 @@ export default function About() {
           My Values
         </h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
-          {values.map((v) => (
+          {values.map((v, i) => (
             <div
               key={v.title}
               style={{
                 background: "var(--color-card)",
                 borderRadius: "16px",
                 padding: "32px",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
+              <div
+                style={{
+                  fontFamily: "var(--font-gasoek)",
+                  fontSize: "clamp(88px, 9vw, 120px)",
+                  lineHeight: 0.9,
+                  color: "rgba(29, 92, 255, 0.4)",
+                  letterSpacing: "-0.02em",
+                  marginBottom: "20px",
+                }}
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </div>
+              <div
+                style={{
+                  width: "40px",
+                  height: "1px",
+                  background: "rgba(17, 24, 39, 0.12)",
+                  marginBottom: "20px",
+                }}
+                aria-hidden="true"
+              />
               <p
                 style={{
-                  fontSize: "22px",
+                  fontSize: "var(--text-card-title)",
                   fontWeight: 700,
                   color: "var(--color-text-primary)",
-                  marginBottom: "8px",
+                  marginBottom: "12px",
                   lineHeight: 1.3,
                 }}
               >
                 {v.title}
               </p>
-              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
+              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-secondary)", lineHeight: 1.7 }}>
                 {v.body}
               </p>
             </div>

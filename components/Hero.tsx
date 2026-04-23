@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import CountUp from "./CountUp";
 
-// Count-up starts after metrics fade-in completes: 150ms delay + 600ms anim
-const COUNT_UP_DELAY = 750;
+const HEADLINE_TEXT = "Hi, I'm Damean,\na designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.";
+const TYPE_SPEED_MS = 14;
+const METRICS_FADE_DELAY_MS = 260;
 
 const fadeUp = (delay: number): React.CSSProperties => ({
   opacity: 0,
@@ -11,12 +13,48 @@ const fadeUp = (delay: number): React.CSSProperties => ({
 });
 
 export default function Hero() {
+  const [typedCount, setTypedCount] = useState(0);
+  const [typingDone, setTypingDone] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mql.matches);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTypedCount(HEADLINE_TEXT.length);
+      setTypingDone(true);
+      return;
+    }
+    const id = setInterval(() => {
+      setTypedCount((c) => {
+        if (c >= HEADLINE_TEXT.length) {
+          clearInterval(id);
+          setTypingDone(true);
+          return c;
+        }
+        return c + 1;
+      });
+    }, TYPE_SPEED_MS);
+    return () => clearInterval(id);
+  }, [reducedMotion]);
+
+  const metricsDelay = typingDone ? 0 : 999_999;
+  const countUpDelay = typingDone ? METRICS_FADE_DELAY_MS + 300 : 999_999;
+
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes typewriter-blink {
+          0%, 50% { opacity: 1; }
+          50.001%, 100% { opacity: 0; }
         }
 
         .hero-section {
@@ -31,6 +69,28 @@ export default function Hero() {
           font-size: clamp(32px, 5.4vw, 76px);
           line-height: 1.08;
           letter-spacing: -0.025em;
+          white-space: pre-line;
+        }
+
+        .typewriter-hidden {
+          opacity: 0;
+        }
+
+        .typewriter-cursor {
+          display: inline-block;
+          width: 0;
+          position: relative;
+          vertical-align: baseline;
+        }
+        .typewriter-cursor::after {
+          content: "";
+          position: absolute;
+          left: 2px;
+          bottom: 0.05em;
+          width: 0.08em;
+          height: 0.85em;
+          background: var(--color-metric);
+          animation: typewriter-blink 1s step-end infinite;
         }
 
         .hero-metrics {
@@ -54,20 +114,30 @@ export default function Hero() {
             margin-top: 28px;
           }
         }
-      `}</style>
+
+        @media (prefers-reduced-motion: reduce) {
+          .typewriter-cursor::after { display: none; }
+        }
+      ` }} />
 
       <section id="hero" className="hero-section">
-        <h1 className="hero-headline" style={fadeUp(0)}>
-          Hi, I&apos;m Damean,<br />a designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.
+        <h1 className="hero-headline" aria-label={HEADLINE_TEXT}>
+          <span aria-hidden="true">
+            {HEADLINE_TEXT.slice(0, typedCount)}
+            {!reducedMotion && <span className="typewriter-cursor" />}
+          </span>
+          <span aria-hidden="true" className="typewriter-hidden">
+            {HEADLINE_TEXT.slice(typedCount)}
+          </span>
         </h1>
 
-        <div className="hero-metrics flex items-center flex-wrap" style={fadeUp(150)}>
+        <div className="hero-metrics flex items-center flex-wrap" style={fadeUp(metricsDelay)}>
           <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={60} delay={COUNT_UP_DELAY} />%+ faster execution
+            <CountUp target={60} delay={countUpDelay} />%+ faster execution
           </span>
           <span className="hero-metrics-dot">·</span>
           <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={50} delay={COUNT_UP_DELAY} />% fewer errors
+            <CountUp target={50} delay={countUpDelay} />% fewer errors
           </span>
           <span className="hero-metrics-dot">·</span>
           <span style={{ color: "var(--color-metric)" }}>$500M+ financial platform</span>
