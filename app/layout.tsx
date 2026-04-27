@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Gasoek_One } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import NavShell from "@/components/NavShell";
 import MobileNav from "@/components/MobileNav";
 import "./globals.css";
@@ -63,6 +64,7 @@ export default function RootLayout({
           </div>
         </main>
 
+        <Analytics />
       </body>
       <GoogleAnalytics gaId="G-DGN5P8HTDG" />
     </html>
