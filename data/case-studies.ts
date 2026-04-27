@@ -106,7 +106,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Leading across 4 squads with 4 different working styles.",
+            text: "Leading across 4 squads with 4 different working styles",
           },
           {
             type: "p",
@@ -118,7 +118,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Documentation as a design tool.",
+            text: "Documentation as a design tool",
           },
           {
             type: "p",
@@ -126,7 +126,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Navigating scope uncertainty.",
+            text: "Navigating scope uncertainty",
           },
           {
             type: "p",
@@ -150,7 +150,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Desktop inline editing: navigating real constraints.",
+            text: "Desktop inline editing: navigating real constraints",
           },
           {
             type: "p",
@@ -167,7 +167,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Product reference tracking: connecting planning to execution.",
+            text: "Product reference tracking: connecting planning to execution",
           },
           {
             type: "p",
@@ -310,7 +310,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "One artifact kept our product trio aligned.",
+            text: "One artifact kept our product trio aligned",
           },
           {
             type: "p",
@@ -323,7 +323,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Learning to leverage a design system.",
+            text: "Learning to leverage a design system",
           },
           {
             type: "p",
@@ -342,7 +342,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Step 1: Choose your account.",
+            text: "Step 1: Choose your account",
           },
           {
             type: "p",
@@ -350,7 +350,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Step 2: Select your balance.",
+            text: "Step 2: Select your balance",
           },
           {
             type: "p",
@@ -358,7 +358,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Step 3: Confirm payment details.",
+            text: "Step 3: Confirm payment details",
           },
           {
             type: "p",
@@ -375,7 +375,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "A trade-off that didn't make the cut.",
+            text: "A trade-off that didn't make the cut",
           },
           {
             type: "p",
@@ -387,7 +387,7 @@ export const caseStudies: CaseStudy[] = [
           },
           {
             type: "h3",
-            text: "Beyond payments: the trust principle scaled.",
+            text: "Beyond payments: the trust principle scaled",
           },
           {
             type: "p",

@@ -77,7 +77,7 @@ function renderBlock(block: Block, idx: number) {
               >
                 —
               </span>
-              <span style={{ lineHeight: 1.7 }}>{item}</span>
+              <span style={{ lineHeight: 1.7, fontSize: "var(--text-body)" }}>{item}</span>
             </li>
           ))}
         </ul>

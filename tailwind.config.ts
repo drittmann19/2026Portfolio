@@ -28,8 +28,8 @@ const config: Config = {
         "border-hover": "var(--color-border-hover)",
       },
       fontFamily: {
-        sans: ["var(--font-jakarta)", "sans-serif"],
-        mono: ["var(--font-jakarta)", "sans-serif"],
+        sans: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-dm-sans)", "sans-serif"],
         display: ["var(--font-gasoek)", "sans-serif"],
       },
     },

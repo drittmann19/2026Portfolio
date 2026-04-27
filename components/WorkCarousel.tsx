@@ -73,8 +73,8 @@ export default function WorkCarousel() {
     <section
       id="work"
       style={{
-        paddingTop: "112px",
-        paddingBottom: "112px",
+        paddingTop: "clamp(64px, 14vw, 112px)",
+        paddingBottom: "clamp(64px, 14vw, 112px)",
         borderTop: "1px solid var(--color-border-subtle)",
       }}
     >
@@ -84,13 +84,13 @@ export default function WorkCarousel() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "40px",
+          marginBottom: "clamp(24px, 4vw, 40px)",
         }}
       >
         <h2
           style={{
             fontFamily: "var(--font-gasoek)",
-            fontSize: "42px",
+            fontSize: "clamp(28px, 5vw, 42px)",
             color: "var(--color-text-primary)",
             lineHeight: 1.1,
           }}

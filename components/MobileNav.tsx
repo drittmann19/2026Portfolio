@@ -63,7 +63,7 @@ export default function MobileNav() {
           >
             Damean Rittmann
           </span>
-          {isCaseStudy && (
+          {isCaseStudy ? (
             <a
               href="/#work"
               className="font-sans"
@@ -71,6 +71,13 @@ export default function MobileNav() {
             >
               ← Home
             </a>
+          ) : (
+            <span
+              className="font-sans uppercase"
+              style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", color: "var(--color-text-secondary)" }}
+            >
+              Product Designer
+            </span>
           )}
         </div>
 

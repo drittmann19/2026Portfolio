@@ -9,12 +9,32 @@ export interface PersonalProject {
   cardColor?: string;
   cardTextDark?: boolean;
   popoverImages?: string[];
+  popoverImageFit?: "cover" | "contain";
   problem: string;
   solution: string;
   reflection: string;
 }
 
 export const personalProjects: PersonalProject[] = [
+  {
+    id: "portfolio",
+    title: "This Portfolio",
+    year: 2026,
+    shortDescription: "The site you are on. Designed and built to match my brand, using Next.js and Claude Code.",
+    tags: ["Web Design", "Next.js + Claude Code", "Live Website"],
+    image: "/images/projects/portfolio/card.png",
+    cardColor: "#1D5CFF",
+    popoverImages: [
+      "/images/projects/portfolio/screen-1.png",
+    ],
+    popoverImageFit: "contain",
+    problem:
+      "I needed a portfolio that matched my updated brand. My previous site was built in Figma Sites, which got me online quickly but ran out of room for custom interactions, animations, or anything beyond the template system. The gap between how I was presenting myself and the work I actually wanted to be hired for was widening. I also wanted to continue understanding the limits of Claude Code and Claude Design by building something real, not by reading documentation.",
+    solution:
+      "I designed this site to feel like the brand behind it. Confident, direct, and focused on the work. The side and top navigation let readers jump to what they care about instead of scrolling through each page and case study. Animations and interactions were added with intent, not as decoration, and the overall pace favors scannability over spectacle. Designed by me, a human, with some suggestions from Claude Design and the Impeccable skill in Claude Code. Built with Claude Code using Next.js and Tailwind.",
+    reflection:
+      "The most useful AI moment was a pushback one. When I asked Claude Design to polish my existing layout, it came back with a full redesign leaning into a technical, overdone brand that wasn't mine. It looked great but it wasn't me. I kept a few small details, then simplified everything else. AI gives you a thousand directions fast. Knowing which one represents you is still design work, and it's the part I'm not outsourcing.",
+  },
   {
     id: "gascast",
     title: "GasCast",
@@ -34,17 +54,6 @@ export const personalProjects: PersonalProject[] = [
       "I designed and built GasCast, a native iOS app that translates live Ethereum data into a weather-style forecast. The biggest design decision was flipping the header hierarchy. Early versions led with the Gwei number, but \"128.5 GWEI\" communicates nothing to someone who doesn't already know gas pricing. I made the status label the hero instead. OPTIMAL, ACCEPTABLE, COSTLY, or SEVERE. Immediately actionable, no crypto knowledge required. The Gwei value still exists for power users, but in a compact badge rather than dominating the screen. I designed in Figma, built in SwiftUI with Claude Code, and deployed a smart contract to Base Sepolia using Foundry to handle on-chain data. Live on the App Store.",
     reflection:
       "This was a learning project first. I wanted to see how far I could take an idea on my own with AI as a collaborator, and what I took away was a repeatable workflow. Claude helped me synthesize research and plan the MVP. Google Stitch gave me a visual starting point. Then I treated the implementation like sculpting, refining each card and tuning details directly in code rather than approximating them in static mockups. The animated wave grid background is a good example. It responds to gas conditions, calm and slow during Optimal and dense and chaotic during Severe, and getting it right took multiple rounds of iteration in code. The real insight isn't that AI made the work faster. It's that AI tools are most powerful when you treat them as a medium to think through, not a shortcut to skip thinking.",
-  },
-  {
-    id: "portfolio",
-    title: "This Portfolio",
-    year: 2026,
-    shortDescription: "Designed and built with Next.js, Tailwind, and Claude Code.",
-    tags: ["Next.js", "AI-assisted"],
-    problem:
-      "An experiment in AI-augmented development. I designed the system, wrote the spec, and used Claude Code to implement it, treating the AI as a collaborator rather than a generator.",
-    solution: "Designer and product owner. Claude Code handled implementation from a detailed spec.",
-    reflection: "Shipped faster than any previous portfolio. The process itself became a proof of concept for AI-augmented design workflows.",
   },
   {
     id: "glow",

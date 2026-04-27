@@ -57,7 +57,7 @@ function ProjectCard({
         )}
       </div>
 
-      <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "8px", flexGrow: 1 }}>
+      <div style={{ padding: "clamp(16px, 3vw, 20px)", display: "flex", flexDirection: "column", gap: "8px", flexGrow: 1 }}>
         {project.year && (
           <p style={{
             fontSize: "14px",
@@ -114,7 +114,7 @@ function isVideo(src: string) {
   return /\.(mp4|mov|webm)$/i.test(src);
 }
 
-function CarouselSlide({ src, title }: { src: string; title: string }) {
+function CarouselSlide({ src, title, objectFit = "cover" }: { src: string; title: string; objectFit?: "cover" | "contain" }) {
   const youtube = parseYoutube(src);
   if (youtube) {
     const embedUrl = `https://www.youtube.com/embed/${youtube.videoId}?autoplay=1&mute=1&start=${youtube.start}&loop=1&playlist=${youtube.videoId}&rel=0`;
@@ -145,12 +145,12 @@ function CarouselSlide({ src, title }: { src: string; title: string }) {
     <img
       src={src}
       alt={title}
-      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      style={{ width: "100%", height: "100%", objectFit: objectFit, display: "block" }}
     />
   );
 }
 
-function ImageCarousel({ images, title }: { images: string[]; title: string }) {
+function ImageCarousel({ images, title, objectFit }: { images: string[]; title: string; objectFit?: "cover" | "contain" }) {
   const [index, setIndex] = useState(0);
 
   if (images.length === 0) {
@@ -169,7 +169,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
 
   return (
     <div className="popover-image-area" style={{ position: "relative" }}>
-      <CarouselSlide key={`${index}-${images[index]}`} src={images[index]} title={`${title} ${index + 1}`} />
+      <CarouselSlide key={`${index}-${images[index]}`} src={images[index]} title={`${title} ${index + 1}`} objectFit={objectFit} />
 
       {!single && (
         <>
@@ -275,7 +275,7 @@ function Popover({
           ×
         </button>
 
-        <ImageCarousel images={carouselImages} title={project.title} />
+        <ImageCarousel images={carouselImages} title={project.title} objectFit={project.popoverImageFit} />
 
         <div className="popover-body">
           {/* Header */}
@@ -346,8 +346,8 @@ export default function PersonalProjects() {
       <section
         id="personal-projects"
         style={{
-          paddingTop: "112px",
-          paddingBottom: "112px",
+          paddingTop: "clamp(64px, 14vw, 112px)",
+          paddingBottom: "clamp(64px, 14vw, 112px)",
           borderTop: "1px solid var(--color-border-subtle)",
         }}
       >
@@ -355,10 +355,10 @@ export default function PersonalProjects() {
           <h2
             style={{
               fontFamily: "var(--font-gasoek)",
-              fontSize: "42px",
+              fontSize: "clamp(28px, 5vw, 42px)",
               color: "var(--color-text-primary)",
               lineHeight: 1.1,
-              marginBottom: "40px",
+              marginBottom: "clamp(24px, 4vw, 40px)",
             }}
           >
             Side Projects
@@ -367,7 +367,7 @@ export default function PersonalProjects() {
 
         <div className="projects-grid">
           {[...personalProjects].sort((a, b) => (b.year ?? 0) - (a.year ?? 0)).map((project, i) => (
-            <ScrollFadeIn key={project.id} delay={i * 80} style={{ height: "100%" }}>
+            <ScrollFadeIn key={project.id} delay={0} style={{ height: "100%" }}>
               <ProjectCard
                 project={project}
                 onClick={() => setActive(project)}

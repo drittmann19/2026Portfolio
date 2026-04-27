@@ -3,8 +3,16 @@
 import { useEffect, useState } from "react";
 import CountUp from "./CountUp";
 
-const HEADLINE_TEXT = "Hi, I'm Damean,\na designer who solves the hard problems. Complex data, real stakes, expert users who notice when you get it wrong. I build trust into high-stakes workflows, and AI sharpens every step of my process.";
-const TYPE_SPEED_MS = 14;
+type Segment = { text: string; blue?: boolean };
+const HEADLINE_SEGMENTS: Segment[] = [
+  { text: "Hi, I'm Damean,\na designer who " },
+  { text: "solves the hard problems", blue: true },
+  { text: ". Complex data, real stakes, expert users who notice when you get it wrong. I" },
+  { text: " build trust into high-stakes workflows", blue: true },
+  { text: ", and AI sharpens every step of my process." },
+];
+const HEADLINE_TEXT = HEADLINE_SEGMENTS.map((s) => s.text).join("");
+const TYPE_SPEED_MS = 18;
 const METRICS_FADE_DELAY_MS = 260;
 
 const fadeUp = (delay: number): React.CSSProperties => ({
@@ -63,7 +71,7 @@ export default function Hero() {
         }
 
         .hero-headline {
-          font-family: var(--font-jakarta);
+          font-family: var(--font-dm-sans);
           font-weight: 900;
           color: var(--color-text-primary);
           font-size: clamp(32px, 5.4vw, 76px);
@@ -75,6 +83,12 @@ export default function Hero() {
         @media (max-width: 1439px) {
           .hero-headline {
             font-size: clamp(32px, 4.0vw, 58px);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-headline {
+            font-size: clamp(22px, 6.5vw, 28px);
           }
         }
 
@@ -129,11 +143,37 @@ export default function Hero() {
       <section id="hero" className="hero-section">
         <h1 className="hero-headline" aria-label={HEADLINE_TEXT}>
           <span aria-hidden="true">
-            {HEADLINE_TEXT.slice(0, typedCount)}
+            {(() => {
+              let pos = 0;
+              return HEADLINE_SEGMENTS.map(({ text, blue }, i) => {
+                const start = pos;
+                pos += text.length;
+                const visible = Math.min(text.length, Math.max(0, typedCount - start));
+                if (visible === 0) return null;
+                return (
+                  <span key={i} style={blue ? { color: "var(--color-accent)" } : undefined}>
+                    {text.slice(0, visible)}
+                  </span>
+                );
+              });
+            })()}
             {!reducedMotion && <span className="typewriter-cursor" />}
           </span>
           <span aria-hidden="true" className="typewriter-hidden">
-            {HEADLINE_TEXT.slice(typedCount)}
+            {(() => {
+              let pos = 0;
+              return HEADLINE_SEGMENTS.map(({ text, blue }, i) => {
+                const start = pos;
+                pos += text.length;
+                const hidden = text.slice(Math.max(0, typedCount - start));
+                if (!hidden) return null;
+                return (
+                  <span key={i} style={blue ? { color: "var(--color-accent)" } : undefined}>
+                    {hidden}
+                  </span>
+                );
+              });
+            })()}
           </span>
         </h1>
 

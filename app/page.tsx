@@ -2,12 +2,9 @@ import Hero from "@/components/Hero";
 import WorkCarousel from "@/components/WorkCarousel";
 import About from "@/components/About";
 import PersonalProjects from "@/components/PersonalProjects";
-import CursorGlow from "@/components/CursorGlow";
-
 export default function Home() {
   return (
     <>
-      <CursorGlow />
       <div style={{ position: "relative", zIndex: 1 }}>
         <Hero />
 

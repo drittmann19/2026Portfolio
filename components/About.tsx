@@ -38,8 +38,8 @@ export default function About() {
     <section
       id="about"
       style={{
-        paddingTop: "112px",
-        paddingBottom: "112px",
+        paddingTop: "clamp(64px, 14vw, 112px)",
+        paddingBottom: "clamp(64px, 14vw, 112px)",
         borderTop: "1px solid var(--color-border-subtle)",
       }}
     >
@@ -48,10 +48,10 @@ export default function About() {
         <h2
           style={{
             fontFamily: "var(--font-gasoek)",
-            fontSize: "42px",
+            fontSize: "clamp(28px, 5vw, 42px)",
             color: "var(--color-text-primary)",
             lineHeight: 1.1,
-            marginBottom: "40px",
+            marginBottom: "clamp(24px, 4vw, 40px)",
           }}
         >
           About Me
@@ -93,7 +93,7 @@ export default function About() {
           style={{
             background: "var(--color-card)",
             borderRadius: "16px",
-            padding: "40px",
+            padding: "clamp(16px, 5vw, 40px)",
             marginBottom: "56px",
           }}
         >
@@ -129,10 +129,10 @@ export default function About() {
         <h3
           style={{
             fontFamily: "var(--font-gasoek)",
-            fontSize: "28px",
+            fontSize: "clamp(22px, 3.5vw, 28px)",
             color: "var(--color-text-primary)",
             lineHeight: 1.1,
-            marginBottom: "32px",
+            marginBottom: "clamp(20px, 3vw, 32px)",
           }}
         >
           My Values
@@ -154,7 +154,7 @@ export default function About() {
               style={{
                 background: "var(--color-card)",
                 borderRadius: "16px",
-                padding: "32px",
+                padding: "clamp(16px, 4.5vw, 32px)",
                 display: "flex",
                 flexDirection: "column",
               }}

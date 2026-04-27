@@ -62,7 +62,7 @@ export default function CaseStudyCard({ slug, title, subtitle, tags, color, year
         {/* Content */}
         <div
           style={{
-            padding: "32px",
+            padding: "clamp(16px, 4.5vw, 32px)",
             display: "flex",
             flexDirection: "column",
             gap: "16px",
