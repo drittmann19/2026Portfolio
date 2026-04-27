@@ -1,12 +1,34 @@
 /* eslint-disable react/no-unescaped-entities */
-"use client";
-
+import type { Metadata } from "next";
 import { Fragment } from "react";
-import Link from "next/link";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import MetricCallout from "@/components/MetricCallout";
-import { getCaseStudy, getPrevNext, type Block } from "@/data/case-studies";
+import { caseStudies, getCaseStudy, getPrevNext, type Block } from "@/data/case-studies";
 import { notFound } from "next/navigation";
+import CaseStudyNavCard from "@/components/CaseStudyNavCard";
+
+export function generateStaticParams() {
+  return caseStudies.map((study) => ({ slug: study.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const study = getCaseStudy(params.slug);
+  if (!study) return {};
+
+  return {
+    title: study.title,
+    description: study.subtitle,
+    openGraph: {
+      title: `${study.title} — Damean Rittmann`,
+      description: study.subtitle,
+      url: `/case-study/${study.slug}`,
+    },
+  };
+}
 
 // ── Block renderer ────────────────────────────────────────────────────────────
 
@@ -237,80 +259,6 @@ function Section({
   );
 }
 
-// ── Metric chip ───────────────────────────────────────────────────────────────
-
-
-// ── Prev / Next card ──────────────────────────────────────────────────────────
-
-function NavCard({
-  study,
-  direction,
-}: {
-  study: { slug: string; title: string; metrics: string };
-  direction: "prev" | "next";
-}) {
-  return (
-    <Link
-      href={`/case-study/${study.slug}`}
-      style={{ textDecoration: "none", flex: 1, minWidth: "240px" }}
-    >
-      <div
-        style={{
-          background: "var(--color-card)",
-          border: "1px solid var(--color-border-subtle)",
-          borderRadius: "12px",
-          padding: "28px 32px",
-          cursor: "pointer",
-          transition: "transform 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out",
-          height: "100%",
-        }}
-        onMouseEnter={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = "translateY(-3px)";
-          el.style.borderColor = "var(--color-border-hover)";
-          el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.08)";
-        }}
-        onMouseLeave={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = "";
-          el.style.borderColor = "var(--color-border-subtle)";
-          el.style.boxShadow = "";
-        }}
-      >
-        <p
-          className="font-mono uppercase"
-          style={{
-            fontSize: "10px",
-            letterSpacing: "0.1em",
-            color: "var(--color-text-tertiary)",
-            marginBottom: "10px",
-          }}
-        >
-          {direction === "prev" ? "← Previous" : "Next →"}
-        </p>
-        <p
-          className="font-sans"
-          style={{
-            fontSize: "17px",
-            fontWeight: 600,
-            color: "var(--color-text-primary)",
-            marginBottom: "8px",
-            lineHeight: 1.3,
-          }}
-        >
-          {study.title}
-        </p>
-        <p
-          className="font-mono"
-          style={{ fontSize: "12px", color: "var(--color-metric)", lineHeight: 1.5 }}
-        >
-          {study.metrics}
-        </p>
-      </div>
-    </Link>
-  );
-}
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
@@ -320,8 +268,28 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const { prev, next } = getPrevNext(params.slug);
   const metricChips = study.metrics.split(" · ");
 
+  const caseStudyJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: study.title,
+    description: study.subtitle,
+    url: `https://dameanrittmann.com/case-study/${study.slug}`,
+    author: {
+      "@type": "Person",
+      name: "Damean Rittmann",
+      url: "https://dameanrittmann.com",
+    },
+    keywords: study.tags.join(", "),
+    ...(study.year ? { dateCreated: String(study.year) } : {}),
+    inLanguage: "en-US",
+  };
+
   return (
     <div style={{ width: "100%" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyJsonLd) }}
+      />
 
       {/* ── Hero ── */}
       <div id="overview" style={{ paddingBottom: "72px" }}>
@@ -463,8 +431,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             More case studies
           </p>
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            {prev && <NavCard study={prev} direction="prev" />}
-            {next && <NavCard study={next} direction="next" />}
+            {prev && <CaseStudyNavCard study={prev} direction="prev" />}
+            {next && <CaseStudyNavCard study={next} direction="next" />}
           </div>
         </div>
       )}

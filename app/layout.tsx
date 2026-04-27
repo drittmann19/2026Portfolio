@@ -18,10 +18,25 @@ const gasoekOne = Gasoek_One({
   display: "swap",
 });
 
+// TODO: update to your actual domain before deploying
+const SITE_URL = "https://dameanrittmann.com";
+
 export const metadata: Metadata = {
-  title: "Damean Rittmann — Product Designer",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Damean Rittmann — Product Designer",
+    template: "%s — Damean Rittmann",
+  },
   description:
-    "Product Designer specializing in complex, high-stakes systems. Reduced payment times by 85%, errors by 50%. Currently seeking product design roles in fintech and AI.",
+    "Product designer building trust into high-stakes workflows. 60%+ faster execution, 50% fewer errors, $500M+ fintech platform.",
+  openGraph: {
+    type: "website",
+    siteName: "Damean Rittmann",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

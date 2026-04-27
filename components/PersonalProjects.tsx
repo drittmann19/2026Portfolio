@@ -366,7 +366,7 @@ export default function PersonalProjects() {
         </ScrollFadeIn>
 
         <div className="projects-grid">
-          {[...personalProjects].sort((a, b) => (b.year ?? 0) - (a.year ?? 0)).map((project, i) => (
+          {[...personalProjects].sort((a, b) => (b.year ?? 0) - (a.year ?? 0)).map((project) => (
             <ScrollFadeIn key={project.id} delay={0} style={{ height: "100%" }}>
               <ProjectCard
                 project={project}
