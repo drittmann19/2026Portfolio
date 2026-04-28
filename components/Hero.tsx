@@ -74,13 +74,13 @@ export default function Hero() {
           font-family: var(--font-dm-sans);
           font-weight: 900;
           color: var(--color-text-primary);
-          font-size: clamp(32px, 5.4vw, 76px);
+          font-size: clamp(32px, 4.6vw, 76px);
           line-height: 1.08;
           letter-spacing: -0.025em;
           white-space: pre-line;
         }
 
-        @media (max-width: 1439px) {
+        @media (max-width: 1600px) {
           .hero-headline {
             font-size: clamp(32px, 4.0vw, 58px);
           }
