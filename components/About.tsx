@@ -5,6 +5,7 @@ const storyParagraphs = [
   "I come from a family of teachers. Growing up, I watched my parents find ways to make difficult concepts click for students who were struggling. That probably explains why I ended up in design. I'm drawn to the moment when something confusing becomes clear.",
   "I didn't know design was a job until college. I started in computer science, but something was missing. When I discovered design, it clicked. I could blend my creative and technical sides to solve real, complex problems that empower people. Growing up in Shanghai, studying abroad in Sweden, and landing at CU Boulder taught me that perspective matters. What works for one person, one culture, one workflow doesn't automatically transfer to the next. You have to truly understand the problem and the person behind it before you solve.",
   "My real design education came at Nutrien, where I spent four years in the agricultural technology space. The problems were the kind I've come to love. Field workers with unreliable connectivity, seasonal workflows that shifted constantly, legacy systems that didn't always cooperate, and expert users who noticed every wrong detail. I learned that simplifying complexity isn't about hiding it. It's about making it legible enough that people trust what they're looking at. Somewhere in those four years I also got curious about how AI could change the way I work, and I haven't stopped experimenting since. It's become part of how I think, prototype, and ship.",
+  "That curiosity has spilled into building too. I designed and shipped GasCast (live on the App Store), then designed and built this portfolio site to keep stretching what I can do. Both started as learning projects. Both ended up real.",
 ];
 
 const hobbies =
@@ -20,8 +21,8 @@ const values = [
     body: "Every time I've grown, it started with discomfort. Pitching to executives for the first time. Leading design across four squads. Moving to a new country. I seek out the edges of what I know because that's where perspective comes from.",
   },
   {
-    title: "Make the team faster, not just the product better",
-    body: "I care about what ships, but I care just as much about how we work together to ship it. The artifacts I build (decision documents, shared models, onboarding resources) aren't extras. They're how good work scales and how collaborative cultures get built.",
+    title: "Learn fast, share what works",
+    body: "The work I'm proudest of came from picking up something new. A tool, a framework, a domain. I stay curious, then I share what I've figured out so the people around me can move faster too.",
   },
 ];
 
