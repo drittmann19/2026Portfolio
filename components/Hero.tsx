@@ -5,7 +5,7 @@ import CountUp from "./CountUp";
 
 type Segment = { text: string; blue?: boolean };
 const HEADLINE_SEGMENTS: Segment[] = [
-  { text: "Hi, I'm Damean.\nI'm a product designer who makes " },
+  { text: "Hi, I'm Damean,\na product designer who makes " },
   { text: "complex workflows trustworthy", blue: true },
   { text: " for the technical experts who use them. I thrive in spaces where the problems are hard, meaningful, and still being figured out." },
 ];
