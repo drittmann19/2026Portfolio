@@ -5,11 +5,9 @@ import CountUp from "./CountUp";
 
 type Segment = { text: string; blue?: boolean };
 const HEADLINE_SEGMENTS: Segment[] = [
-  { text: "Hi, I'm Damean,\na designer who " },
-  { text: "solves the hard problems", blue: true },
-  { text: ". Complex data, real stakes, expert users who notice when you get it wrong. I" },
-  { text: " build trust into high-stakes workflows", blue: true },
-  { text: ", and AI sharpens every step of my process." },
+  { text: "Hi, I'm Damean,\na product designer who makes " },
+  { text: "complex workflows trustworthy", blue: true },
+  { text: " for the experts who use them. I thrive in spaces where the problems are hard, meaningful, and still being figured out." },
 ];
 const HEADLINE_TEXT = HEADLINE_SEGMENTS.map((s) => s.text).join("");
 const TYPE_SPEED_MS = 18;
@@ -179,14 +177,14 @@ export default function Hero() {
 
         <div className="hero-metrics flex items-center flex-wrap" style={fadeUp(metricsDelay)}>
           <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={60} delay={countUpDelay} />%+ faster execution
+            <CountUp target={60} delay={countUpDelay} />%+ faster ordering and payments
           </span>
           <span className="hero-metrics-dot">·</span>
           <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={50} delay={countUpDelay} />% fewer errors
+            <CountUp target={20000} delay={countUpDelay} formatValue={(n) => n.toLocaleString()} />+ expert users served
           </span>
           <span className="hero-metrics-dot">·</span>
-          <span style={{ color: "var(--color-metric)" }}>$500M+ financial platform</span>
+          <span style={{ color: "var(--color-metric)" }}>$500M+ payments, multi-billion dollar platform</span>
         </div>
       </section>
     </>

@@ -7,9 +7,10 @@ interface CountUpProps {
   duration?: number;
   delay?: number;
   suffix?: string;
+  formatValue?: (n: number) => string;
 }
 
-export default function CountUp({ target, duration = 800, delay = 0, suffix = "" }: CountUpProps) {
+export default function CountUp({ target, duration = 800, delay = 0, suffix = "", formatValue }: CountUpProps) {
   const [value, setValue] = useState(0);
   const rafRef = useRef<number | null>(null);
 
@@ -38,5 +39,5 @@ export default function CountUp({ target, duration = 800, delay = 0, suffix = ""
     };
   }, [target, duration, delay]);
 
-  return <>{value}{suffix}</>;
+  return <>{formatValue ? formatValue(value) : value}{suffix}</>;
 }
