@@ -81,10 +81,7 @@ export default function FitCheck() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       <ScrollFadeIn>
-        <p className="fc-kicker">For recruiters and hiring managers</p>
-        <h2 className="fc-headline">
-          See how I <span className="fc-blue">fit your role.</span>
-        </h2>
+        <h2 className="fc-headline">Fit Check</h2>
         <p className="fc-sub">
           Paste a job description and get an honest read on the match. Strengths, gaps, and
           the work most worth your time.
@@ -101,21 +98,26 @@ export default function FitCheck() {
             onKeyDown={handleKeyDown}
             aria-label="Job description"
           />
-          <div className="fc-actions">
+          <div className="fc-bar">
             <button
               type="button"
               className="fc-upload"
               onClick={() => fileInputRef.current?.click()}
             >
-              ↑ or upload a file
+              <UploadIcon />
+              Upload a file
             </button>
+            <span className={`fc-count${overLimit ? " fc-count-over" : ""}`}>
+              {jd.length.toLocaleString()} / {MAX_JD_CHARS.toLocaleString()}
+            </span>
             <button
               type="button"
               className="fc-go"
               onClick={evaluate}
               disabled={!canSubmit}
+              title="⌘ + Enter to evaluate"
             >
-              {status === "loading" ? "Evaluating…" : "Evaluate fit →"}
+              {status === "loading" ? "Evaluating…" : "Evaluate fit"}
             </button>
           </div>
           <input
@@ -144,6 +146,15 @@ export default function FitCheck() {
         {status === "done" && result && <Analysis result={result} />}
       </div>
     </section>
+  );
+}
+
+function UploadIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 10.5V2.5M8 2.5L4.5 6M8 2.5L11.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5 11v1.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -257,24 +268,13 @@ const CSS = `
   padding-bottom: clamp(64px, 14vw, 112px);
   border-top: 1px solid var(--color-border-subtle);
 }
-.fc-kicker {
-  font-weight: 700;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-  margin-bottom: 12px;
-}
 .fc-headline {
   font-family: var(--font-gasoek);
   font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--color-text-primary);
-  max-width: 16ch;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
-.fc-blue { color: var(--color-accent); }
 .fc-sub {
   font-size: var(--text-body);
   color: var(--color-text-secondary);
@@ -285,13 +285,20 @@ const CSS = `
 .fc-field {
   background: var(--color-card);
   border: 1px solid var(--color-border-default);
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 16px;
   max-width: 720px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+.fc-field:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-ghost-border), 0 6px 20px rgba(17, 24, 39, 0.06);
 }
 .fc-textarea {
+  display: block;
   width: 100%;
-  min-height: 132px;
+  min-height: 150px;
   border: none;
   outline: none;
   resize: vertical;
@@ -300,41 +307,57 @@ const CSS = `
   font-family: var(--font-dm-sans), sans-serif;
   font-size: 16px;
   line-height: 1.6;
+  padding: 18px 20px;
 }
 .fc-textarea::placeholder { color: var(--color-text-tertiary); }
-.fc-actions {
+.fc-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-top: 14px;
+  padding: 11px 14px 11px 18px;
+  border-top: 1px solid var(--color-border-subtle);
 }
 .fc-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: auto;
+  padding: 6px 9px;
   background: none;
   border: none;
-  padding: 0;
+  border-radius: 8px;
   font-family: var(--font-dm-sans), sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  color: var(--color-accent);
+  font-size: 13.5px;
+  color: var(--color-text-secondary);
   cursor: pointer;
+  transition: color 150ms ease-out, background 150ms ease-out;
 }
-.fc-upload:hover { color: var(--color-accent-hover); }
+.fc-upload:hover { color: var(--color-text-primary); background: var(--color-surface); }
+.fc-count {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fc-count-over { color: var(--color-metric); font-weight: 600; }
 .fc-go {
-  background: var(--color-text-primary);
-  color: var(--color-page);
+  background: var(--color-metric);
+  color: var(--color-text-primary);
   border: none;
-  padding: 12px 24px;
-  border-radius: 999px;
+  padding: 11px 22px;
+  border-radius: 10px;
   font-family: var(--font-dm-sans), sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 150ms ease-out, opacity 150ms ease-out;
+  transition: background 150ms ease-out, opacity 150ms ease-out, transform 150ms ease-out;
 }
-.fc-go:hover:not(:disabled) { background: var(--color-accent); }
-.fc-go:disabled { opacity: 0.45; cursor: not-allowed; }
+.fc-go:hover:not(:disabled) { background: color-mix(in oklab, var(--color-metric) 88%, #000); }
+.fc-go:active:not(:disabled) { transform: translateY(1px); }
+.fc-go:disabled { opacity: 0.4; cursor: not-allowed; }
+.fc-go:focus-visible, .fc-upload:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .fc-overlimit {
   font-size: 13px;
   color: var(--color-metric);
@@ -494,8 +517,12 @@ const CSS = `
 
 @media (max-width: 767px) {
   .fc-cols { grid-template-columns: 1fr; gap: 32px; }
-  .fc-actions { flex-direction: column; align-items: stretch; }
-  .fc-go { width: 100%; order: 1; }
-  .fc-upload { order: 2; text-align: center; }
+}
+@media (max-width: 560px) {
+  .fc-bar { flex-wrap: wrap; row-gap: 12px; }
+  .fc-go { flex: 1 1 100%; width: 100%; order: 3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fc-field, .fc-go, .fc-upload, .fc-pulse, .fc-work-link { transition: none; animation: none; }
 }
 `;
