@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import WorkCarousel from "@/components/WorkCarousel";
 import About from "@/components/About";
 import PersonalProjects from "@/components/PersonalProjects";
+import FitCheck from "@/components/FitCheck";
 
 export const metadata: Metadata = {
   title: "Damean Rittmann — Product Designer",
@@ -51,6 +52,8 @@ export default function Home() {
         <About />
 
         <PersonalProjects />
+
+        <FitCheck />
 
         <footer
           style={{

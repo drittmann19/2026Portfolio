@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JD Evaluator — Editorial vs Split (on-brand)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Narrow:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15161a;
+    --paper: #f4f4f3;
+    --white: #ffffff;
+    --blue: #1b46ff;
+    --blue-pale: #c3d0ff;
+    --coral: #ff5a3c;
+    --line: #e3e3e0;
+    --muted: #6c6e75;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #d9d9d6;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    padding: 0 0 100px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .pagehead {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 14px 28px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .pagehead h1 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 0.01em; text-transform: uppercase; }
+  .pagehead .nav { margin-left: auto; display: flex; gap: 6px; }
+  .pagehead .nav a { color: #b9bac0; text-decoration: none; font-size: 12px; font-weight: 600; padding: 5px 12px; border: 1px solid #34353b; border-radius: 7px; }
+  .pagehead .nav a:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .intro { max-width: 820px; margin: 36px auto 0; padding: 0 28px; }
+  .intro p { font-size: 14px; color: #4a4b50; }
+
+  .block { max-width: 1240px; margin: 40px auto 0; padding: 0 28px; }
+  .blockhead { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; flex-wrap: wrap; }
+  .bnum { font-family: 'Archivo', monospace; font-size: 12px; font-weight: 700; color: var(--blue); }
+  .bname { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.02em; }
+  .bnote { font-size: 13px; color: #5b5c62; margin-bottom: 20px; max-width: 760px; }
+  .bnote b { color: var(--ink); }
+
+  .frames { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+  .framewrap { }
+  .framelabel { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #76777d; margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+  .togglebar { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 999px; overflow: hidden; margin-left: auto; }
+  .togglebar button { font-family: 'Inter'; font-size: 10px; font-weight: 700; padding: 4px 12px; background: transparent; border: none; cursor: pointer; color: var(--ink); text-transform: uppercase; letter-spacing: 0.04em; }
+  .togglebar button.on { background: var(--ink); color: var(--paper); }
+
+  .desktop { width: 920px; max-width: 100%; border: 1px solid #c4c4c0; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px -30px rgba(0,0,0,0.4); background: var(--paper); }
+  .mobile { width: 360px; border: 1px solid #c4c4c0; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 60px -30px rgba(0,0,0,0.4); background: var(--paper); padding: 8px; }
+  .mobile .screen { border-radius: 22px; overflow: hidden; }
+
+  .browserbar { background: #e8e8e5; padding: 9px 14px; display: flex; gap: 6px; align-items: center; border-bottom: 1px solid #d6d6d2; }
+  .browserbar i { width: 10px; height: 10px; border-radius: 50%; background: #c6c6c2; display: block; }
+  .browserbar .url { margin-left: 12px; font-size: 11px; color: #9a9a96; font-family: 'Inter'; }
+
+  .state { display: none; }
+  .state.show { display: block; }
+
+  /* section label shared (echoes portfolio's bold lowercase headers) */
+  .seclabel { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }
+
+  /* pill tags from portfolio */
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; color: #fff; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; padding: 3px 8px; margin-right: 5px; }
+
+  /* ============================================================
+     EDITORIAL  (on-brand: big Archivo header, blue accent,
+     pale-blue oversized numerals like the My Values section)
+  ============================================================ */
+  .ed { background: var(--paper); padding: 46px 54px; }
+  .ed-m { padding: 30px 22px; }
+  .ed .kicker { font-family: 'Archivo'; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); margin-bottom: 10px; }
+  .ed-input-head { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 40px; line-height: 1.0; letter-spacing: -0.03em; max-width: 14ch; margin-bottom: 14px; }
+  .ed-m .ed-input-head { font-size: 30px; }
+  .ed-input-head .b { color: var(--blue); }
+  .ed-sub { font-size: 15px; color: var(--muted); max-width: 52ch; margin-bottom: 24px; }
+  .ed-field { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 18px; max-width: 640px; }
+  .ed-field .ph { color: #a3a3a0; font-size: 15px; min-height: 56px; }
+  .ed-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 12px; }
+  .ed-up { font-size: 13px; color: var(--blue); font-weight: 600; cursor: pointer; }
+  .ed-go { background: var(--ink); color: var(--paper); border: none; padding: 12px 24px; border-radius: 999px; font-family: 'Inter'; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .ed-m .ed-actions { flex-direction: column; align-items: stretch; }
+  .ed-m .ed-go { width: 100%; }
+
+  .ed-summary { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 25px; line-height: 1.25; letter-spacing: -0.02em; max-width: 28ch; padding-bottom: 26px; border-bottom: 2px solid var(--ink); }
+  .ed-m .ed-summary { font-size: 20px; }
+  .ed-summary .b { color: var(--blue); }
+  .ed-summary .g { color: var(--coral); }
+  .ed-cols { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; margin-top: 26px; }
+  .ed-m .ed-cols { grid-template-columns: 1fr; gap: 30px; }
+  .ed-collabel { font-family: 'Archivo'; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #9a9a96; margin-bottom: 16px; }
+  .ed-item { display: grid; grid-template-columns: 40px 1fr; gap: 14px; margin-bottom: 18px; }
+  .ed-num { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 30px; line-height: 0.9; color: var(--blue-pale); }
+  .ed-item h4 { font-family: 'Archivo'; font-weight: 700; font-size: 16px; line-height: 1.18; margin-bottom: 3px; letter-spacing: -0.01em; }
+  .ed-item p { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+  .ed-gap h4::before { content: ''; }
+  .ed-gap .ed-num { color: var(--coral); font-family: 'Archivo'; font-size: 30px; }
+  .ed-work { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .ed-work a { display: block; text-decoration: none; color: var(--ink); margin-bottom: 12px; }
+  .ed-work a strong { font-family: 'Archivo'; font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; gap: 6px; }
+  .ed-work a strong::after { content: '→'; color: var(--blue); }
+  .ed-work a span { display: block; font-size: 13px; color: var(--muted); }
+
+  /* ============================================================
+     SPLIT (right-pinned input to avoid clashing with the
+     site's LEFT nav). Results occupy the left/main area.
+  ============================================================ */
+  .sp { background: var(--paper); display: grid; grid-template-columns: 1fr 300px; min-height: 440px; }
+  .sp-m { grid-template-columns: 1fr; min-height: 0; }
+  .sp-main { padding: 40px 40px; }
+  .sp-m .sp-main { padding: 26px 22px; order: 2; }
+  .sp-aside { background: var(--ink); color: var(--paper); padding: 32px 26px; }
+  .sp-m .sp-aside { order: 1; padding: 26px 22px; }
+
+  .sp-aside .kicker { font-family: 'Archivo'; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue-pale); margin-bottom: 12px; }
+  .sp-aside h3 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 26px; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sp-aside h3 .b { color: #7d94ff; }
+  .sp-aside p { font-size: 13px; color: #adaeb6; margin-bottom: 16px; }
+  .sp-ta { width: 100%; min-height: 130px; background: #232429; border: 1px solid #34353b; border-radius: 8px; padding: 12px; color: #8a8b92; font-size: 13px; font-family: 'Inter'; }
+  .sp-m .sp-ta { min-height: 70px; }
+  .sp-aside .row { display: flex; gap: 8px; margin-top: 12px; }
+  .sp-go { flex: 1; background: var(--blue); color: #fff; border: none; padding: 12px; border-radius: 8px; font-family: 'Inter'; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .sp-attach { background: #232429; color: var(--blue-pale); border: 1px solid #34353b; padding: 12px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+  .sp-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: #b4b5b1; font-size: 14px; text-align: center; padding: 40px; }
+
+  .sp-summary { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 22px; max-width: 32ch; }
+  .sp-summary .b { color: var(--blue); }
+  .sp-summary .g { color: var(--coral); }
+  .sp-collabel { font-family: 'Archivo'; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #9a9a96; margin: 0 0 12px; }
+  .sp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .sp-m .sp-cards { grid-template-columns: 1fr; }
+  .sp-card { background: var(--white); border: 1px solid var(--line); border-radius: 9px; padding: 13px; border-left: 3px solid var(--blue); }
+  .sp-card.gap { border-left-color: var(--coral); }
+  .sp-card h4 { font-family: 'Archivo'; font-weight: 700; font-size: 14px; line-height: 1.2; margin-bottom: 5px; }
+  .sp-card p { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .sp-work { display: flex; gap: 10px; }
+  .sp-m .sp-work { flex-direction: column; }
+  .sp-work a { flex: 1; background: var(--ink); color: var(--paper); border-radius: 9px; padding: 13px; text-decoration: none; }
+  .sp-work a strong { font-family: 'Archivo'; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; }
+  .sp-work a strong::after { content: '→'; color: #7d94ff; }
+  .sp-work a span { font-size: 12px; color: #adaeb6; display: block; margin-top: 3px; }
+
+  @media (max-width: 980px) {
+    .desktop { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pagehead">
+  <h1>JD Evaluator — On-Brand</h1>
+  <div class="nav">
+    <a href="#ed">Editorial</a>
+    <a href="#sp">Split</a>
+  </div>
+</div>
+
+<div class="intro">
+  <p>Both directions rebuilt in your portfolio's type (Archivo), palette (off-white, near-black, electric blue, coral accent), and signature moves (oversized pale-blue numerals from My Values, the pill-tag card system). Each is shown in a desktop browser frame and a phone frame. Toggle Input / Analysis on each frame. The Split version pins its input on the RIGHT so it never competes with your left sidebar nav.</p>
+</div>
+
+<!-- ================= EDITORIAL ================= -->
+<section class="block" id="ed">
+  <div class="blockhead"><span class="bnum">A</span><span class="bname">Editorial Column</span></div>
+  <p class="bnote"><b>On-brand fit:</b> Borrows directly from your About and My Values sections. The oversized pale-blue numerals tie it to the rest of the page. Reads like a considered evaluation, premium and unmistakably yours. Costs some vertical height. Centered-ish single flow rather than full-width density.</p>
+
+  <div class="frames">
+    <!-- desktop -->
+    <div class="framewrap">
+      <div class="framelabel">Desktop
+        <div class="togglebar" data-g="ed-d"><button class="on" data-s="input">Input</button><button data-s="result">Analysis</button></div>
+      </div>
+      <div class="desktop">
+        <div class="browserbar"><i></i><i></i><i></i><span class="url">dameanrittmann.com</span></div>
+        <div class="state show" data-g="ed-d" data-n="input">
+          <div class="ed">
+            <div class="kicker">For recruiters &amp; hiring managers</div>
+            <div class="ed-input-head">See how I <span class="b">fit your role.</span></div>
+            <div class="ed-sub">Paste a job description and get an honest read on the match. Strengths, gaps, and the work most worth your time.</div>
+            <div class="ed-field"><div class="ph">Paste the job description here…</div>
+              <div class="ed-actions"><span class="ed-up">↑ or upload a file</span><button class="ed-go">Evaluate fit →</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="state" data-g="ed-d" data-n="result">
+          <div class="ed">
+            <div class="ed-summary"><span class="b">Strong fit</span> on AI-integrated building, expert-user complexity, and cross-functional style, with a <span class="g">real gap</span> on computer vision and the push away from Figma-first design.</div>
+            <div class="ed-cols">
+              <div>
+                <div class="ed-collabel">Strong alignment</div>
+                <div class="ed-item"><span class="ed-num">01</span><div><h4>Builder who ships with AI tools</h4><p>Designed and shipped GasCast, a crypto gas fee tracker iOS app live on the App Store. Built with SwiftUI, Claude Code, and Foundry.</p></div></div>
+                <div class="ed-item"><span class="ed-num">02</span><div><h4>Complex operations for expert users</h4><p>Led design across 4 product squads for 10,000+ field consultants at Nutrien, users driving $1.5B+ in annual revenue.</p></div></div>
+                <div class="ed-item"><span class="ed-num">03</span><div><h4>Engineers love working with you</h4><p>Built the org's first interactive design system onboarding plus 20+ reusable components, adopted across design, PM, and engineering.</p></div></div>
+                <div class="ed-item"><span class="ed-num">04</span><div><h4>Comfortable with Series B ambiguity</h4><p>Scaled a financial platform from 0 to 2,000+ users in a product trio model. Associate to UX Designer in under 2 years.</p></div></div>
+              </div>
+              <div>
+                <div class="ed-collabel">Honest gaps</div>
+                <div class="ed-item ed-gap"><span class="ed-num">—</span><div><h4>Computer vision domain</h4><p>No documented CV or safety systems work. Closest is high-stakes workflow design on a $500M+ platform. But he targets novel problems where the path isn't obvious.</p></div></div>
+                <div class="ed-item ed-gap"><span class="ed-num">—</span><div><h4>Not Figma-first posture</h4><p>Figma is his primary tool, though he ships coded products when fastest. But "not primarily Figma" is the explicit bar.</p></div></div>
+                <div class="ed-work">
+                  <div class="ed-collabel">Most relevant work</div>
+                  <a href="#"><strong>GasCast</strong><span>Proof of building something real with AI tools.</span></a>
+                  <a href="#"><strong>Agriculture Workflow Optimization</strong><span>On-site, expert-user operations complexity at scale.</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile -->
+    <div class="framewrap">
+      <div class="framelabel">Mobile
+        <div class="togglebar" data-g="ed-m"><button class="on" data-s="input">Input</button><button data-s="result">Analysis</button></div>
+      </div>
+      <div class="mobile"><div class="screen">
+        <div class="state show" data-g="ed-m" data-n="input">
+          <div class="ed ed-m">
+            <div class="kicker">For recruiters</div>
+            <div class="ed-input-head">See how I <span class="b">fit your role.</span></div>
+            <div class="ed-sub">Paste a job description for an honest read on the match.</div>
+            <div class="ed-field"><div class="ph">Paste the job description…</div>
+              <div class="ed-actions"><button class="ed-go">Evaluate fit →</button><span class="ed-up">↑ or upload a file</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="state" data-g="ed-m" data-n="result">
+          <div class="ed ed-m">
+            <div class="ed-summary"><span class="b">Strong fit</span> on AI building and expert-user complexity, with a <span class="g">real gap</span> on computer vision.</div>
+            <div class="ed-cols">
+              <div>
+                <div class="ed-collabel">Strong alignment</div>
+                <div class="ed-item"><span class="ed-num">01</span><div><h4>Builder who ships with AI tools</h4><p>GasCast on the App Store. SwiftUI, Claude Code, Foundry.</p></div></div>
+                <div class="ed-item"><span class="ed-num">02</span><div><h4>Complex ops for expert users</h4><p>4 product squads, 10,000+ consultants, $1.5B+ revenue.</p></div></div>
+                <div class="ed-item"><span class="ed-num">03</span><div><h4>Engineers love working with you</h4><p>First interactive DS onboarding + 20 components.</p></div></div>
+                <div class="ed-item"><span class="ed-num">04</span><div><h4>Series B ambiguity</h4><p>0 to 2,000+ users. Associate to UX Designer in under 2 yrs.</p></div></div>
+              </div>
+              <div>
+                <div class="ed-collabel">Honest gaps</div>
+                <div class="ed-item ed-gap"><span class="ed-num">—</span><div><h4>Computer vision domain</h4><p>No CV work. Closest is a $500M+ platform. But he targets novel problems where the path isn't obvious.</p></div></div>
+                <div class="ed-item ed-gap"><span class="ed-num">—</span><div><h4>Not Figma-first</h4><p>Figma primary, ships code when fastest. But "not Figma-first" is the bar.</p></div></div>
+                <div class="ed-work">
+                  <div class="ed-collabel">Most relevant work</div>
+                  <a href="#"><strong>GasCast</strong><span>Built something real with AI tools.</span></a>
+                  <a href="#"><strong>Agriculture Workflow Optimization</strong><span>Expert-user ops at scale.</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPLIT ================= -->
+<section class="block" id="sp">
+  <div class="blockhead"><span class="bnum">B</span><span class="bname">Split View (input pinned right)</span></div>
+  <p class="bnote"><b>On-brand fit + your nav concern addressed:</b> Input is pinned on the RIGHT in a dark panel, so it never competes with your existing left sidebar. Results fill the main area on the left. Feels like a real tool and keeps the JD in view for re-runs. Cost: the analysis gets ~70% width so cards are tighter, and on mobile the panel has to stack on top.</p>
+
+  <div class="frames">
+    <!-- desktop -->
+    <div class="framewrap">
+      <div class="framelabel">Desktop
+        <div class="togglebar" data-g="sp-d"><button class="on" data-s="input">Input</button><button data-s="result">Analysis</button></div>
+      </div>
+      <div class="desktop">
+        <div class="browserbar"><i></i><i></i><i></i><span class="url">dameanrittmann.com</span></div>
+        <div class="state show" data-g="sp-d" data-n="input">
+          <div class="sp">
+            <div class="sp-main"><div class="sp-empty">Your evaluation appears here once you submit a role. Strengths, honest gaps, and the work most worth your time.</div></div>
+            <div class="sp-aside">
+              <div class="kicker">Fit check</div>
+              <h3>See how I <span class="b">fit your role.</span></h3>
+              <p>Paste a role. I'll show where I match and where I don't.</p>
+              <div class="sp-ta">Paste the job description…</div>
+              <div class="row"><button class="sp-go">Evaluate</button><button class="sp-attach">↑</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="state" data-g="sp-d" data-n="result">
+          <div class="sp">
+            <div class="sp-main">
+              <div class="sp-summary"><span class="b">Strong fit</span> on AI-integrated building, expert-user complexity, and cross-functional style, with a <span class="g">real gap</span> on computer vision and the push from Figma-first design.</div>
+              <div class="sp-collabel">Strong alignment</div>
+              <div class="sp-cards">
+                <div class="sp-card"><h4>Builder who ships with AI tools</h4><p>GasCast on the App Store. SwiftUI, Claude Code, Foundry, smart contract on Base Sepolia.</p></div>
+                <div class="sp-card"><h4>Complex ops for expert users</h4><p>4 product squads, 10,000+ field consultants, $1.5B+ annual revenue.</p></div>
+                <div class="sp-card"><h4>Engineers love working with you</h4><p>Org's first interactive DS onboarding + 20 reusable components, cross-team adoption.</p></div>
+                <div class="sp-card"><h4>Comfortable with Series B ambiguity</h4><p>0 to 2,000+ users in a product trio. Associate to UX Designer in under 2 years.</p></div>
+              </div>
+              <div class="sp-collabel">Honest gaps</div>
+              <div class="sp-cards">
+                <div class="sp-card gap"><h4>Computer vision domain</h4><p>No documented CV or safety work. Closest is a $500M+ platform. But he targets novel problems where the path isn't obvious.</p></div>
+                <div class="sp-card gap"><h4>Not Figma-first posture</h4><p>Figma is primary, ships code when fastest. But "not primarily Figma" is the explicit bar.</p></div>
+              </div>
+              <div class="sp-collabel">Most relevant work</div>
+              <div class="sp-work">
+                <a href="#"><strong>GasCast</strong><span>Built something real with AI tools.</span></a>
+                <a href="#"><strong>Agriculture Workflow Optimization</strong><span>Expert-user ops complexity at scale.</span></a>
+              </div>
+            </div>
+            <div class="sp-aside">
+              <div class="kicker">Fit check</div>
+              <h3>Voxel<br><span class="b">Product Designer</span></h3>
+              <p>Evaluating against this role.</p>
+              <div class="sp-ta">Series B computer vision company building workplace safety systems. Looking for a product designer who builds with AI tools, is not Figma-first…</div>
+              <div class="row"><button class="sp-go">Re-evaluate</button><button class="sp-attach">↑</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile -->
+    <div class="framewrap">
+      <div class="framelabel">Mobile
+        <div class="togglebar" data-g="sp-m"><button class="on" data-s="input">Input</button><button data-s="result">Analysis</button></div>
+      </div>
+      <div class="mobile"><div class="screen">
+        <div class="state show" data-g="sp-m" data-n="input">
+          <div class="sp sp-m">
+            <div class="sp-aside">
+              <div class="kicker">Fit check</div>
+              <h3>See how I <span class="b">fit your role.</span></h3>
+              <p>Paste a role. I'll show where I match and where I don't.</p>
+              <div class="sp-ta">Paste the job description…</div>
+              <div class="row"><button class="sp-go">Evaluate</button><button class="sp-attach">↑</button></div>
+            </div>
+            <div class="sp-main"><div class="sp-empty">Your evaluation appears below once you submit a role.</div></div>
+          </div>
+        </div>
+        <div class="state" data-g="sp-m" data-n="result">
+          <div class="sp sp-m">
+            <div class="sp-aside">
+              <div class="kicker">Fit check</div>
+              <h3>Voxel — <span class="b">Product Designer</span></h3>
+              <p>Evaluating against this role.</p>
+              <div class="sp-ta">Series B computer vision company building workplace safety systems…</div>
+              <div class="row"><button class="sp-go">Re-evaluate</button><button class="sp-attach">↑</button></div>
+            </div>
+            <div class="sp-main">
+              <div class="sp-summary"><span class="b">Strong fit</span> on AI building and expert-user complexity, with a <span class="g">real gap</span> on computer vision.</div>
+              <div class="sp-collabel">Strong alignment</div>
+              <div class="sp-cards">
+                <div class="sp-card"><h4>Builder who ships with AI tools</h4><p>GasCast on the App Store. SwiftUI, Claude Code, Foundry.</p></div>
+                <div class="sp-card"><h4>Complex ops for expert users</h4><p>4 squads, 10,000+ consultants, $1.5B+ revenue.</p></div>
+                <div class="sp-card"><h4>Engineers love working with you</h4><p>First interactive DS onboarding + 20 components.</p></div>
+                <div class="sp-card"><h4>Series B ambiguity</h4><p>0 to 2,000+ users. Associate to UX Designer in &lt;2 yrs.</p></div>
+              </div>
+              <div class="sp-collabel">Honest gaps</div>
+              <div class="sp-cards">
+                <div class="sp-card gap"><h4>Computer vision domain</h4><p>No CV work. Closest is a $500M+ platform. But he targets novel problems.</p></div>
+                <div class="sp-card gap"><h4>Not Figma-first</h4><p>Figma primary, ships code when fastest. But "not Figma-first" is the bar.</p></div>
+              </div>
+              <div class="sp-collabel">Most relevant work</div>
+              <div class="sp-work">
+                <a href="#"><strong>GasCast</strong><span>Built something real with AI tools.</span></a>
+                <a href="#"><strong>Agriculture Workflow Optimization</strong><span>Expert-user ops at scale.</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.togglebar').forEach(function(bar){
+    var g = bar.getAttribute('data-g');
+    bar.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var s = btn.getAttribute('data-s');
+        bar.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        document.querySelectorAll('.state[data-g="'+g+'"]').forEach(function(st){
+          st.classList.toggle('show', st.getAttribute('data-n') === s);
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
