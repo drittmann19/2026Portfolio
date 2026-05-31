@@ -8,18 +8,46 @@ import { parseEvaluation, type ParseResult } from "./fitCheckParser";
 const MAX_JD_CHARS = 8000;
 const LINKEDIN_URL = "https://www.linkedin.com/in/damean-rittmann/";
 
+// ─── LOCAL PREVIEW DEMO (off by default) ─────────────────────────
+// Flip DEMO to true to seed a sample analysis and preview the results
+// UI without an API key. MUST stay false on commit so visitors see the
+// real idle input, not this canned evaluation.
+const DEMO = false;
+const DEMO_MARKDOWN = `
+## Summary
+Strong fit. Damean has spent years designing high-stakes financial workflows where trust and accuracy are non-negotiable — exactly the problem space this role centers on.
+
+## Strong alignment
+- **High-stakes fintech workflows** → Led design on a $500M+ payments platform, cutting execution time 60% and errors in half — directly relevant to trustworthy financial UX.
+- **Cross-functional leadership** → Partners with PMs and engineers from discovery through ship, the collaboration model this role expects.
+- **Design systems** → Built and scaled a component system that kept a multi-platform product consistent as the team grew.
+- **Complex, expert users** → Designs for users who notice the moment you get it wrong, balancing density with clarity.
+
+## Honest gaps
+- **Consumer-scale fintech** → Most depth is in B2B and enterprise; experience with high-volume consumer banking flows is lighter.
+- **Native mobile** → Strongest on responsive and cross-platform web; less hands-on with platform-specific iOS / Android patterns.
+
+## Most relevant work
+- **Customer Financial Management Hub** → A payments platform rebuild that shows how Damean designs trust into financial workflows under real regulatory and accuracy constraints.
+`;
+// ─────────────────────────────────────────────────────────────────
+
 type Status = "idle" | "loading" | "done" | "error" | "disabled" | "ratelimited";
 
 export default function FitCheck() {
   const [jd, setJd] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [result, setResult] = useState<ParseResult | null>(null);
+  const [status, setStatus] = useState<Status>(DEMO ? "done" : "idle");
+  const [result, setResult] = useState<ParseResult | null>(
+    DEMO ? parseEvaluation(DEMO_MARKDOWN) : null,
+  );
   const [message, setMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const overLimit = jd.length > MAX_JD_CHARS;
   const canSubmit = jd.trim().length > 0 && !overLimit && status !== "loading";
+  // Once we have a real evaluation, swap the input out for the result.
+  const hideInput = status === "done" && result?.kind === "evaluation";
 
   async function evaluate() {
     if (!canSubmit) return;
@@ -88,53 +116,55 @@ export default function FitCheck() {
         </p>
       </ScrollFadeIn>
 
-      <ScrollFadeIn delay={80}>
-        <div className="fc-field">
-          <textarea
-            className="fc-textarea"
-            placeholder="Paste the job description here…"
-            value={jd}
-            onChange={(e) => setJd(e.target.value)}
-            onKeyDown={handleKeyDown}
-            aria-label="Job description"
-          />
-          <div className="fc-bar">
-            <button
-              type="button"
-              className="fc-upload"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <UploadIcon />
-              Upload a file
-            </button>
-            <span className={`fc-count${overLimit ? " fc-count-over" : ""}`}>
-              {jd.length.toLocaleString()} / {MAX_JD_CHARS.toLocaleString()}
-            </span>
-            <button
-              type="button"
-              className="fc-go"
-              onClick={evaluate}
-              disabled={!canSubmit}
-              title="⌘ + Enter to evaluate"
-            >
-              {status === "loading" ? "Evaluating…" : "Evaluate fit"}
-            </button>
+      {!hideInput && (
+        <ScrollFadeIn delay={80}>
+          <div className="fc-field">
+            <textarea
+              className="fc-textarea"
+              placeholder="Paste the job description here…"
+              value={jd}
+              onChange={(e) => setJd(e.target.value)}
+              onKeyDown={handleKeyDown}
+              aria-label="Job description"
+            />
+            <div className="fc-bar">
+              <button
+                type="button"
+                className="fc-upload"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <UploadIcon />
+                Upload a file
+              </button>
+              <span className={`fc-count${overLimit ? " fc-count-over" : ""}`}>
+                {jd.length.toLocaleString()} / {MAX_JD_CHARS.toLocaleString()}
+              </span>
+              <button
+                type="button"
+                className="fc-go"
+                onClick={evaluate}
+                disabled={!canSubmit}
+                title="⌘ + Enter to evaluate"
+              >
+                {status === "loading" ? "Evaluating…" : "Evaluate fit"}
+              </button>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt,.md,text/plain"
+              onChange={handleUpload}
+              style={{ display: "none" }}
+            />
           </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".txt,.md,text/plain"
-            onChange={handleUpload}
-            style={{ display: "none" }}
-          />
-        </div>
-        {overLimit && (
-          <p className="fc-overlimit">
-            That's {jd.length.toLocaleString()} characters. Trim it to under{" "}
-            {MAX_JD_CHARS.toLocaleString()} to evaluate.
-          </p>
-        )}
-      </ScrollFadeIn>
+          {overLimit && (
+            <p className="fc-overlimit">
+              That's {jd.length.toLocaleString()} characters. Trim it to under{" "}
+              {MAX_JD_CHARS.toLocaleString()} to evaluate.
+            </p>
+          )}
+        </ScrollFadeIn>
+      )}
 
       <div ref={resultRef}>
         {status === "loading" && <LoadingBlock />}
@@ -205,58 +235,52 @@ function Analysis({ result }: { result: ParseResult }) {
       <div className="fc-analysis">
         {summary && <p className="fc-summary">{summary}</p>}
 
-        <div className="fc-cols">
-          {alignments.length > 0 && (
-            <div>
-              <p className="fc-collabel">Strong alignment</p>
-              {alignments.map((a, i) => (
-                <div className="fc-item" key={i}>
-                  <span className="fc-num" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="fc-item-title">{a.title}</h3>
-                    {a.body && <p className="fc-item-body">{a.body}</p>}
-                  </div>
+        {alignments.length > 0 && (
+          <div className="fc-group">
+            <p className="fc-collabel">Strong alignment</p>
+            {alignments.map((a, i) => (
+              <div className="fc-item" key={i}>
+                <span className="fc-marker fc-marker-align" aria-hidden="true" />
+                <div>
+                  <h3 className="fc-item-title">{a.title}</h3>
+                  {a.body && <p className="fc-item-body">{a.body}</p>}
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
+        )}
 
-          <div>
-            {gaps.length > 0 && (
-              <>
-                <p className="fc-collabel">Honest gaps</p>
-                {gaps.map((g, i) => (
-                  <div className="fc-item" key={i}>
-                    <span className="fc-gap-marker" aria-hidden="true" />
-                    <div>
-                      <h3 className="fc-item-title">{g.title}</h3>
-                      {g.body && <p className="fc-item-body">{g.body}</p>}
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
+        {gaps.length > 0 && (
+          <div className="fc-group">
+            <p className="fc-collabel">Honest gaps</p>
+            {gaps.map((g, i) => (
+              <div className="fc-item" key={i}>
+                <span className="fc-marker fc-marker-gap" aria-hidden="true" />
+                <div>
+                  <h3 className="fc-item-title">{g.title}</h3>
+                  {g.body && <p className="fc-item-body">{g.body}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-            {work && (
-              <div className="fc-work">
-                <p className="fc-collabel">Most relevant work</p>
-                {work.url ? (
-                  <Link href={work.url} className="fc-work-link">
-                    <strong className="fc-work-title">{work.title}</strong>
-                    {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
-                  </Link>
-                ) : (
-                  <div className="fc-work-link fc-work-static">
-                    <strong className="fc-work-title fc-work-title-static">{work.title}</strong>
-                    {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
-                  </div>
-                )}
+        {work && (
+          <div className="fc-group fc-work">
+            <p className="fc-collabel">Most relevant work</p>
+            {work.url ? (
+              <Link href={work.url} className="fc-work-link">
+                <strong className="fc-work-title">{work.title}</strong>
+                {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
+              </Link>
+            ) : (
+              <div className="fc-work-link fc-work-static">
+                <strong className="fc-work-title fc-work-title-static">{work.title}</strong>
+                {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
               </div>
             )}
           </div>
-        </div>
+        )}
       </div>
     </ScrollFadeIn>
   );
@@ -286,7 +310,6 @@ const CSS = `
   background: var(--color-card);
   border: 1px solid var(--color-border-default);
   border-radius: 16px;
-  max-width: 720px;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
   transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
@@ -362,7 +385,6 @@ const CSS = `
   font-size: 13px;
   color: var(--color-metric);
   margin-top: 10px;
-  max-width: 720px;
 }
 
 .fc-loading {
@@ -416,15 +438,15 @@ const CSS = `
   line-height: 1.32;
   letter-spacing: -0.01em;
   color: var(--color-text-primary);
-  max-width: 40ch;
   padding-bottom: clamp(20px, 3vw, 26px);
   border-bottom: 2px solid var(--color-text-primary);
   margin-bottom: clamp(26px, 4vw, 36px);
 }
-.fc-cols {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: clamp(32px, 5vw, 56px);
+.fc-group {
+  margin-bottom: clamp(36px, 5vw, 52px);
+}
+.fc-group:last-child {
+  margin-bottom: 0;
 }
 .fc-collabel {
   font-weight: 700;
@@ -436,25 +458,19 @@ const CSS = `
 }
 .fc-item {
   display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 14px;
+  grid-template-columns: 14px 1fr;
+  gap: 16px;
   margin-bottom: 22px;
 }
-.fc-num {
-  font-family: var(--font-gasoek);
-  font-size: clamp(30px, 4vw, 38px);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: rgba(29, 92, 255, 0.4);
-}
-.fc-gap-marker {
+.fc-marker {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--color-metric);
   margin-top: 6px;
   justify-self: start;
 }
+.fc-marker-align { background: var(--color-accent); }
+.fc-marker-gap { background: var(--color-metric); }
 .fc-item-title {
   font-weight: 700;
   font-size: clamp(16px, 2vw, 18px);
@@ -467,13 +483,9 @@ const CSS = `
   font-size: 15px;
   color: var(--color-text-secondary);
   line-height: 1.55;
+  max-width: 68ch;
 }
 
-.fc-work {
-  margin-top: 26px;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-border-default);
-}
 .fc-work-link {
   display: block;
   text-decoration: none;
@@ -515,9 +527,6 @@ const CSS = `
   line-height: 1.6;
 }
 
-@media (max-width: 767px) {
-  .fc-cols { grid-template-columns: 1fr; gap: 32px; }
-}
 @media (max-width: 560px) {
   .fc-bar { flex-wrap: wrap; row-gap: 12px; }
   .fc-go { flex: 1 1 100%; width: 100%; order: 3; }
