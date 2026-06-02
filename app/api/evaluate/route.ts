@@ -84,39 +84,44 @@ export async function POST(request: Request) {
 
   const wrappedJD = `<job_description>\n${jobDescription}\n</job_description>`;
 
-  try {
-    const response = await getClient().messages.create({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system: [
-        {
-          type: "text",
-          text: SYSTEM_PROMPT,
-          cache_control: { type: "ephemeral" },
-        },
-      ],
-      messages: [{ role: "user", content: wrappedJD }],
-    });
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        const messageStream = getClient().messages.stream({
+          model: MODEL,
+          max_tokens: MAX_TOKENS,
+          system: [
+            {
+              type: "text",
+              text: SYSTEM_PROMPT,
+              cache_control: { type: "ephemeral" },
+            },
+          ],
+          messages: [{ role: "user", content: wrappedJD }],
+        });
 
-    const markdown = response.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("")
-      .trim();
+        for await (const event of messageStream) {
+          if (
+            event.type === "content_block_delta" &&
+            event.delta.type === "text_delta"
+          ) {
+            controller.enqueue(encoder.encode(event.delta.text));
+          }
+        }
+        controller.close();
+      } catch (err) {
+        console.error("[/api/evaluate] Anthropic stream failed:", err);
+        controller.error(err);
+      }
+    },
+  });
 
-    if (!markdown) {
-      return NextResponse.json(
-        { error: "The evaluation came back empty. Please try again." },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ markdown });
-  } catch (err) {
-    console.error("[/api/evaluate] Anthropic request failed:", err);
-    return NextResponse.json(
-      { error: "Something went wrong generating the evaluation. Please try again in a moment." },
-      { status: 500 },
-    );
-  }
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Accel-Buffering": "no",
+    },
+  });
 }

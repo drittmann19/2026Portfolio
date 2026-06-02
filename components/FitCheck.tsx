@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import ScrollFadeIn from "./ScrollFadeIn";
 import { parseEvaluation, type ParseResult } from "./fitCheckParser";
@@ -32,27 +32,41 @@ Strong fit. Damean has spent years designing high-stakes financial workflows whe
 `;
 // ─────────────────────────────────────────────────────────────────
 
-type Status = "idle" | "loading" | "done" | "error" | "disabled" | "ratelimited";
+type Status = "idle" | "streaming" | "done" | "error" | "disabled" | "ratelimited";
+
+// While streaming we only parse complete lines, so a half-written bullet never
+// flashes raw markdown (e.g. "- **Titl…"). Once the stream ends, parse it all.
+function parseStreamable(raw: string, done: boolean): ParseResult {
+  if (done) return parseEvaluation(raw);
+  const lastNewline = raw.lastIndexOf("\n");
+  return parseEvaluation(lastNewline >= 0 ? raw.slice(0, lastNewline) : "");
+}
 
 export default function FitCheck() {
   const [jd, setJd] = useState("");
   const [status, setStatus] = useState<Status>(DEMO ? "done" : "idle");
-  const [result, setResult] = useState<ParseResult | null>(
-    DEMO ? parseEvaluation(DEMO_MARKDOWN) : null,
-  );
+  const [streamText, setStreamText] = useState(DEMO ? DEMO_MARKDOWN : "");
+  const [streamDone, setStreamDone] = useState(DEMO);
   const [message, setMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
+  const result = useMemo(
+    () => (streamText ? parseStreamable(streamText, streamDone) : null),
+    [streamText, streamDone],
+  );
+
   const overLimit = jd.length > MAX_JD_CHARS;
-  const canSubmit = jd.trim().length > 0 && !overLimit && status !== "loading";
-  // Once we have a real evaluation, swap the input out for the result.
-  const hideInput = status === "done" && result?.kind === "evaluation";
+  const canSubmit = jd.trim().length > 0 && !overLimit && status !== "streaming";
+  // As soon as a structured evaluation starts arriving, swap the input out.
+  const hideInput =
+    (status === "streaming" || status === "done") && result?.kind === "evaluation";
 
   async function evaluate() {
     if (!canSubmit) return;
-    setStatus("loading");
-    setResult(null);
+    setStatus("streaming");
+    setStreamText("");
+    setStreamDone(false);
     setMessage("");
 
     try {
@@ -61,27 +75,43 @@ export default function FitCheck() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobDescription: jd }),
       });
-      const data = await res.json();
 
-      if (res.ok) {
-        setResult(parseEvaluation(data.markdown ?? ""));
-        setStatus("done");
-        requestAnimationFrame(() =>
-          resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
-        );
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}) as Record<string, unknown>);
+        const error = typeof data.error === "string" ? data.error : "";
+        if (res.status === 503 && data.disabled) {
+          setMessage(error || "The fit check is temporarily unavailable.");
+          setStatus("disabled");
+        } else if (res.status === 429) {
+          setMessage(error || "You've reached the daily limit. Try again tomorrow.");
+          setStatus("ratelimited");
+        } else {
+          setMessage(error || "Something went wrong. Please try again.");
+          setStatus("error");
+        }
         return;
       }
 
-      if (res.status === 503 && data.disabled) {
-        setMessage(data.error ?? "");
-        setStatus("disabled");
-      } else if (res.status === 429) {
-        setMessage(data.error ?? "You've reached the daily limit. Try again tomorrow.");
-        setStatus("ratelimited");
-      } else {
-        setMessage(data.error ?? "Something went wrong. Please try again.");
-        setStatus("error");
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let acc = "";
+      let scrolled = false;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        acc += decoder.decode(value, { stream: true });
+        setStreamText(acc);
+        if (!scrolled) {
+          scrolled = true;
+          requestAnimationFrame(() =>
+            resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
+          );
+        }
       }
+      acc += decoder.decode();
+      setStreamText(acc);
+      setStreamDone(true);
+      setStatus("done");
     } catch {
       setMessage("Couldn't reach the evaluator. Check your connection and try again.");
       setStatus("error");
@@ -146,7 +176,7 @@ export default function FitCheck() {
                 disabled={!canSubmit}
                 title="⌘ + Enter to evaluate"
               >
-                {status === "loading" ? "Evaluating…" : "Evaluate fit"}
+                {status === "streaming" ? "Evaluating…" : "Evaluate fit"}
               </button>
             </div>
             <input
@@ -167,13 +197,16 @@ export default function FitCheck() {
       )}
 
       <div ref={resultRef}>
-        {status === "loading" && <LoadingBlock />}
+        {(status === "streaming" || status === "done") &&
+          (result?.kind === "evaluation" || (status === "done" && result) ? (
+            <Analysis result={result!} streaming={status === "streaming"} />
+          ) : (
+            <LoadingBlock />
+          ))}
 
         {(status === "disabled" || status === "ratelimited" || status === "error") && (
           <NoticeBlock status={status} message={message} />
         )}
-
-        {status === "done" && result && <Analysis result={result} />}
       </div>
     </section>
   );
@@ -211,7 +244,115 @@ function NoticeBlock({ status, message }: { status: Status; message: string }) {
   );
 }
 
-function Analysis({ result }: { result: ParseResult }) {
+function Caret() {
+  return <span className="fc-caret" aria-hidden="true" />;
+}
+
+// Reveals words up to `target`, which grows as the model streams its answer.
+// The reveal never outruns what's been generated, so its pace tracks the live
+// response; when generation pauses the caret simply waits. The catch-up rate is
+// capped so a fast burst still reads as writing rather than a hard cut. Stops
+// once the stream is complete and everything is shown.
+function useRevealStream(target: number, streamComplete: boolean, enabled: boolean) {
+  const [revealed, setRevealed] = useState(0);
+  const targetRef = useRef(target);
+  targetRef.current = target;
+  const completeRef = useRef(streamComplete);
+  completeRef.current = streamComplete;
+
+  useEffect(() => {
+    if (!enabled) return;
+    let raf = 0;
+    let current = 0;
+    let last = performance.now();
+    const MAX_WPS = 90;
+    const step = (now: number) => {
+      current = Math.min(targetRef.current, current + ((now - last) / 1000) * MAX_WPS);
+      last = now;
+      setRevealed(Math.floor(current));
+      const finished = completeRef.current && current >= targetRef.current;
+      if (!finished) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [enabled]);
+
+  // Reduced motion: skip the animation, just show whatever has been generated.
+  useEffect(() => {
+    if (!enabled) setRevealed(target);
+  }, [enabled, target]);
+
+  return revealed;
+}
+
+interface Seg {
+  text: string;
+  start: number;
+  count: number;
+}
+
+function Analysis({ result, streaming }: { result: ParseResult; streaming: boolean }) {
+  const evaluation = result.kind === "evaluation" ? result.evaluation : null;
+
+  const motion = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
+
+  const stream = useMemo(() => {
+    let cursor = 0;
+    const reg = (text: string): Seg => {
+      const clean = text.trim();
+      const count = clean ? clean.split(/\s+/).length : 0;
+      const seg = { text: clean, start: cursor, count };
+      cursor += count;
+      return seg;
+    };
+    if (!evaluation) {
+      return { summary: null, align: null, gap: null, total: 0 } as const;
+    }
+    const summary = evaluation.summary ? reg(evaluation.summary) : null;
+    const align = evaluation.alignments.length
+      ? {
+          label: reg("Strong alignment"),
+          items: evaluation.alignments.map((a) => ({
+            title: reg(a.title),
+            body: a.body ? reg(a.body) : null,
+          })),
+        }
+      : null;
+    const gap = evaluation.gaps.length
+      ? {
+          label: reg("Honest gaps"),
+          items: evaluation.gaps.map((g) => ({
+            title: reg(g.title),
+            body: g.body ? reg(g.body) : null,
+          })),
+        }
+      : null;
+    return { summary, align, gap, total: cursor };
+  }, [evaluation]);
+
+  const streamComplete = !streaming;
+  const revealed = useRevealStream(stream.total, streamComplete, motion);
+  const textRevealed = stream.total > 0 && revealed >= stream.total;
+  const done = textRevealed && streamComplete;
+
+  const [caretGone, setCaretGone] = useState(false);
+  useEffect(() => {
+    if (!motion) {
+      setCaretGone(true);
+      return;
+    }
+    if (done) {
+      const t = setTimeout(() => setCaretGone(true), 1200);
+      return () => clearTimeout(t);
+    }
+    setCaretGone(false);
+  }, [motion, done]);
+
   if (result.kind === "not_job_description") {
     return (
       <div className="fc-notice" role="status">
@@ -228,61 +369,101 @@ function Analysis({ result }: { result: ParseResult }) {
     );
   }
 
-  const { summary, alignments, gaps, work } = result.evaluation;
+  if (!evaluation) return null;
+
+  const shown = (seg: Seg | null) => {
+    if (!seg || seg.count === 0) return "";
+    const n = Math.max(0, Math.min(seg.count, revealed - seg.start));
+    return seg.text.split(/\s+/).slice(0, n).join(" ");
+  };
+  const started = (seg: Seg | null) => !!seg && revealed > seg.start;
+  const caret = (seg: Seg | null) =>
+    !caretGone && !!seg && seg.start < revealed && revealed <= seg.start + seg.count;
+
+  const work = evaluation.work;
 
   return (
-    <ScrollFadeIn>
-      <div className="fc-analysis">
-        {summary && <p className="fc-summary">{summary}</p>}
+    <div className="fc-analysis" role="region" aria-label="Fit evaluation" aria-busy={!done}>
+      {started(stream.summary) && (
+        <p className="fc-summary">
+          {shown(stream.summary)}
+          {caret(stream.summary) && <Caret />}
+        </p>
+      )}
 
-        {alignments.length > 0 && (
-          <div className="fc-group">
-            <p className="fc-collabel">Strong alignment</p>
-            {alignments.map((a, i) => (
+      {stream.align && started(stream.align.label) && (
+        <div className="fc-group">
+          <p className="fc-collabel">
+            {shown(stream.align.label)}
+            {caret(stream.align.label) && <Caret />}
+          </p>
+          {stream.align.items.map((it, i) =>
+            started(it.title) ? (
               <div className="fc-item" key={i}>
                 <span className="fc-marker fc-marker-align" aria-hidden="true" />
                 <div>
-                  <h3 className="fc-item-title">{a.title}</h3>
-                  {a.body && <p className="fc-item-body">{a.body}</p>}
+                  <h3 className="fc-item-title">
+                    {shown(it.title)}
+                    {caret(it.title) && <Caret />}
+                  </h3>
+                  {it.body && started(it.body) && (
+                    <p className="fc-item-body">
+                      {shown(it.body)}
+                      {caret(it.body) && <Caret />}
+                    </p>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            ) : null,
+          )}
+        </div>
+      )}
 
-        {gaps.length > 0 && (
-          <div className="fc-group">
-            <p className="fc-collabel">Honest gaps</p>
-            {gaps.map((g, i) => (
+      {stream.gap && started(stream.gap.label) && (
+        <div className="fc-group">
+          <p className="fc-collabel">
+            {shown(stream.gap.label)}
+            {caret(stream.gap.label) && <Caret />}
+          </p>
+          {stream.gap.items.map((it, i) =>
+            started(it.title) ? (
               <div className="fc-item" key={i}>
                 <span className="fc-marker fc-marker-gap" aria-hidden="true" />
                 <div>
-                  <h3 className="fc-item-title">{g.title}</h3>
-                  {g.body && <p className="fc-item-body">{g.body}</p>}
+                  <h3 className="fc-item-title">
+                    {shown(it.title)}
+                    {caret(it.title) && <Caret />}
+                  </h3>
+                  {it.body && started(it.body) && (
+                    <p className="fc-item-body">
+                      {shown(it.body)}
+                      {caret(it.body) && <Caret />}
+                    </p>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            ) : null,
+          )}
+        </div>
+      )}
 
-        {work && (
-          <div className="fc-group fc-work">
-            <p className="fc-collabel">Most relevant work</p>
-            {work.url ? (
-              <Link href={work.url} className="fc-work-link">
-                <strong className="fc-work-title">{work.title}</strong>
-                {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
-              </Link>
-            ) : (
-              <div className="fc-work-link fc-work-static">
-                <strong className="fc-work-title fc-work-title-static">{work.title}</strong>
-                {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </ScrollFadeIn>
+      {done && work && (
+        <div className="fc-group fc-work fc-work-reveal">
+          <p className="fc-collabel">Most relevant work</p>
+          {work.url ? (
+            <Link href={work.url} className="fc-work-link">
+              <strong className="fc-work-title">{work.title}</strong>
+              {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
+            </Link>
+          ) : (
+            <div className="fc-work-link fc-work-static">
+              <strong className="fc-work-title fc-work-title-static">{work.title}</strong>
+              {work.relevance && <span className="fc-work-rel">{work.relevance}</span>}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -434,13 +615,14 @@ const CSS = `
 .fc-analysis { margin-top: clamp(36px, 6vw, 56px); }
 .fc-summary {
   font-weight: 700;
-  font-size: clamp(20px, 3vw, 26px);
-  line-height: 1.32;
+  font-size: clamp(20px, 3vw, 27px);
+  line-height: 1.42;
   letter-spacing: -0.01em;
   color: var(--color-text-primary);
-  padding-bottom: clamp(20px, 3vw, 26px);
-  border-bottom: 2px solid var(--color-text-primary);
-  margin-bottom: clamp(26px, 4vw, 36px);
+  max-width: 70ch;
+  padding-bottom: clamp(22px, 3.5vw, 32px);
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: clamp(28px, 4.5vw, 40px);
 }
 .fc-group {
   margin-bottom: clamp(36px, 5vw, 52px);
@@ -466,11 +648,30 @@ const CSS = `
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  margin-top: 6px;
+  margin-top: 7px;
   justify-self: start;
+  animation: fc-pop 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .fc-marker-align { background: var(--color-accent); }
 .fc-marker-gap { background: var(--color-metric); }
+.fc-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.04em;
+  margin-left: 2px;
+  vertical-align: -0.16em;
+  border-radius: 1px;
+  background: var(--color-metric);
+  animation: fc-blink 1.05s steps(1, end) infinite;
+}
+@keyframes fc-blink {
+  0%, 52% { opacity: 1; }
+  52.01%, 100% { opacity: 0; }
+}
+@keyframes fc-pop {
+  from { opacity: 0; transform: scale(0.2); }
+  to { opacity: 1; transform: scale(1); }
+}
 .fc-item-title {
   font-weight: 700;
   font-size: clamp(16px, 2vw, 18px);
@@ -486,6 +687,13 @@ const CSS = `
   max-width: 68ch;
 }
 
+.fc-work-reveal {
+  animation: fc-fade-up 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes fc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
 .fc-work-link {
   display: block;
   text-decoration: none;
@@ -532,6 +740,7 @@ const CSS = `
   .fc-go { flex: 1 1 100%; width: 100%; order: 3; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fc-field, .fc-go, .fc-upload, .fc-pulse, .fc-work-link { transition: none; animation: none; }
+  .fc-field, .fc-go, .fc-upload, .fc-pulse, .fc-work-link, .fc-marker, .fc-work-reveal { transition: none; animation: none; }
+  .fc-caret { display: none; }
 }
 `;
