@@ -27,7 +27,7 @@ export default function CaseStudyNavCard({
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.transform = "translateY(-3px)";
-          el.style.borderColor = "var(--color-border-hover)";
+          el.style.borderColor = "var(--color-accent)";
           el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.08)";
         }}
         onMouseLeave={(e) => {
