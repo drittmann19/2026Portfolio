@@ -189,7 +189,7 @@ export default function FitCheck() {
           </div>
           {overLimit && (
             <p className="fc-overlimit">
-              That's {jd.length.toLocaleString()} characters. Trim it to under{" "}
+              That&apos;s {jd.length.toLocaleString()} characters. Trim it to under{" "}
               {MAX_JD_CHARS.toLocaleString()} to evaluate.
             </p>
           )}
@@ -225,7 +225,7 @@ function LoadingBlock() {
   return (
     <div className="fc-loading" role="status" aria-live="polite">
       <span className="fc-pulse" aria-hidden="true" />
-      Reading the role and matching it to Damean's experience…
+      Reading the role and matching it to Damean&apos;s experience…
     </div>
   );
 }
