@@ -141,8 +141,8 @@ export default function FitCheck() {
       <ScrollFadeIn>
         <h2 className="fc-headline">Fit Check</h2>
         <p className="fc-sub">
-          Paste a job description and get an honest read on the match. Strengths, gaps, and
-          the work most worth your time.
+          Paste a job description for an honest read on the match. You&apos;ll see where my
+          experience lines up, where it falls short, and the case study most relevant to the role.
         </p>
       </ScrollFadeIn>
 
@@ -484,7 +484,8 @@ const CSS = `
   font-size: var(--text-body);
   color: var(--color-text-secondary);
   line-height: 1.6;
-  max-width: 54ch;
+  max-width: 80ch;
+  text-wrap: pretty;
   margin-bottom: clamp(24px, 4vw, 32px);
 }
 .fc-field {
