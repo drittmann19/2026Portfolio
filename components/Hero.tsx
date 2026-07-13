@@ -1,192 +1,102 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import CountUp from "./CountUp";
+import { useEffect, useRef } from "react";
+import { gsap, SplitText } from "@/lib/gsap";
+import SpecLens from "./SpecLens";
+import StatsMarquee from "./StatsMarquee";
 
-type Segment = { text: string; blue?: boolean };
-const HEADLINE_SEGMENTS: Segment[] = [
-  { text: "Hi, I'm Damean,\na product designer who makes " },
-  { text: "complex workflows trustworthy", blue: true },
-  { text: " for the experts who use them. I thrive in spaces where the problems are hard, meaningful, and still being figured out." },
-];
-const HEADLINE_TEXT = HEADLINE_SEGMENTS.map((s) => s.text).join("");
-const TYPE_SPEED_MS = 18;
-const METRICS_FADE_DELAY_MS = 260;
-
-const fadeUp = (delay: number): React.CSSProperties => ({
-  opacity: 0,
-  animation: `fadeUp 600ms ease-out ${delay}ms forwards`,
-});
+/* Hero — "Complexity, made legible." with the circled word, GSAP intro,
+   spec lens, and the fold-pinned stats marquee. Content is visible in
+   markup by default; GSAP animates FROM hidden, so the page stays
+   readable if JS or fonts stall (and under prefers-reduced-motion). */
 
 export default function Hero() {
-  const [typedCount, setTypedCount] = useState(0);
-  const [typingDone, setTypingDone] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mql.matches);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    let split: SplitText | null = null;
+    const ctx = gsap.context(() => {
+      let done = false;
+      const intro = () => {
+        if (done) return;
+        done = true;
+
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        const title = root.querySelector(".hero-title");
+        const circle = root.querySelector(".circled svg path");
+
+        tl.from(".topbar", { y: -14, autoAlpha: 0, duration: 0.7 })
+          .from(".hero-eyebrow", { y: 14, autoAlpha: 0, duration: 0.6 }, "-=0.35");
+
+        let lines: Element[] | null = null;
+        if (title) {
+          try {
+            split = new SplitText(title, { type: "lines" });
+            lines = split.lines;
+          } catch {
+            /* fall back to whole-title reveal */
+          }
+        }
+        if (lines && lines.length) {
+          tl.from(lines, { y: 56, autoAlpha: 0, duration: 1.05, stagger: 0.14 }, "-=0.25");
+        } else if (title) {
+          tl.from(title, { y: 34, autoAlpha: 0, duration: 1 }, "-=0.25");
+        }
+
+        if (circle) {
+          gsap.set(circle, { drawSVG: "0%" });
+          tl.to(circle, { drawSVG: "100%", duration: 0.9, ease: "power2.inOut" }, "-=0.45");
+        }
+
+        tl.from(".hero-lede", { y: 22, autoAlpha: 0, duration: 0.8 }, "-=0.5")
+          .from(".marquee", { autoAlpha: 0, duration: 0.7 }, "-=0.4");
+      };
+
+      // wait for fonts so SplitText measures real line breaks
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(() => setTimeout(intro, 50));
+        setTimeout(intro, 2500); // safety net if fonts hang
+      } else {
+        intro();
+      }
+    });
+
+    return () => {
+      split?.revert();
+      ctx.revert();
+    };
   }, []);
 
-  useEffect(() => {
-    if (reducedMotion) {
-      setTypedCount(HEADLINE_TEXT.length);
-      setTypingDone(true);
-      return;
-    }
-    const id = setInterval(() => {
-      setTypedCount((c) => {
-        if (c >= HEADLINE_TEXT.length) {
-          clearInterval(id);
-          setTypingDone(true);
-          return c;
-        }
-        return c + 1;
-      });
-    }, TYPE_SPEED_MS);
-    return () => clearInterval(id);
-  }, [reducedMotion]);
-
-  const metricsDelay = typingDone ? 0 : 999_999;
-  const countUpDelay = typingDone ? METRICS_FADE_DELAY_MS + 300 : 999_999;
-
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes typewriter-blink {
-          0%, 50% { opacity: 1; }
-          50.001%, 100% { opacity: 0; }
-        }
-
-        .hero-section {
-          padding-top: 80px;
-          padding-bottom: 128px;
-        }
-
-        .hero-headline {
-          font-family: var(--font-dm-sans);
-          font-weight: 900;
-          color: var(--color-text-primary);
-          font-size: clamp(32px, 4.6vw, 76px);
-          line-height: 1.08;
-          letter-spacing: -0.025em;
-          white-space: pre-line;
-        }
-
-        @media (max-width: 1600px) {
-          .hero-headline {
-            font-size: clamp(32px, 4.0vw, 58px);
-          }
-        }
-
-        @media (max-width: 480px) {
-          .hero-headline {
-            font-size: clamp(22px, 6.5vw, 28px);
-          }
-        }
-
-        .typewriter-hidden {
-          opacity: 0;
-        }
-
-        .typewriter-cursor {
-          display: inline-block;
-          width: 0;
-          position: relative;
-          vertical-align: baseline;
-        }
-        .typewriter-cursor::after {
-          content: "";
-          position: absolute;
-          left: 2px;
-          bottom: 0.05em;
-          width: 0.08em;
-          height: 0.85em;
-          background: var(--color-metric);
-          animation: typewriter-blink 1s step-end infinite;
-        }
-
-        .hero-metrics {
-          margin-top: 40px;
-          font-size: clamp(16px, 1.6vw, 22px);
-          line-height: 1.4;
-          font-weight: 500;
-        }
-
-        .hero-metrics-dot {
-          color: var(--color-text-tertiary);
-          margin: 0 14px;
-        }
-
-        @media (max-width: 1023px) {
-          .hero-section {
-            padding-top: 56px;
-            padding-bottom: 96px;
-          }
-          .hero-metrics {
-            margin-top: 28px;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .typewriter-cursor::after { display: none; }
-        }
-      ` }} />
-
-      <section id="hero" className="hero-section">
-        <h1 className="hero-headline" aria-label={HEADLINE_TEXT}>
-          <span aria-hidden="true">
-            {(() => {
-              let pos = 0;
-              return HEADLINE_SEGMENTS.map(({ text, blue }, i) => {
-                const start = pos;
-                pos += text.length;
-                const visible = Math.min(text.length, Math.max(0, typedCount - start));
-                if (visible === 0) return null;
-                return (
-                  <span key={i} style={blue ? { color: "var(--color-accent)" } : undefined}>
-                    {text.slice(0, visible)}
-                  </span>
-                );
-              });
-            })()}
-            {!reducedMotion && <span className="typewriter-cursor" />}
+    <section className="hero" id="overview" ref={rootRef}>
+      <div className="wrap">
+        <p className="hero-eyebrow mono">Damean Rittmann ✳ Product Designer ✳ Portfolio, 2026</p>
+        <h1 className="hero-title">
+          Complexity,
+          <br />
+          made{" "}
+          <span className="circled">
+            legible
+            <svg viewBox="0 0 310 110" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M155 12 C226 4 296 18 299 50 C302 84 232 102 150 100 C70 98 12 86 11 54 C10 24 84 10 166 10" />
+            </svg>
           </span>
-          <span aria-hidden="true" className="typewriter-hidden">
-            {(() => {
-              let pos = 0;
-              return HEADLINE_SEGMENTS.map(({ text, blue }, i) => {
-                const start = pos;
-                pos += text.length;
-                const hidden = text.slice(Math.max(0, typedCount - start));
-                if (!hidden) return null;
-                return (
-                  <span key={i} style={blue ? { color: "var(--color-accent)" } : undefined}>
-                    {hidden}
-                  </span>
-                );
-              });
-            })()}
-          </span>
+          .
         </h1>
-
-        <div className="hero-metrics flex items-center flex-wrap" style={fadeUp(metricsDelay)}>
-          <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={60} delay={countUpDelay} />%+ faster ordering and payments
-          </span>
-          <span className="hero-metrics-dot">·</span>
-          <span style={{ color: "var(--color-metric)" }}>
-            <CountUp target={20000} delay={countUpDelay} formatValue={(n) => n.toLocaleString()} />+ expert users served
-          </span>
-          <span className="hero-metrics-dot">·</span>
-          <span style={{ color: "var(--color-metric)" }}>$500M+ payments, multi-billion dollar platform</span>
+        <div className="hero-sub">
+          <p className="hero-lede">
+            I&rsquo;m a product designer who makes <em>complex workflows trustworthy</em> for the
+            experts who use them. I thrive in spaces where the problems are hard, meaningful,
+            and still being figured out.
+          </p>
         </div>
-      </section>
-    </>
+      </div>
+      <StatsMarquee />
+      <SpecLens />
+    </section>
   );
 }

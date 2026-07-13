@@ -1,22 +1,31 @@
 import type { Metadata } from "next";
-import { DM_Sans, Gasoek_One } from "next/font/google";
+import { Fraunces, Archivo, Spline_Sans_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
-import NavShell from "@/components/NavShell";
-import MobileNav from "@/components/MobileNav";
+import SiteNav from "@/components/SiteNav";
+import Rail from "@/components/Rail";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-dm-sans",
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const gasoekOne = Gasoek_One({
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-gasoek",
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const splineSansMono = Spline_Sans_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -47,23 +56,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${gasoekOne.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${archivo.variable} ${splineSansMono.variable}`}>
 <body>
-        {/* Desktop side nav */}
-        <div className="hidden lg:block">
-          <NavShell />
-        </div>
-
-        {/* Mobile / tablet top nav */}
-        <MobileNav />
-
-        {/* Main content */}
-        <main className="lg:ml-[280px]">
-          <div className="px-4 tablet:px-12 pt-10 mx-auto" style={{ maxWidth: "1800px" }}>
-            {children}
-          </div>
-        </main>
-
+        <SiteNav />
+        <Rail />
+        <main>{children}</main>
         <Analytics />
       </body>
       <GoogleAnalytics gaId="G-DGN5P8HTDG" />
