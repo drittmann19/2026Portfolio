@@ -1,11 +1,10 @@
-/* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 import { Fragment } from "react";
-import ScrollFadeIn from "@/components/ScrollFadeIn";
-import MetricCallout from "@/components/MetricCallout";
-import { caseStudies, getCaseStudy, getPrevNext, type Block } from "@/data/case-studies";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import CaseStudyNavCard from "@/components/CaseStudyNavCard";
+import { caseStudies, getCaseStudy, getPrevNext, type Block } from "@/data/case-studies";
+import CSVideo from "@/components/CSVideo";
+import RevealFX from "@/components/RevealFX";
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -36,70 +35,25 @@ function renderBlock(block: Block, idx: number) {
   switch (block.type) {
     case "p":
       return (
-        <p
-          key={idx}
-          style={{
-            marginBottom: "20px",
-            color: "var(--color-text-secondary)",
-            lineHeight: 1.8,
-            fontSize: "var(--text-body)",
-          }}
-        >
+        <p key={idx} className="cs-p" data-reveal>
           {block.text}
         </p>
       );
 
     case "h3":
       return (
-        <h3
-          key={idx}
-          className="font-sans"
-          style={{
-            fontSize: "clamp(30px, 3.2vw, 42px)",
-            fontWeight: 700,
-            color: "var(--color-text-primary)",
-            marginTop: "64px",
-            marginBottom: "24px",
-            lineHeight: 1.15,
-            letterSpacing: "-0.015em",
-          }}
-        >
+        <h3 key={idx} className="cs-h3" data-reveal>
           {block.text}
         </h3>
       );
 
     case "list":
       return (
-        <ul
-          key={idx}
-          style={{
-            marginBottom: "20px",
-            marginTop: "4px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            listStyle: "none",
-            padding: 0,
-          }}
-        >
+        <ul key={idx} className="cs-list" data-reveal>
           {block.items.map((item, i) => (
-            <li
-              key={i}
-              style={{ display: "flex", gap: "14px", alignItems: "flex-start", color: "var(--color-text-secondary)" }}
-            >
-              <span
-                className="font-mono"
-                style={{
-                  color: "var(--color-metric)",
-                  fontWeight: 700,
-                  flexShrink: 0,
-                  marginTop: "1px",
-                  fontSize: "14px",
-                }}
-              >
-                —
-              </span>
-              <span style={{ lineHeight: 1.7, fontSize: "var(--text-body)" }}>{item}</span>
+            <li key={i}>
+              <span className="cs-list-mark" aria-hidden="true">✳</span>
+              <span>{item}</span>
             </li>
           ))}
         </ul>
@@ -107,156 +61,48 @@ function renderBlock(block: Block, idx: number) {
 
     case "metric":
       return (
-        <div key={idx} style={{ margin: "32px 0" }}>
-          <ScrollFadeIn>
-            <MetricCallout metric={block.metric} label={block.label} sublabel={block.sublabel} />
-          </ScrollFadeIn>
+        <div key={idx} className="cs-metric" data-reveal>
+          <p className="cs-metric-big">{block.metric}</p>
+          <p className="mono cs-metric-label">
+            {block.label}
+            {block.sublabel ? ` · ${block.sublabel}` : ""}
+          </p>
         </div>
       );
 
     case "metrics_grid":
       return (
-        <div
-          key={idx}
-          className="grid gap-4"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            margin: "32px 0",
-          }}
-        >
-          {block.items.map((item, i) => (
-            <ScrollFadeIn key={i} delay={i * 80}>
-              <MetricCallout metric={item.metric} label={item.label} sublabel={item.sublabel} />
-            </ScrollFadeIn>
+        <div key={idx} className="cs-metrics-grid" data-reveal>
+          {block.items.map((m, i) => (
+            <div key={i} className="cs-metric">
+              <p className="cs-metric-big">{m.metric}</p>
+              <p className="mono cs-metric-label">
+                {m.label}
+                {m.sublabel ? ` · ${m.sublabel}` : ""}
+              </p>
+            </div>
           ))}
-        </div>
-      );
-
-    case "video":
-      return (
-        <div key={idx} style={{ margin: "56px 0" }}>
-          <ScrollFadeIn>
-            <video
-              src={block.src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                width: "100%",
-                borderRadius: "10px",
-                border: "1px solid var(--color-border-subtle)",
-                display: "block",
-              }}
-            />
-          </ScrollFadeIn>
         </div>
       );
 
     case "image":
       return (
-        <div key={idx} style={{ margin: "56px 0" }}>
-          <ScrollFadeIn>
-            {block.src ? (
-              <img
-                src={block.src}
-                alt={block.alt}
-                style={{
-                  width: "100%",
-                  borderRadius: "10px",
-                  border: "1px solid var(--color-border-subtle)",
-                  display: "block",
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  width: "100%",
-                  height: "320px",
-                  borderRadius: "10px",
-                  border: "1px solid var(--color-border-subtle)",
-                  backgroundColor: "var(--color-surface)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                }}
-              >
-                <p className="font-mono" style={{ fontSize: "12px", color: "var(--color-text-tertiary)" }}>
-                  Image placeholder
-                </p>
-                <p className="font-mono" style={{ fontSize: "11px", color: "var(--color-border-default)" }}>
-                  {block.alt.replace("Placeholder: ", "")}
-                </p>
-              </div>
-            )}
-          </ScrollFadeIn>
-        </div>
+        <figure key={idx} className="cs-fig" data-reveal>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="cs-img" src={block.src} alt={block.alt} loading="lazy" />
+        </figure>
+      );
+
+    case "video":
+      return (
+        <figure key={idx} className="cs-fig" data-reveal>
+          <CSVideo src={block.src} />
+        </figure>
       );
 
     default:
       return null;
   }
-}
-
-// ── Section ───────────────────────────────────────────────────────────────────
-
-function Section({
-  id,
-  label,
-  heading,
-  children,
-}: {
-  id: string;
-  label: string;
-  heading: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="cs-section-grid">
-      {/* Left column: section label */}
-      <ScrollFadeIn>
-        <div style={{ paddingTop: "6px" }}>
-          <p
-            className="font-sans uppercase"
-            style={{
-              fontSize: "13px",
-              letterSpacing: "0.12em",
-              fontWeight: 600,
-              color: "var(--color-accent)",
-              lineHeight: 1,
-            }}
-          >
-            {label}
-          </p>
-        </div>
-      </ScrollFadeIn>
-
-      {/* Right column: heading + body */}
-      <div>
-        <ScrollFadeIn>
-          <h2
-            className="font-sans"
-            style={{
-              fontSize: "clamp(30px, 3.2vw, 42px)",
-              fontWeight: 700,
-              color: "var(--color-text-primary)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.015em",
-              marginBottom: "36px",
-            }}
-          >
-            {heading}
-          </h2>
-        </ScrollFadeIn>
-
-        <div className="font-sans">
-          {children}
-        </div>
-      </div>
-    </section>
-  );
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -265,8 +111,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const study = getCaseStudy(params.slug);
   if (!study) notFound();
 
+  const idx = caseStudies.findIndex((s) => s.slug === study.slug);
+  const csNum = String(idx + 1).padStart(2, "0");
   const { prev, next } = getPrevNext(params.slug);
-  const metricChips = study.metrics.split(" · ");
+  const receiptItems = study.metrics.split("·").map((m) => m.trim());
 
   const caseStudyJsonLd = {
     "@context": "https://schema.org",
@@ -285,159 +133,94 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyJsonLd) }}
       />
 
-      {/* ── Hero ── */}
-      <div id="overview" style={{ paddingBottom: "72px" }}>
-
-        {/* Tags row */}
-        <ScrollFadeIn>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px" }}>
-            {study.tags.map((tag) => (
-              <span
-                key={tag}
-                className="font-mono uppercase"
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.1em",
-                  color: "var(--color-text-tertiary)",
-                  background: "var(--color-surface)",
-                  border: "1px solid var(--color-border-subtle)",
-                  borderRadius: "100px",
-                  padding: "4px 12px",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </ScrollFadeIn>
-
-        {/* Title */}
-        <ScrollFadeIn delay={60}>
-          <h1
-            className="font-sans"
-            style={{
-              fontSize: "clamp(36px, 4vw, 56px)",
-              fontWeight: 700,
-              color: "var(--color-text-primary)",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              marginBottom: "24px",
-            }}
-          >
-            {study.title}
-          </h1>
-        </ScrollFadeIn>
-
-        {/* Subtitle */}
-        <ScrollFadeIn delay={120}>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "18px",
-              color: "var(--color-text-secondary)",
-              lineHeight: 1.7,
-              marginBottom: "28px",
-            }}
-          >
-            {study.subtitle}
+      {/* ── Case hero ── */}
+      <section className="cs-hero" id="overview">
+        <div className="wrap">
+          <p className="eyebrow mono">
+            cs.{csNum}
+            {study.year ? ` · ${study.year}` : ""} ✳ case study
           </p>
-        </ScrollFadeIn>
-
-        {/* Metrics row */}
-        <ScrollFadeIn delay={180}>
-          <div
-            className="font-mono"
-            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0", marginBottom: "40px", fontSize: "16px", fontWeight: 500 }}
-          >
-            {metricChips.map((chip, i) => (
-              <Fragment key={chip}>
-                <span style={{ color: "var(--color-metric)" }}>{chip.trim()}</span>
-                {i < metricChips.length - 1 && (
-                  <span style={{ color: "var(--color-text-tertiary)", margin: "0 12px" }}>·</span>
-                )}
+          <h1 className="cs-title">{study.title}</h1>
+          <p className="cs-lede">{study.subtitle}</p>
+          <ul className="chips mono">
+            {study.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="cs-receipt mono" aria-label="Outcomes">
+          <div className="wrap cs-receipt-in">
+            {receiptItems.map((m, i) => (
+              <Fragment key={m}>
+                <span>{m}</span>
+                {i < receiptItems.length - 1 && <i aria-hidden="true">✳</i>}
               </Fragment>
             ))}
           </div>
-        </ScrollFadeIn>
-
-        {/* Hero image */}
-        <ScrollFadeIn delay={240}>
-          <div
-            style={{
-              width: "100%",
-              borderRadius: "14px",
-              backgroundColor: "var(--color-surface)",
-              border: "1px solid var(--color-border-subtle)",
-              overflow: "hidden",
-            }}
-          >
-            {study.heroImage ? (
-              <img
-                src={study.heroImage}
-                alt={`${study.title} hero`}
-                style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}
-              />
-            ) : (
-              <div style={{ textAlign: "center" }}>
-                <p
-                  className="font-mono"
-                  style={{ fontSize: "12px", color: "var(--color-text-tertiary)", marginBottom: "6px" }}
-                >
-                  Hero image
-                </p>
-                <p
-                  className="font-mono"
-                  style={{ fontSize: "11px", color: "var(--color-border-default)" }}
-                >
-                  /public/images/case-studies/
-                </p>
-              </div>
-            )}
+        </div>
+        {study.heroImage && (
+          <div className="wrap">
+            <figure className="cs-fig cs-hero-fig" data-reveal>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="cs-img" src={study.heroImage} alt={`${study.title} hero`} />
+            </figure>
           </div>
-        </ScrollFadeIn>
-      </div>
+        )}
+      </section>
 
       {/* ── Content sections ── */}
-      {study.sections.map((section) => (
-        <Section key={section.id} id={section.id} label={section.label} heading={section.heading}>
-          {section.blocks.map((block, i) => renderBlock(block, i))}
-        </Section>
-      ))}
+      <div className="wrap">
+        {study.sections.map((section, si) => (
+          <section key={section.id} className="cs-section" id={section.id}>
+            <div className="cs-sec-label">
+              <p className="eyebrow mono" data-reveal>
+                fig. {String(si + 1).padStart(2, "0")} · {section.label.toLowerCase()}
+              </p>
+            </div>
+            <div className="cs-sec-body">
+              <h2 className="cs-sec-heading" data-reveal>
+                {section.heading}
+              </h2>
+              {section.blocks.map((block, i) => renderBlock(block, i))}
+            </div>
+          </section>
+        ))}
+      </div>
 
-      {/* ── Bottom nav ── */}
-      {(prev || next) && (
-        <div
-          style={{
-            marginTop: "96px",
-            paddingTop: "48px",
-            borderTop: "1px solid var(--color-border-subtle)",
-          }}
-        >
-          <p
-            className="font-mono uppercase"
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.12em",
-              color: "var(--color-text-tertiary)",
-              marginBottom: "20px",
-            }}
-          >
-            More case studies
-          </p>
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            {prev && <CaseStudyNavCard study={prev} direction="prev" />}
-            {next && <CaseStudyNavCard study={next} direction="next" />}
+      {/* ── Prev / next ── */}
+      <section className="cs-prevnext">
+        <div className="wrap">
+          <p className="eyebrow mono" data-reveal>more work</p>
+          <div className="cs-pn-grid">
+            {prev && (
+              <Link className="cs-pn-card" href={`/case-study/${prev.slug}`} data-reveal>
+                <p className="mono cs-pn-label">← previous case</p>
+                <h3 className="cs-pn-title">{prev.title}</h3>
+                <p className="mono cs-pn-metrics">{prev.metrics}</p>
+              </Link>
+            )}
+            {next && (
+              <Link className="cs-pn-card cs-pn-next" href={`/case-study/${next.slug}`} data-reveal>
+                <p className="mono cs-pn-label">next case →</p>
+                <h3 className="cs-pn-title">{next.title}</h3>
+                <p className="mono cs-pn-metrics">{next.metrics}</p>
+              </Link>
+            )}
+          </div>
+          <div className="cs-colophon mono">
+            <p>© {new Date().getFullYear()} Damean Rittmann ✳ Designed &amp; built by hand (and a little AI)</p>
+            <a href="#top" className="to-top">Back to top ↑</a>
           </div>
         </div>
-      )}
+      </section>
 
-      <div style={{ height: "96px" }} />
-    </div>
+      <RevealFX />
+    </>
   );
 }
