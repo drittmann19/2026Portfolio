@@ -72,8 +72,6 @@ export default function Home() {
             </a>
           </div>
           <div className="colophon mono">
-            <p>© {new Date().getFullYear()} Damean Rittmann ✳ Designed &amp; built by hand (and a little AI)</p>
-            <p>Set in Fraunces, Archivo &amp; Spline Sans Mono ✳ Built with Next.js</p>
             <a href="#overview" className="to-top">Back to top ↑</a>
           </div>
         </div>

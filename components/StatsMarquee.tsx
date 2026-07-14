@@ -10,7 +10,7 @@ const STATS: Array<{ text: string; cite: string }> = [
   { text: "85% faster payments", cite: "cs.02" },
   { text: "50% fewer errors", cite: "cs.02" },
   { text: "2× transaction volume", cite: "cs.01" },
-  { text: "90% satisfaction", cite: "cs.02" },
+  { text: "90% User Satisfaction", cite: "cs.02" },
 ];
 
 function Group() {

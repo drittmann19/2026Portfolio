@@ -388,7 +388,7 @@ body.menu-open { overflow: hidden; }
   color: var(--red);
   font-size: 13px;
 }
-/* every number carries its source; hover pauses the tape so you can read it */
+/* every number carries its source case study as a superscript cite */
 .marquee-group .cite {
   font-weight: 500;
   font-size: 10px;
@@ -396,7 +396,6 @@ body.menu-open { overflow: hidden; }
   vertical-align: super;
   letter-spacing: 0.04em;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ============ SPEC LENS ============
@@ -712,6 +711,10 @@ section, footer.contact { padding-block: clamp(72px, 12vh, 140px); }
 
 /* ============ LAB / SIDE PROJECTS ============ */
 .lab { border-top: 1px solid var(--line-soft); }
+
+/* the Lab intro line runs the full content width */
+.lab .sec-head { max-width: none; }
+.lab .sec-sub { max-width: none; }
 
 .lab-grid {
   display: grid;
