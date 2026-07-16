@@ -12,45 +12,33 @@ export default function About() {
         <div className="about-grid">
           <div className="about-text" data-reveal>
             <p>
-              I come from a family of teachers. Growing up, I watched my parents find ways to
-              make difficult concepts click for students who were struggling. That probably
-              explains why I ended up in design. I&rsquo;m drawn to the moment when something
-              confusing becomes clear.
+              I come from a family of teachers, so I grew up watching people make confusing
+              things click. I didn&rsquo;t discover design until college and I instantly knew it
+              was my passion. It blended my analytical problem solving skills with my need to
+              be creative, into a process that benefits real people. I&rsquo;m drawn to the moment
+              when something confusing becomes clear.
             </p>
             <p>
-              I didn&rsquo;t know design was a job until college. I started in computer science, but
-              something was missing. When I discovered design, it clicked. I could blend my
-              creative and technical sides to solve real, complex problems that empower people.
-              Growing up in Shanghai, studying abroad in Sweden, and landing at CU Boulder
-              taught me that perspective matters. What works for one person, one culture, one
-              workflow doesn&rsquo;t automatically transfer to the next. You have to truly understand
-              the problem and the person behind it before you solve.
+              I learn best by doing and I have grown fast. In 5 years I went from rebuilding
+              university websites to leading a workflow redesign across 4 product squads at a
+              Fortune Global 500 company. My expertise is complex, data heavy workflows where
+              trust makes or breaks your product. My core principle is simplifying without
+              hiding, because showing the details is what builds trust.
             </p>
             <p>
-              My real design education came at Nutrien, where I spent four years in the
-              agricultural technology space. The problems were the kind I&rsquo;ve come to love.
-              Field workers with unreliable connectivity, seasonal workflows that shifted
-              constantly, legacy systems that didn&rsquo;t always cooperate, and expert users who
-              noticed every wrong detail. I learned that simplifying complexity isn&rsquo;t about
-              hiding it. It&rsquo;s about making it legible enough that people trust what they&rsquo;re
-              looking at. Somewhere in those four years I also got curious about how AI could
-              change the way I work, and I haven&rsquo;t stopped experimenting since. It&rsquo;s become
-              part of how I think, prototype, and ship.
+              What drives me is boundless curiosity and dedication. I adapt quickly to new
+              industries, environments, and workflows because I ask the right questions and do
+              the extra work. Right now I am all in on AI, learning by building and using it as
+              a partner for the tedious parts so I can focus on design thinking and strategy. I
+              want to help reinvent design around it.
             </p>
             <p>
-              That curiosity has spilled into building too. I designed and shipped GasCast
-              (live on the App Store), then designed and built this portfolio site to keep
-              stretching what I can do. Both started as learning projects. Both ended up real.
-            </p>
-            <p>
-              Outside of work, you&rsquo;ll find me feeding my growth mindset by traveling to explore
-              new cultures, getting outdoors for camping and adventures, catching live shows,
-              or channeling my competitive spirit through table tennis, ultimate frisbee, and
-              Rocket League. Games taught me to adapt quickly and think strategically under
-              pressure, which translates to design more than I expected. When I&rsquo;m not out
-              exploring, I&rsquo;m hanging out with my three cats Rotary, Axl, and Piper (see if you
-              can guess the theme). They&rsquo;re my best work partners, helping me think through
-              tricky problems and making sure I actually take breaks.
+              Outside of work you&rsquo;ll find me exploring. I&rsquo;ve been to 11 countries, and the
+              best parts are never the landmarks, they&rsquo;re the people I meet and the new
+              perspective I gain. When I&rsquo;m not abroad I&rsquo;m in the wild, backpacking, canoeing,
+              camping, and occasionally standing 50 feet from a Yellowstone grizzly. At home, my
+              competitive nature takes over in pick up soccer, frisbee, and video games.
+              Curiosity gets me out the door. Dedication is why I never half-do any of it.
             </p>
           </div>
           <aside className="about-side" data-reveal="0.1">
