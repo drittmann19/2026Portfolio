@@ -1007,7 +1007,6 @@ body.note-open { overflow: hidden; }
   font-size: clamp(17px, 1.5vw, 20px);
   line-height: 1.6;
   color: var(--ink-70);
-  max-width: 62ch;
 }
 .cs-hero .chips { margin-top: 26px; }
 
@@ -1174,7 +1173,6 @@ body.note-open { overflow: hidden; }
   .sec-head { max-width: 1000px; }
   .case-desc { max-width: 58ch; }
   .cs-title { max-width: 21ch; }
-  .cs-lede { max-width: 70ch; }
   .cs-p, .cs-list { max-width: 80ch; }
   .cs-p, .cs-list li { font-size: 17.5px; }
   .cs-sec-heading { max-width: 30ch; }
