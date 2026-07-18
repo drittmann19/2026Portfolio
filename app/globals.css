@@ -915,7 +915,6 @@ body.note-open { overflow: hidden; }
   font-size: 15px;
   line-height: 1.65;
   color: var(--ink-70);
-  max-width: 66ch;
 }
 .note-tags {
   margin-top: 24px;
