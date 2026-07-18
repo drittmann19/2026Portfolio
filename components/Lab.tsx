@@ -233,7 +233,6 @@ export default function Lab() {
           </h2>
           <p className="sec-sub">
             Side projects that started as learning projects. Some shipped, some stayed concepts.
-            All of them ended up real.
           </p>
         </header>
         <div className="lab-grid">
