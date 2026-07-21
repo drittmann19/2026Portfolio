@@ -69,7 +69,7 @@ export default function SiteNav() {
             <span className="mono brand-role">/ product&nbsp;designer</span>
           </Link>
           <nav className="topnav" aria-label="Primary">
-            {isCase && <Link href="/#work">← All Work</Link>}
+            {isCase && <Link href="/">Home</Link>}
             <a href="https://www.linkedin.com/in/damean-rittmann/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a href="mailto:dameanrittmann@gmail.com">Contact Me</a>
             <a href="/DameanRittmann_Resume.pdf" download>Resume</a>
@@ -102,7 +102,7 @@ export default function SiteNav() {
         <div>
           <div className="menu-ext mono">
             {isCase && (
-              <Link href="/#work" onClick={() => setOpen(false)}>← All Work</Link>
+              <Link href="/" onClick={() => setOpen(false)}>Home</Link>
             )}
             <a href="https://www.linkedin.com/in/damean-rittmann/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
             <a href="mailto:dameanrittmann@gmail.com">Contact Me ↗</a>

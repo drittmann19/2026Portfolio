@@ -1193,8 +1193,7 @@ body.note-open { overflow: hidden; }
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .case { padding-block: clamp(40px, 6vh, 64px); }
-  .work .case:first-of-type { padding-top: 8px; }
+  .case { padding-block: clamp(48px, 7vh, 72px); }
   .case-flip .case-meta { order: 1; }
   .case-flip .case-fig { order: 2; }
   .about-side {
@@ -1222,8 +1221,7 @@ body.note-open { overflow: hidden; }
   .brand-role { display: none; }
   section, footer.contact { padding-block: clamp(48px, 7vh, 64px); }
   .sec-head { margin-bottom: 28px; }
-  .case { gap: 20px; padding-block: 32px; }
-  .work .case:first-of-type { padding-top: 4px; }
+  .case { gap: 20px; padding-block: 40px; }
   .lab-grid { grid-template-columns: 1fr; }
   .about-side { grid-template-columns: 1fr; }
   .colophon { flex-direction: column; }
