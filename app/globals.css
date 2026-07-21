@@ -570,7 +570,7 @@ section, footer.contact { padding-block: clamp(72px, 12vh, 140px); }
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: clamp(28px, 4vw, 64px);
-  align-items: center;
+  align-items: start;
   padding-block: clamp(64px, 9vh, 104px);
 }
 .case + .case { border-top: 1px solid var(--line-soft); }
