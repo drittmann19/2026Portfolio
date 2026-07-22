@@ -74,7 +74,7 @@ export default function Hero() {
   return (
     <section className="hero" id="overview" ref={rootRef}>
       <div className="wrap">
-        <p className="hero-eyebrow mono">Damean Rittmann ✳ Product Designer ✳ Portfolio, 2026</p>
+        <p className="hero-eyebrow mono">Damean Rittmann ✳ Product Designer ✳ Portfolio 2026</p>
         <h1 className="hero-title">
           Complexity,
           <br />
