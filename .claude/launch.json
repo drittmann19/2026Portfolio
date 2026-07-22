@@ -9,6 +9,12 @@
       "autoPort": true
     },
     {
+      "name": "explorations",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["explorations/serve.js"],
+      "port": 4300
+    },
+    {
       "name": "portfolio-redesign",
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "cd /Users/dameanrittmann/Documents/PersonalProjects/Portfolio-redesign && exec npm run dev -- --port 3001"],
