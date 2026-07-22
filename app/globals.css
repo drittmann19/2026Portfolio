@@ -1212,7 +1212,18 @@ body.note-open { overflow: hidden; }
   .tile.s2, .tile.s3 { grid-column: span 1; }
   .tile { min-height: 260px; }
   .values-grid { grid-template-columns: 1fr; gap: 36px; }
-  .value p:not(.value-num) { max-width: 56ch; }
+  /* single-column tablet: text fills the full content column instead of
+     keeping the narrow desktop two-column measures */
+  .hero-lede,
+  .case-desc,
+  .about-text p,
+  .value p:not(.value-num),
+  .sec-sub,
+  .cs-title,
+  .cs-lede,
+  .cs-sec-heading,
+  .cs-p,
+  .cs-list { max-width: none; }
   .cs-hero { padding-top: calc(var(--topbar-h) + clamp(48px, 8vh, 80px)); }
   .cs-section { grid-template-columns: 1fr; gap: 14px; padding-block: clamp(40px, 7vh, 72px); }
   .cs-sec-label .eyebrow { position: static; }

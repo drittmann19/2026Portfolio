@@ -29,7 +29,6 @@ const splineSansMono = Spline_Sans_Mono({
   display: "swap",
 });
 
-// TODO: update to your actual domain before deploying
 const SITE_URL = "https://dameanrittmann.com";
 
 export const metadata: Metadata = {
