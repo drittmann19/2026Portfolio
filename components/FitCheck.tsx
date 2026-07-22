@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import ScrollFadeIn from "./ScrollFadeIn";
 import { parseEvaluation, type ParseResult } from "./fitCheckParser";
 
 const MAX_JD_CHARS = 8000;
@@ -135,89 +134,85 @@ export default function FitCheck() {
   }
 
   return (
-    <section id="fit-check" className="fc-section">
+    <section id="fit-check" className="fitcheck">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <ScrollFadeIn>
-        <h2 className="fc-headline">Fit Check</h2>
-        <p className="fc-sub">
-          Paste a job description for an honest read on the match. You&apos;ll see where my
-          experience lines up, where it falls short, and the case study most relevant to the role.
-        </p>
-      </ScrollFadeIn>
+      <div className="wrap">
+        <header className="sec-head" data-reveal>
+          <p className="eyebrow mono">fig. 05 · fit check</p>
+          <h2>
+            Fit <em>check</em>.
+          </h2>
+          <p className="sec-sub">
+            Paste a job description for an honest read on the match. You&apos;ll see where my
+            experience lines up, where it falls short, and the case study most relevant to the role.
+          </p>
+        </header>
 
-      {!hideInput && (
-        <ScrollFadeIn delay={80}>
-          <div className="fc-field">
-            <textarea
-              className="fc-textarea"
-              placeholder="Paste the job description here…"
-              value={jd}
-              onChange={(e) => setJd(e.target.value)}
-              onKeyDown={handleKeyDown}
-              aria-label="Job description"
-            />
-            <div className="fc-bar">
-              <button
-                type="button"
-                className="fc-upload"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <UploadIcon />
-                Upload a file
-              </button>
-              <span className={`fc-count${overLimit ? " fc-count-over" : ""}`}>
-                {jd.length.toLocaleString()} / {MAX_JD_CHARS.toLocaleString()}
-              </span>
-              <button
-                type="button"
-                className="fc-go"
-                onClick={evaluate}
-                disabled={!canSubmit}
-                title="⌘ + Enter to evaluate"
-              >
-                {status === "streaming" ? "Evaluating…" : "Evaluate fit"}
-              </button>
+        {!hideInput && (
+          <div data-reveal>
+            <div className="fc-card">
+              <p className="fc-head mono">Input / Job description</p>
+              <textarea
+                className="fc-textarea"
+                placeholder="Paste the job description here…"
+                value={jd}
+                onChange={(e) => setJd(e.target.value)}
+                onKeyDown={handleKeyDown}
+                aria-label="Job description"
+              />
+              <div className="fc-bar">
+                <button
+                  type="button"
+                  className="fc-upload mono"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  ↑ Upload a file
+                </button>
+                <span className={`fc-count mono${overLimit ? " fc-count-over" : ""}`}>
+                  {jd.length.toLocaleString()} / {MAX_JD_CHARS.toLocaleString()}
+                </span>
+                <button
+                  type="button"
+                  className="fc-go"
+                  onClick={evaluate}
+                  disabled={!canSubmit}
+                  title="⌘ + Enter to evaluate"
+                >
+                  {status === "streaming" ? "Evaluating…" : "Evaluate fit"}
+                </button>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".txt,.md,text/plain"
+                onChange={handleUpload}
+                style={{ display: "none" }}
+              />
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".txt,.md,text/plain"
-              onChange={handleUpload}
-              style={{ display: "none" }}
-            />
+            {overLimit && (
+              <p className="fc-overlimit">
+                That&apos;s {jd.length.toLocaleString()} characters. Trim it to under{" "}
+                {MAX_JD_CHARS.toLocaleString()} to evaluate.
+              </p>
+            )}
           </div>
-          {overLimit && (
-            <p className="fc-overlimit">
-              That&apos;s {jd.length.toLocaleString()} characters. Trim it to under{" "}
-              {MAX_JD_CHARS.toLocaleString()} to evaluate.
-            </p>
-          )}
-        </ScrollFadeIn>
-      )}
-
-      <div ref={resultRef}>
-        {(status === "streaming" || status === "done") &&
-          (result?.kind === "evaluation" || (status === "done" && result) ? (
-            <Analysis result={result!} streaming={status === "streaming"} />
-          ) : (
-            <LoadingBlock />
-          ))}
-
-        {(status === "disabled" || status === "ratelimited" || status === "error") && (
-          <NoticeBlock status={status} message={message} />
         )}
+
+        <div ref={resultRef}>
+          {(status === "streaming" || status === "done") &&
+            (result?.kind === "evaluation" || (status === "done" && result) ? (
+              <Analysis result={result!} streaming={status === "streaming"} />
+            ) : (
+              <LoadingBlock />
+            ))}
+
+          {(status === "disabled" || status === "ratelimited" || status === "error") && (
+            <NoticeBlock status={status} message={message} />
+          )}
+        </div>
       </div>
     </section>
-  );
-}
-
-function UploadIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M8 10.5V2.5M8 2.5L4.5 6M8 2.5L11.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M2.5 11v1.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }
 
@@ -468,104 +463,89 @@ function Analysis({ result, streaming }: { result: ParseResult; streaming: boole
 }
 
 const CSS = `
-.fc-section {
-  padding-top: clamp(64px, 14vw, 112px);
-  padding-bottom: clamp(64px, 14vw, 112px);
-  border-top: 1px solid var(--color-border-subtle);
+.fitcheck { border-top: 1px solid var(--line-soft); }
+
+/* Fit Check header + input span the full content width */
+.fitcheck .sec-head { max-width: none; }
+.fitcheck .sec-sub { max-width: none; }
+
+.fc-card {
+  position: relative;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.fc-headline {
-  font-family: var(--font-gasoek);
-  font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.1;
-  color: var(--color-text-primary);
-  margin-bottom: 14px;
+.fc-card:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(39, 51, 232, 0.12);
 }
-.fc-sub {
-  font-size: var(--text-body);
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  max-width: 80ch;
-  text-wrap: pretty;
-  margin-bottom: clamp(24px, 4vw, 32px);
-}
-.fc-field {
-  background: var(--color-card);
-  border: 1px solid var(--color-border-default);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
-  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
-}
-.fc-field:focus-within {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-ghost-border), 0 6px 20px rgba(17, 24, 39, 0.06);
+.fc-head {
+  color: var(--ink-50);
+  font-size: 10px;
+  padding: 22px 20px 0;
 }
 .fc-textarea {
   display: block;
   width: 100%;
-  min-height: 150px;
-  border: none;
-  outline: none;
+  min-height: 160px;
+  border: 0;
+  outline: 0;
   resize: vertical;
   background: transparent;
-  color: var(--color-text-primary);
-  font-family: var(--font-dm-sans), sans-serif;
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  padding: 18px 20px;
+  padding: 12px 20px 16px;
 }
-.fc-textarea::placeholder { color: var(--color-text-tertiary); }
+.fc-textarea::placeholder { color: var(--ink-50); }
 .fc-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 14px 11px 18px;
-  border-top: 1px solid var(--color-border-subtle);
+  gap: 14px;
+  padding: 12px 14px 12px 20px;
+  border-top: 1px dashed var(--line);
 }
 .fc-upload {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
   margin-right: auto;
-  padding: 6px 9px;
-  background: none;
-  border: none;
-  border-radius: 8px;
-  font-family: var(--font-dm-sans), sans-serif;
-  font-weight: 600;
-  font-size: 13.5px;
-  color: var(--color-text-secondary);
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-70);
   cursor: pointer;
-  transition: color 150ms ease-out, background 150ms ease-out;
+  transition: border-color 0.25s, color 0.25s;
 }
-.fc-upload:hover { color: var(--color-text-primary); background: var(--color-surface); }
+.fc-upload:hover { border-color: var(--blue); color: var(--ink); }
 .fc-count {
-  font-size: 12px;
-  color: var(--color-text-tertiary);
+  color: var(--ink-50);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.fc-count-over { color: var(--color-metric); font-weight: 600; }
+.fc-count-over { color: var(--red); }
 .fc-go {
-  background: var(--color-metric);
-  color: var(--color-text-primary);
-  border: none;
-  padding: 11px 22px;
-  border-radius: 10px;
-  font-family: var(--font-dm-sans), sans-serif;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 150ms ease-out, opacity 150ms ease-out, transform 150ms ease-out;
+  transition: background 0.25s, transform 0.25s, opacity 0.25s;
 }
-.fc-go:hover:not(:disabled) { background: color-mix(in oklab, var(--color-metric) 88%, #000); }
+.fc-go:hover:not(:disabled) { background: var(--blue); transform: translateY(-1px); }
 .fc-go:active:not(:disabled) { transform: translateY(1px); }
-.fc-go:disabled { opacity: 0.4; cursor: not-allowed; }
-.fc-go:focus-visible, .fc-upload:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.fc-go:disabled { opacity: 0.35; cursor: not-allowed; }
 .fc-overlimit {
   font-size: 13px;
-  color: var(--color-metric);
+  color: var(--red);
   margin-top: 10px;
 }
 
@@ -574,14 +554,14 @@ const CSS = `
   align-items: center;
   gap: 12px;
   margin-top: clamp(32px, 5vw, 48px);
-  font-size: var(--text-body);
-  color: var(--color-text-secondary);
+  font-size: 16px;
+  color: var(--ink-70);
 }
 .fc-pulse {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--color-accent);
+  background: var(--blue);
   flex-shrink: 0;
   animation: fc-pulse 1.2s ease-in-out infinite;
 }
@@ -591,70 +571,64 @@ const CSS = `
 }
 
 .fc-notice {
+  position: relative;
+  border-left: 2px solid var(--blue);
+  padding: 4px 0 4px 16px;
   margin-top: clamp(32px, 5vw, 48px);
-  padding: 20px 22px;
-  background: var(--color-accent-ghost);
-  border: 1px solid var(--color-accent-ghost-border);
-  border-radius: 12px;
   max-width: 720px;
 }
-.fc-notice p { font-size: var(--text-body); color: var(--color-text-primary); line-height: 1.6; }
-.fc-notice-error {
-  background: var(--color-metric-ghost);
-  border-color: rgba(240, 94, 59, 0.2);
-}
+.fc-notice p { font-size: 16px; color: var(--ink); line-height: 1.7; }
+.fc-notice-error { border-left-color: var(--red); }
 .fc-notice-link {
   display: inline-block;
   margin-top: 12px;
   font-weight: 600;
   font-size: 14px;
-  color: var(--color-accent);
-  text-decoration: none;
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
-.fc-notice-link:hover { color: var(--color-accent-hover); }
+.fc-notice-link:hover { color: var(--blue-deep); }
 
-.fc-analysis { margin-top: clamp(36px, 6vw, 56px); }
+/* results */
+.fc-analysis { margin-top: clamp(36px, 6vh, 56px); }
 .fc-summary {
-  font-weight: 700;
-  font-size: clamp(20px, 3vw, 27px);
-  line-height: 1.42;
+  font-family: var(--font-display), "Georgia", serif;
+  font-optical-sizing: auto;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--color-text-primary);
-  max-width: 70ch;
-  padding-bottom: clamp(22px, 3.5vw, 32px);
-  border-bottom: 1px solid var(--color-border-subtle);
-  margin-bottom: clamp(28px, 4.5vw, 40px);
+  padding-bottom: clamp(20px, 3vh, 30px);
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: clamp(26px, 4vh, 38px);
 }
-.fc-group {
-  margin-bottom: clamp(36px, 5vw, 52px);
-}
-.fc-group:last-child {
-  margin-bottom: 0;
-}
+.fc-group { margin-bottom: clamp(32px, 5vh, 48px); }
+.fc-group:last-child { margin-bottom: 0; }
 .fc-collabel {
-  font-weight: 700;
-  font-size: 11px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-text-tertiary);
-  margin-bottom: 18px;
+  color: var(--red);
+  margin-bottom: 16px;
 }
 .fc-item {
   display: grid;
-  grid-template-columns: 14px 1fr;
+  grid-template-columns: 12px 1fr;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 .fc-marker {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  margin-top: 7px;
+  margin-top: 6px;
   justify-self: start;
   animation: fc-pop 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.fc-marker-align { background: var(--color-accent); }
-.fc-marker-gap { background: var(--color-metric); }
+.fc-marker-align { background: var(--blue); }
+.fc-marker-gap { background: var(--red); }
 .fc-caret {
   display: inline-block;
   width: 2px;
@@ -662,7 +636,7 @@ const CSS = `
   margin-left: 2px;
   vertical-align: -0.16em;
   border-radius: 1px;
-  background: var(--color-metric);
+  background: var(--red);
   animation: fc-blink 1.05s steps(1, end) infinite;
 }
 @keyframes fc-blink {
@@ -674,16 +648,16 @@ const CSS = `
   to { opacity: 1; transform: scale(1); }
 }
 .fc-item-title {
-  font-weight: 700;
-  font-size: clamp(16px, 2vw, 18px);
-  line-height: 1.25;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 16.5px;
   letter-spacing: -0.01em;
-  color: var(--color-text-primary);
-  margin-bottom: 5px;
+  color: var(--ink);
+  margin-bottom: 4px;
 }
 .fc-item-body {
   font-size: 15px;
-  color: var(--color-text-secondary);
+  color: var(--ink-70);
   line-height: 1.55;
   max-width: 68ch;
 }
@@ -697,51 +671,50 @@ const CSS = `
 }
 .fc-work-link {
   display: block;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
   text-decoration: none;
-  background: var(--color-card);
-  border: 1px solid var(--color-border-default);
-  border-radius: 12px;
-  padding: 18px;
-  transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .fc-work-link:hover {
   transform: translateY(-2px);
-  border-color: var(--color-accent);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--blue);
+  box-shadow: 0 18px 40px -22px rgba(23, 21, 15, 0.35);
 }
-.fc-work-static:hover { transform: none; border-color: var(--color-border-default); box-shadow: none; }
+.fc-work-static:hover { transform: none; border-color: var(--line); box-shadow: none; }
 .fc-work-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: clamp(16px, 2vw, 18px);
-  color: var(--color-text-primary);
+  font-family: var(--font-display), "Georgia", serif;
+  font-optical-sizing: auto;
+  font-weight: 480;
+  font-size: 1.3rem;
+  color: var(--ink);
   letter-spacing: -0.01em;
 }
-.fc-work-title::after { content: "→"; color: var(--color-accent); }
+.fc-work-title::after { content: " ↗"; color: var(--blue); }
 .fc-work-title-static::after { content: ""; }
 .fc-work-rel {
   display: block;
   font-size: 14px;
-  color: var(--color-text-secondary);
-  line-height: 1.5;
+  color: var(--ink-70);
+  line-height: 1.55;
   margin-top: 6px;
 }
 .fc-raw {
   white-space: pre-wrap;
-  font-family: var(--font-dm-sans), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 15px;
-  color: var(--color-text-primary);
+  color: var(--ink);
   line-height: 1.6;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 767px) {
   .fc-bar { flex-wrap: wrap; row-gap: 12px; }
-  .fc-go { flex: 1 1 100%; width: 100%; order: 3; }
+  .fc-go { flex: 1 1 100%; width: 100%; justify-content: center; order: 3; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fc-field, .fc-go, .fc-upload, .fc-pulse, .fc-work-link, .fc-marker, .fc-work-reveal { transition: none; animation: none; }
+  .fc-card, .fc-go, .fc-upload, .fc-pulse, .fc-work-link, .fc-marker, .fc-work-reveal { transition: none; animation: none; }
   .fc-caret { display: none; }
 }
 `;

@@ -1,205 +1,60 @@
-"use client";
-import ScrollFadeIn from "./ScrollFadeIn";
-
-const storyParagraphs = [
-  "I come from a family of teachers. Growing up, I watched my parents find ways to make difficult concepts click for students who were struggling. That probably explains why I ended up in design. I'm drawn to the moment when something confusing becomes clear.",
-  "I didn't know design was a job until college. I started in computer science, but something was missing. When I discovered design, it clicked. I could blend my creative and technical sides to solve real, complex problems that empower people. Growing up in Shanghai, studying abroad in Sweden, and landing at CU Boulder taught me that perspective matters. What works for one person, one culture, one workflow doesn't automatically transfer to the next. You have to truly understand the problem and the person behind it before you solve.",
-  "My real design education came at Nutrien, where I spent four years in the agricultural technology space. The problems were the kind I've come to love. Field workers with unreliable connectivity, seasonal workflows that shifted constantly, legacy systems that didn't always cooperate, and expert users who noticed every wrong detail. I learned that simplifying complexity isn't about hiding it. It's about making it legible enough that people trust what they're looking at. Somewhere in those four years I also got curious about how AI could change the way I work, and I haven't stopped experimenting since. It's become part of how I think, prototype, and ship.",
-  "That curiosity has spilled into building too. I designed and shipped GasCast (live on the App Store), then designed and built this portfolio site to keep stretching what I can do. Both started as learning projects. Both ended up real.",
-];
-
-const hobbies =
-  "Outside of work, you'll find me feeding my growth mindset by traveling to explore new cultures, diving into music production and live shows, or channeling my competitive spirit through table tennis, ultimate frisbee, and Rocket League. Games taught me to adapt quickly and think strategically under pressure, which translates to design more than I expected. When I'm not out exploring, I'm hanging out with my three cats Rotary, Axl, and Piper (see if you can guess the theme). They're my best work partners, helping me think through tricky problems and making sure I actually take breaks.";
-
-const values = [
-  {
-    title: "Clarity over cleverness",
-    body: "The best design isn't the most innovative solution. It's the one people understand immediately. Transparency builds trust faster than polish.",
-  },
-  {
-    title: "Stay uncomfortable",
-    body: "Every time I've grown, it started with discomfort. Pitching to executives for the first time. Leading design across four squads. Moving to a new country. I seek out the edges of what I know because that's where perspective comes from.",
-  },
-  {
-    title: "Learn fast, share what works",
-    body: "The work I'm proudest of came from picking up something new. A tool, a framework, a domain. I stay curious, then I share what I've figured out so the people around me can move faster too.",
-  },
-];
-
-function AboutImage({ src, alt, style }: { src: string; alt: string; style?: React.CSSProperties }) {
-  return (
-    <div style={{ borderRadius: "12px", overflow: "hidden", ...style }}>
-      <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-    </div>
-  );
-}
-
+/* About — editorial text column + contour-line portrait */
 export default function About() {
   return (
-    <section
-      id="about"
-      style={{
-        paddingTop: "clamp(64px, 14vw, 112px)",
-        paddingBottom: "clamp(64px, 14vw, 112px)",
-        borderTop: "1px solid var(--color-border-subtle)",
-      }}
-    >
-      {/* Section heading */}
-      <ScrollFadeIn>
-        <h2
-          style={{
-            fontFamily: "var(--font-gasoek)",
-            fontSize: "clamp(28px, 5vw, 42px)",
-            color: "var(--color-text-primary)",
-            lineHeight: 1.1,
-            marginBottom: "clamp(24px, 4vw, 40px)",
-          }}
-        >
-          About Me
-        </h2>
-      </ScrollFadeIn>
-
-      {/* Story card */}
-      <ScrollFadeIn>
-        <style dangerouslySetInnerHTML={{ __html: `
-          .about-story-layout {
-            overflow: hidden;
-            margin-bottom: 32px;
-          }
-          .about-headshot-desktop {
-            float: right;
-            width: 33.333%;
-            margin-left: 24px;
-            margin-bottom: 16px;
-            border-radius: 12px;
-            overflow: hidden;
-            aspect-ratio: 3 / 4;
-          }
-          .about-headshot-desktop img { width: 100%; height: 100%; object-fit: cover; display: block; }
-          .about-photos-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-          }
-          .about-headshot-mobile { display: none; }
-
-          @media (max-width: 1023px) {
-            .about-story-layout { margin-bottom: 32px; }
-            .about-headshot-desktop { display: none; }
-            .about-photos-grid { grid-template-columns: repeat(2, 1fr); }
-            .about-headshot-mobile { display: block; }
-          }
-        ` }} />
-        <div
-          style={{
-            background: "var(--color-card)",
-            borderRadius: "16px",
-            padding: "clamp(16px, 5vw, 40px)",
-            marginBottom: "56px",
-          }}
-        >
-          {/* Float headshot right so text wraps around it */}
-          <div className="about-story-layout">
-            <div className="about-headshot-desktop">
-              <img src="/images/about/LinkedInHeadshot.png" alt="Damean Rittmann" />
-            </div>
-            {storyParagraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7, marginBottom: "16px" }}>
-                {p}
-              </p>
-            ))}
-            <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-primary)", lineHeight: 1.7 }}>
-              {hobbies}
+    <section className="about" id="about">
+      <div className="wrap">
+        <header className="sec-head" data-reveal>
+          <p className="eyebrow mono">fig. 02 · about</p>
+          <h2>
+            Where this <em>comes from</em>.
+          </h2>
+        </header>
+        <div className="about-grid">
+          <div className="about-text" data-reveal>
+            <p>
+              I come from a family of teachers, so I grew up watching people make confusing
+              things click. I didn&rsquo;t discover design until college and I instantly knew it
+              was my passion. It blended my analytical problem solving skills with my need to
+              be creative, into a process that benefits real people. I&rsquo;m drawn to the moment
+              when something confusing becomes clear.
+            </p>
+            <p>
+              I learn best by doing and I have grown fast. In 5 years I went from rebuilding
+              university websites to leading a workflow redesign across 4 product squads at a
+              Fortune Global 500 company. My expertise is complex, data heavy workflows where
+              trust makes or breaks your product. My core principle is simplifying without
+              hiding, because showing the details is what builds trust.
+            </p>
+            <p>
+              What drives me is boundless curiosity and dedication. I adapt quickly to new
+              industries, environments, and workflows because I ask the right questions and do
+              the extra work. Right now I am all in on AI, learning by building and using it as
+              a partner for the tedious parts so I can focus on design thinking and strategy. I
+              want to help reinvent design around it.
+            </p>
+            <p>
+              Outside of work you&rsquo;ll find me exploring. I&rsquo;ve been to 11 countries, and the
+              best parts are never the landmarks, they&rsquo;re the people I meet and the new
+              perspective I gain. When I&rsquo;m not abroad I&rsquo;m in the wild, backpacking, canoeing,
+              camping, and occasionally standing 50 feet from a Yellowstone grizzly. At home, my
+              competitive nature takes over in pick up soccer, frisbee, and video games.
+              Curiosity gets me out the door. Dedication is why I never half-do any of it.
             </p>
           </div>
-
-          {/* Photos: 3-col on desktop, 2-col on mobile (headshot joins here on mobile) */}
-          <div className="about-photos-grid">
-            <div className="about-headshot-mobile" style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "3 / 4" }}>
-              <img src="/images/about/LinkedInHeadshot.png" alt="Damean Rittmann" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            </div>
-            <AboutImage src="/images/about/Plane.png" alt="Traveling" style={{ aspectRatio: "3 / 4" }} />
-            <AboutImage src="/images/about/festival.png" alt="Festival" style={{ aspectRatio: "3 / 4" }} />
-            <AboutImage src="/images/about/cats.png" alt="Rotary, Axl, and Piper" style={{ aspectRatio: "3 / 4" }} />
-          </div>
+          <aside className="about-side" data-reveal="0.1">
+            <figure className="portrait">
+              <svg viewBox="0 0 320 380" aria-hidden="true">
+                <path className="contour" d="M160 60 C220 60 256 110 252 170 C249 222 222 250 206 268 C220 276 262 292 270 330 L50 330 C58 292 100 276 114 268 C98 250 71 222 68 170 C64 110 100 60 160 60 Z" />
+                <path className="contour" d="M160 84 C206 84 232 122 229 168 C226 208 206 232 192 248 C170 258 150 258 128 248 C114 232 94 208 91 168 C88 122 114 84 160 84 Z" />
+                <path className="contour" d="M160 110 C192 110 210 138 208 168 C206 196 192 214 160 222 C128 214 114 196 112 168 C110 138 128 110 160 110 Z" />
+                <circle className="contour" cx="160" cy="166" r="22" />
+              </svg>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/about/LinkedInHeadshot.png" alt="Portrait of Damean Rittmann" loading="lazy" />
+            </figure>
+          </aside>
         </div>
-      </ScrollFadeIn>
-
-      {/* Values */}
-      <ScrollFadeIn delay={100}>
-        <h3
-          style={{
-            fontFamily: "var(--font-gasoek)",
-            fontSize: "clamp(22px, 3.5vw, 28px)",
-            color: "var(--color-text-primary)",
-            lineHeight: 1.1,
-            marginBottom: "clamp(20px, 3vw, 32px)",
-          }}
-        >
-          My Values
-        </h3>
-        <style dangerouslySetInnerHTML={{ __html: `
-          .values-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-          @media (min-width: 768px) {
-            .values-grid { grid-template-columns: repeat(3, 1fr); }
-          }
-        ` }} />
-        <div className="values-grid">
-          {values.map((v, i) => (
-            <div
-              key={v.title}
-              style={{
-                background: "var(--color-card)",
-                borderRadius: "16px",
-                padding: "clamp(16px, 4.5vw, 32px)",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-gasoek)",
-                  fontSize: "clamp(88px, 9vw, 120px)",
-                  lineHeight: 0.9,
-                  color: "rgba(29, 92, 255, 0.4)",
-                  letterSpacing: "-0.02em",
-                  marginBottom: "20px",
-                }}
-                aria-hidden="true"
-              >
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              <div
-                style={{
-                  width: "40px",
-                  height: "1px",
-                  background: "rgba(17, 24, 39, 0.12)",
-                  marginBottom: "20px",
-                }}
-                aria-hidden="true"
-              />
-              <p
-                style={{
-                  fontSize: "var(--text-card-title)",
-                  fontWeight: 700,
-                  color: "var(--color-text-primary)",
-                  marginBottom: "12px",
-                  lineHeight: 1.3,
-                }}
-              >
-                {v.title}
-              </p>
-              <p style={{ fontSize: "var(--text-body)", color: "var(--color-text-secondary)", lineHeight: 1.7 }}>
-                {v.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </ScrollFadeIn>
+      </div>
     </section>
   );
 }
