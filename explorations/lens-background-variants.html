@@ -298,23 +298,25 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
    VARIANT 02 — FIGMA CANVAS
    ================================================== */
 .layer-figma {
-  background:
-    radial-gradient(rgba(0, 0, 0, 0.055) 1px, transparent 1.4px) 0 0 / 24px 24px,
-    var(--fg-canvas);
+  background: #f5f5f5;
   font-family: "Inter", var(--font-body), sans-serif;
 }
-.fg-frame {
-  position: absolute;
-  background: #fff;
-  outline: 1px solid var(--fg-blue);
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
-}
+.fg-frame { position: absolute; background: #fff; }
 .fg-frame-label {
   position: absolute; left: 0; top: -22px;
-  color: var(--fg-blue); font-size: 11.5px; font-weight: 500;
+  color: rgba(0, 0, 0, 0.45); font-size: 11.5px; font-weight: 500;
   display: flex; align-items: center; gap: 5px; white-space: nowrap;
 }
-.fg-frame-label svg { width: 10px; height: 10px; stroke: var(--fg-blue); stroke-width: 1.6; fill: none; }
+.fg-frame-label svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+
+/* text layers: hover outlines + layer names */
+.fg-obj { position: absolute; outline: 1.5px solid rgba(13, 153, 255, 0.75); }
+.fg-obj > b, .fg-sel > b {
+  position: absolute; left: -1px; top: -21px;
+  display: flex; align-items: center; gap: 5px;
+  color: var(--fg-blue); font-size: 11px; font-weight: 500; white-space: nowrap;
+}
+.fg-obj > b svg, .fg-sel > b svg { width: 9px; height: 9px; stroke: var(--fg-blue); stroke-width: 1.8; fill: none; }
 
 /* selection box + handles + dims pill */
 .fg-sel { position: absolute; outline: 1.5px solid var(--fg-blue); }
@@ -369,32 +371,36 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 3px;
 }
 
-/* comment pin + open comment thread */
+/* comment pin: the Figma teardrop with the author avatar inside */
+.fg-av {
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  font-size: 10px; font-weight: 600; color: #fff;
+}
 .fg-pin {
-  position: absolute; width: 30px; height: 30px;
-  background: #fff; border-radius: 50% 50% 50% 4px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
-  display: grid; place-items: center;
+  position: absolute; padding: 3px; display: flex;
+  background: #fff; border-radius: 17px 17px 17px 3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
-.fg-pin b {
-  width: 22px; height: 22px; border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 9.5px; font-weight: 600; color: #fff;
-}
+/* open comment thread: header row, body, reply field */
 .fg-comment {
-  position: absolute; width: 264px;
-  background: #fff; border-radius: 10px 10px 10px 2px;
-  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.16);
-  padding: 12px 14px; font-size: 12px; line-height: 1.45; color: #333;
+  position: absolute; width: 300px;
+  background: #fff; border-radius: 3px 16px 16px 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  padding: 12px 14px; font-size: 12.5px; line-height: 1.45; color: #333;
 }
-.fg-comment header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.fg-comment header b {
-  width: 22px; height: 22px; border-radius: 50%; background: var(--blue);
-  color: #fff; display: grid; place-items: center; font-size: 9.5px; font-weight: 600;
+.fg-comment header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.fg-comment header .fg-av { width: 26px; height: 26px; }
+.fg-comment header span { font-weight: 600; font-size: 12.5px; color: #1e1e1e; }
+.fg-comment header small { color: #a6a6a6; font-size: 11px; }
+.fg-cmt-icons { margin-left: auto; display: flex; align-items: center; gap: 10px; color: #7f7f7f; }
+.fg-cmt-icons svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.fg-reply {
+  margin-top: 11px; display: flex; align-items: center; gap: 8px;
+  border: 1px solid #e3e3e3; border-radius: 999px; padding: 4px 6px;
 }
-.fg-comment header span { font-weight: 600; font-size: 12px; color: #111; }
-.fg-comment header small { color: #999; font-size: 11px; }
-.fg-comment .fg-resolved { display: flex; align-items: center; gap: 5px; margin-top: 8px; color: var(--green); font-size: 11px; font-weight: 500; }
+.fg-reply .fg-av { width: 22px; height: 22px; }
+.fg-reply span { color: #b3b3b3; font-size: 12px; }
 
 /* multiplayer cursors */
 .fg-cursor { position: absolute; }
@@ -620,6 +626,8 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     </div>
     <div class="fg-al" id="fgAl1"><b></b></div>
     <div class="fg-al" id="fgAl2"><b></b></div>
+    <div class="fg-obj" id="fgObjEye"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-eyebrow</b></div>
+    <div class="fg-obj" id="fgObjLede"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-lede</b></div>
     <div class="fg-sel" id="fgSel">
       <span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span>
       <span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span>
@@ -627,19 +635,26 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     </div>
     <div class="fg-comp" id="fgComp"><b>❖ annotation / circled-word</b></div>
     <div class="fg-measure" id="fgMeasure"><b>312</b></div>
-    <div class="fg-pin" id="fgPin"><b style="background:#e8430a">AK</b></div>
+    <div class="fg-pin" id="fgPin"><b class="fg-av" style="background:#e8430a">AK</b></div>
     <div class="fg-comment" id="fgComment">
-      <header><b>DR</b><span>Damean</span><small>· 2d</small></header>
+      <header>
+        <b class="fg-av" style="background:#2733e8">DR</b>
+        <span>Damean</span><small>2d ago</small>
+        <span class="fg-cmt-icons">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2"/><path d="M5.4 8.2l1.8 1.8 3.4-3.6"/></svg>
+          <svg viewBox="0 0 16 16"><circle cx="3.5" cy="8" r="0.9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="0.9" fill="currentColor" stroke="none"/><circle cx="12.5" cy="8" r="0.9" fill="currentColor" stroke="none"/></svg>
+        </span>
+      </header>
       Circle should draw in <em>after</em> the split-text lands — keep the whole intro under 0.9s.
-      <div class="fg-resolved">✓ Resolved</div>
+      <div class="fg-reply"><b class="fg-av" style="background:#e8430a">AK</b><span>Reply…</span></div>
     </div>
     <div class="fg-cursor fg-cursor-a" id="fgCursorA">
-      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#e8430a"/></svg>
-      <span style="background:#e8430a">Ava · viewing</span>
+      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#ff7262"/></svg>
+      <span style="background:#ff7262">Ava · viewing</span>
     </div>
     <div class="fg-cursor fg-cursor-b" id="fgCursorB">
-      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#11744a"/></svg>
-      <span style="background:#11744a">Damean</span>
+      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#1bc47d"/></svg>
+      <span style="background:#1bc47d">Damean</span>
     </div>
     <div class="fg-zoom">⌖ 64% · Hero.fig</div>
   </div>
@@ -868,21 +883,36 @@ function place1() {
 }
 
 /* ================= 02 · figma ================= */
+/* text layers hug their glyphs, like real Figma text objects */
+function relText(elm, hr) {
+  const range = document.createRange();
+  range.selectNodeContents(elm);
+  const r = range.getBoundingClientRect();
+  return { x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: r.height, r: r.right - hr.left, b: r.bottom - hr.top };
+}
 function place2() {
   const hr = hero.getBoundingClientRect();
-  const eye = rel(q(".hero-eyebrow", hero), hr);
-  const title = rel(q(".hero-title", hero), hr);
-  const lede = rel(q(".hero-lede", hero), hr);
+  const eye = relText(q(".hero-eyebrow", hero), hr);
+  const title = relText(q(".hero-title", hero), hr);
+  const lede = relText(q(".hero-lede", hero), hr);
   const circled = rel(q(".circled", hero), hr);
 
-  /* the design frame around the hero content */
-  const fx = Math.max(24, eye.x - 64);
+  /* the design frame spans the wrap's content area */
+  const wrapEl = q(".hero > .wrap", hero);
+  const wcs = getComputedStyle(wrapEl);
+  const wrRect = rel(wrapEl, hr);
+  const fx = Math.max(24, wrRect.x + parseFloat(wcs.paddingLeft) - 64);
   const fy = Math.max(44, eye.y - 56);
-  const fr = Math.min(hr.width - 24, title.r + 64);
+  const fr = Math.min(hr.width - 24, wrRect.r - parseFloat(wcs.paddingRight) + 64);
   const fb = lede.b + 56;
   const frame = q("#fgFrame");
   Object.assign(frame.style, { left: fx + "px", top: fy + "px", width: fr - fx + "px", height: fb - fy + "px" });
   q("#fgFrameName").textContent = `Hero / L — ${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
+
+  /* hover outlines + layer names on the unselected text layers */
+  [[eye, "fgObjEye"], [lede, "fgObjLede"]].forEach(([r, id]) => {
+    Object.assign(q("#" + id).style, { left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px" });
+  });
 
   /* selection on the headline */
   const sel = q("#fgSel");
@@ -913,7 +943,7 @@ function place2() {
   Object.assign(q("#fgPin").style, { left: circled.r + 26 + "px", top: circled.y - 34 + "px" });
   Object.assign(q("#fgComment").style, { left: Math.min(lede.r + 70, hr.width - 300) + "px", top: lede.y - 26 + "px" });
   Object.assign(q("#fgCursorA").style, { left: title.r - 130 + "px", top: title.y - 46 + "px" });
-  Object.assign(q("#fgCursorB").style, { left: lede.r + 120 + "px", top: lede.b + 6 + "px" });
+  Object.assign(q("#fgCursorB").style, { left: fx + 130 + "px", top: fb - 34 + "px" });
 }
 
 /* ================= 03 · code ================= */
