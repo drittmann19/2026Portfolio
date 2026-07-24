@@ -3,15 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lens Background Explorations — 3 Variants</title>
+<title>Lens Background Explorations — Redline + 3 Figma Variants</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400..620;1,9..144,400..620&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400..620;1,9..144,400..620&family=Inter:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================
-   Lens background explorations — hero recreation + 3 lens layers
-   01 Redline+  · 02 Figma canvas · 03 Code under the paper
-   Switch: buttons bottom-center, keys 1/2/3, F = full reveal.
+   Lens background explorations — hero recreation + 4 lens layers
+
+   01  Redline+  · the drafting sheet (parked, unchanged)
+   2A  Quiet     · simple + aesthetic   — Figma idiom, portfolio palette
+   2B  Studio    · complex + ultra-real — actual Figma UI chrome
+   2C  Spec      · complex + aesthetic  — annotated handoff sheet
+
+   Switch: buttons bottom-center, keys 1–4. F = full reveal.
    ============================================================ */
 :root {
   --paper: #f6f3ec;
@@ -33,11 +38,16 @@
   --fg-purple: #9747ff;
   --fg-pink: #ff24bd;
   --fg-red: #f24822;
-  --fg-canvas: #f1f1f0;
+  --fg-canvas: #f5f5f5;
+  --fg-text: #1e1e1e;
+  --fg-dim: #b3b3b3;
+  --fg-mid: #757575;
+  --fg-border: #e6e6e6;
 
   --font-display: "Fraunces";
   --font-body: "Archivo";
   --font-mono: "Spline Sans Mono";
+  --font-ui: "Inter";
 
   --wrap: 1240px;
   --pad: clamp(20px, 4vw, 48px);
@@ -167,10 +177,36 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   -webkit-mask-image: none;
   mask-image: none;
 }
-/* layers that carry their own background sit UNDER the type */
-.layer-figma, .layer-code { z-index: 0; }
+/* layers that carry their own canvas sit UNDER the type */
+.layer-a, .layer-b, .layer-c { z-index: 0; }
 /* the redline layer draws over the type, like the shipped lens */
 .layer-redline { z-index: 2; }
+
+/* shared bits across the figma variants */
+.av {
+  border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 600;
+}
+.cursor { position: absolute; }
+.cursor svg { width: 17px; height: 17px; display: block; }
+.cursor span {
+  position: absolute; left: 13px; top: 15px;
+  color: #fff; font-size: 10.5px; font-weight: 500;
+  padding: 2px 7px; border-radius: 999px; white-space: nowrap;
+}
+.drift-a { animation: drift-a 9s ease-in-out infinite alternate; }
+.drift-b { animation: drift-b 11s ease-in-out infinite alternate; }
+@keyframes drift-a {
+  0% { transform: translate(0, 0); }
+  40% { transform: translate(-70px, 42px); }
+  100% { transform: translate(26px, -20px); }
+}
+@keyframes drift-b {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(54px, -34px); }
+  100% { transform: translate(-30px, 18px); }
+}
 
 /* ==================================================
    VARIANT 01 — REDLINE+ (the full drafting sheet)
@@ -187,7 +223,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 
 .lens-box { position: absolute; border: 1.5px dashed var(--red); border-radius: 4px; }
 .lens-box::before {
-  /* the 8px vertical padding the box carries around its frame */
   content: ""; position: absolute; inset: 8px 0;
   border-block: 1px dotted rgba(232, 67, 10, 0.55);
 }
@@ -202,7 +237,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .lens-vdim { position: absolute; border-left: 1.5px solid var(--red); }
 .lens-vdim::before, .lens-vdim::after { content: ""; position: absolute; left: -6px; width: 11px; height: 1.5px; background: var(--red); }
 .lens-vdim::before { top: 0; } .lens-vdim::after { bottom: 0; }
-.lens-vdim.is-gap { border-left-style: solid; border-left-color: var(--blue); }
+.lens-vdim.is-gap { border-left-color: var(--blue); }
 .lens-vdim.is-gap::before, .lens-vdim.is-gap::after { background: var(--blue); }
 
 .lens-tag {
@@ -222,7 +257,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .lens-val.is-v { transform: translate(-50%, -50%) rotate(-90deg); }
 .lens-val.is-gap { color: var(--blue); }
 
-/* margins: hatched, labeled */
 .rl-margin {
   position: absolute; top: 0; bottom: 0;
   background: repeating-linear-gradient(45deg, rgba(232, 67, 10, 0.07) 0 5px, transparent 5px 11px);
@@ -236,7 +270,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   font-size: 9px; letter-spacing: 0.14em; white-space: nowrap;
 }
 
-/* rulers */
 .rl-ruler-top {
   position: absolute; top: var(--topbar-h); left: 0; right: 0; height: 20px;
   border-bottom: 1px solid var(--line);
@@ -259,7 +292,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .rl-ruler-top span { top: 2px; transform: translateX(3px); }
 .rl-ruler-left span { left: 2px; transform: translateY(2px) rotate(-90deg); transform-origin: left top; }
 
-/* gutter chip */
 .rl-gutter {
   position: absolute; transform: translate(-50%, -50%);
   font-family: var(--font-mono), monospace;
@@ -268,13 +300,11 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   padding: 2px 6px; border-radius: 999px; white-space: nowrap;
 }
 
-/* registration marks at the content corners */
 .rl-reg { position: absolute; width: 18px; height: 18px; transform: translate(-50%, -50%); }
 .rl-reg::before, .rl-reg::after { content: ""; position: absolute; background: rgba(23, 21, 15, 0.55); }
 .rl-reg::before { left: 50%; top: 0; bottom: 0; width: 1px; }
 .rl-reg::after { top: 50%; left: 0; right: 0; height: 1px; }
 
-/* drawing title block */
 .rl-titleblock {
   position: absolute; right: calc(var(--pad) + 4px); bottom: 18px;
   border: 1.5px solid var(--ink);
@@ -287,7 +317,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .rl-titleblock div:first-child { border-top: 0; color: var(--ink); font-weight: 500; }
 .rl-titleblock i { font-style: normal; color: var(--red); }
 
-/* the spinning stamp easter egg */
 .lens-stamp { position: absolute; right: 9%; top: 24%; width: 148px; aspect-ratio: 1; }
 .lens-stamp svg { width: 100%; height: 100%; animation: lens-spin 26s linear infinite; }
 .lens-stamp-text { font-family: var(--font-mono), monospace; font-size: 13px; letter-spacing: 0.36em; fill: var(--ink-70); }
@@ -295,240 +324,393 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 @keyframes lens-spin { to { transform: rotate(360deg); } }
 
 /* ==================================================
-   VARIANT 02 — FIGMA CANVAS
+   2A — QUIET  (simple · aesthetic-focused)
+   Figma's grammar, spoken in the portfolio's own voice:
+   paper canvas, ultramarine selection, mono labels, lots of air.
    ================================================== */
-.layer-figma {
-  background: #f5f5f5;
-  font-family: "Inter", var(--font-body), sans-serif;
-}
-.fg-frame { position: absolute; background: #fff; }
-.fg-frame-label {
-  position: absolute; left: 0; top: -22px;
-  color: rgba(0, 0, 0, 0.45); font-size: 11.5px; font-weight: 500;
-  display: flex; align-items: center; gap: 5px; white-space: nowrap;
-}
-.fg-frame-label svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+.layer-a { background: var(--paper-2); }
 
-/* text layers: hover outlines + layer names */
-.fg-obj { position: absolute; outline: 1.5px solid rgba(13, 153, 255, 0.75); }
-.fg-obj > b, .fg-sel > b {
-  position: absolute; left: -1px; top: -21px;
+.fa-frame {
+  position: absolute;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.fa-frame > b {
+  position: absolute; left: -1px; top: -26px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-50); white-space: nowrap;
+}
+
+/* every text layer gets a hairline frame + its name */
+.fa-obj { position: absolute; outline: 1px solid rgba(39, 51, 232, 0.4); }
+.fa-obj > b {
+  position: absolute; left: 0; top: -19px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--blue); white-space: nowrap;
+}
+
+/* the one selected layer */
+.fa-sel { outline: 1.5px solid var(--blue); }
+.fa-hand {
+  position: absolute; width: 7px; height: 7px;
+  background: var(--paper); border: 1.5px solid var(--blue);
+}
+.fa-hand:nth-of-type(1) { left: -4px; top: -4px; }
+.fa-hand:nth-of-type(2) { right: -4px; top: -4px; }
+.fa-hand:nth-of-type(3) { left: -4px; bottom: -4px; }
+.fa-hand:nth-of-type(4) { right: -4px; bottom: -4px; }
+.fa-dims {
+  position: absolute; left: 50%; bottom: -27px; transform: translateX(-50%);
+  background: var(--blue); color: var(--paper);
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px; letter-spacing: 0.08em;
+  padding: 3px 8px; border-radius: 3px; white-space: nowrap;
+}
+
+/* a single, quiet spacing measure */
+.fa-gap { position: absolute; border-left: 1px solid var(--blue); }
+.fa-gap::before, .fa-gap::after {
+  content: ""; position: absolute; left: -4px; width: 9px; height: 1px; background: var(--blue);
+}
+.fa-gap::before { top: 0; } .fa-gap::after { bottom: 0; }
+.fa-gap b {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.08em; color: var(--blue);
+  background: var(--paper-2); padding: 0 4px;
+}
+
+.fa-pin {
+  position: absolute; padding: 3px; display: flex;
+  background: var(--paper); border-radius: 16px 16px 16px 3px;
+  box-shadow: 0 2px 10px rgba(23, 21, 15, 0.16);
+}
+.fa-pin .av { width: 22px; height: 22px; font-size: 9px; background: var(--red); }
+
+/* ==================================================
+   2B — STUDIO  (complex · ultra-realistic)
+   Figma UI3 chrome: floating panels, top bar, toolbar pill.
+   ================================================== */
+.layer-b { background: var(--fg-canvas); font-family: var(--font-ui), "Inter", sans-serif; }
+
+.fb-frame { position: absolute; background: #fff; }
+.fb-frame > b {
+  position: absolute; left: 0; top: -21px;
   display: flex; align-items: center; gap: 5px;
+  color: rgba(0, 0, 0, 0.45); font-size: 11.5px; font-weight: 500; white-space: nowrap;
+}
+.fb-frame > b svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+
+/* hovered text layers */
+.fb-obj { position: absolute; outline: 1.5px solid rgba(13, 153, 255, 0.75); }
+.fb-obj > b {
+  position: absolute; left: -1px; top: -20px;
+  display: flex; align-items: center; gap: 4px;
   color: var(--fg-blue); font-size: 11px; font-weight: 500; white-space: nowrap;
 }
-.fg-obj > b svg, .fg-sel > b svg { width: 9px; height: 9px; stroke: var(--fg-blue); stroke-width: 1.8; fill: none; }
+.fb-obj > b svg { width: 9px; height: 9px; stroke: var(--fg-blue); stroke-width: 1.8; fill: none; }
 
-/* selection box + handles + dims pill */
-.fg-sel { position: absolute; outline: 1.5px solid var(--fg-blue); }
-.fg-h {
-  position: absolute; width: 7px; height: 7px;
-  background: #fff; border: 1.5px solid var(--fg-blue);
-}
-.fg-h:nth-child(1) { left: -4px; top: -4px; }
-.fg-h:nth-child(2) { right: -4px; top: -4px; }
-.fg-h:nth-child(3) { left: -4px; bottom: -4px; }
-.fg-h:nth-child(4) { right: -4px; bottom: -4px; }
-.fg-h:nth-child(5) { left: 50%; top: -4px; margin-left: -3.5px; }
-.fg-h:nth-child(6) { left: 50%; bottom: -4px; margin-left: -3.5px; }
-.fg-h:nth-child(7) { left: -4px; top: 50%; margin-top: -3.5px; }
-.fg-h:nth-child(8) { right: -4px; top: 50%; margin-top: -3.5px; }
-.fg-dims {
+.fb-sel { position: absolute; outline: 1.5px solid var(--fg-blue); }
+.fb-h { position: absolute; width: 7px; height: 7px; background: #fff; border: 1.5px solid var(--fg-blue); }
+.fb-h:nth-of-type(1) { left: -4px; top: -4px; }
+.fb-h:nth-of-type(2) { right: -4px; top: -4px; }
+.fb-h:nth-of-type(3) { left: -4px; bottom: -4px; }
+.fb-h:nth-of-type(4) { right: -4px; bottom: -4px; }
+.fb-h:nth-of-type(5) { left: 50%; top: -4px; margin-left: -3.5px; }
+.fb-h:nth-of-type(6) { left: 50%; bottom: -4px; margin-left: -3.5px; }
+.fb-h:nth-of-type(7) { left: -4px; top: 50%; margin-top: -3.5px; }
+.fb-h:nth-of-type(8) { right: -4px; top: 50%; margin-top: -3.5px; }
+.fb-dims {
   position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%);
   background: var(--fg-blue); color: #fff;
-  font-size: 10.5px; font-weight: 500; letter-spacing: 0.02em;
-  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+  font-size: 10.5px; font-weight: 500; padding: 2px 7px; border-radius: 3px; white-space: nowrap;
 }
 
-/* auto-layout spacing highlight */
-.fg-al { position: absolute; background: rgba(255, 36, 189, 0.13); }
-.fg-al::before, .fg-al::after {
-  content: ""; position: absolute; left: 0; right: 0; height: 1px;
-  background: rgba(255, 36, 189, 0.55);
+.fb-al { position: absolute; background: rgba(255, 36, 189, 0.13); }
+.fb-al::before, .fb-al::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 1px; background: rgba(255, 36, 189, 0.55);
 }
-.fg-al::before { top: 0; } .fg-al::after { bottom: 0; }
-.fg-al b {
+.fb-al::before { top: 0; } .fb-al::after { bottom: 0; }
+.fb-al b {
   position: absolute; left: calc(50% - 78px); top: 50%; transform: translate(-50%, -50%);
   background: var(--fg-pink); color: #fff; font-weight: 500;
   font-size: 10px; padding: 1px 6px; border-radius: 3px;
 }
 
-/* component outline on the circled word */
-.fg-comp { position: absolute; outline: 1.5px dashed var(--fg-purple); border-radius: 2px; }
-.fg-comp b {
-  position: absolute; left: -1px; bottom: -24px;
+.fb-comp { position: absolute; outline: 1.5px dashed var(--fg-purple); border-radius: 2px; }
+.fb-comp b {
+  position: absolute; left: -1px; bottom: -23px;
   color: var(--fg-purple); font-size: 11px; font-weight: 500; white-space: nowrap;
 }
 
-/* red distance measurement */
-.fg-measure { position: absolute; height: 0; border-top: 1px solid var(--fg-red); }
-.fg-measure::before, .fg-measure::after {
+.fb-measure { position: absolute; height: 0; border-top: 1px solid var(--fg-red); }
+.fb-measure::before, .fb-measure::after {
   content: ""; position: absolute; top: -4px; width: 1px; height: 8px; background: var(--fg-red);
 }
-.fg-measure::before { left: 0; } .fg-measure::after { right: 0; }
-.fg-measure b {
+.fb-measure::before { left: 0; } .fb-measure::after { right: 0; }
+.fb-measure b {
   position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
-  background: var(--fg-red); color: #fff;
-  font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 3px;
+  background: var(--fg-red); color: #fff; font-size: 10px; font-weight: 500;
+  padding: 1px 6px; border-radius: 3px;
 }
 
-/* comment pin: the Figma teardrop with the author avatar inside */
-.fg-av {
-  width: 24px; height: 24px; border-radius: 50%; flex: none;
-  display: grid; place-items: center;
-  font-size: 10px; font-weight: 600; color: #fff;
-}
-.fg-pin {
+.fb-pin {
   position: absolute; padding: 3px; display: flex;
   background: #fff; border-radius: 17px 17px 17px 3px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
-/* open comment thread: header row, body, reply field */
-.fg-comment {
+.fb-pin .av { width: 24px; height: 24px; font-size: 10px; }
+.fb-comment {
   position: absolute; width: 300px;
   background: #fff; border-radius: 3px 16px 16px 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05);
   padding: 12px 14px; font-size: 12.5px; line-height: 1.45; color: #333;
 }
-.fg-comment header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-.fg-comment header .fg-av { width: 26px; height: 26px; }
-.fg-comment header span { font-weight: 600; font-size: 12.5px; color: #1e1e1e; }
-.fg-comment header small { color: #a6a6a6; font-size: 11px; }
-.fg-cmt-icons { margin-left: auto; display: flex; align-items: center; gap: 10px; color: #7f7f7f; }
-.fg-cmt-icons svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-.fg-reply {
+.fb-comment header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.fb-comment header .av { width: 26px; height: 26px; font-size: 10px; }
+.fb-comment header span { font-weight: 600; font-size: 12.5px; color: var(--fg-text); }
+.fb-comment header small { color: var(--fg-dim); font-size: 11px; }
+.fb-cmt-icons { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--fg-mid); }
+.fb-cmt-icons svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.fb-reply {
   margin-top: 11px; display: flex; align-items: center; gap: 8px;
-  border: 1px solid #e3e3e3; border-radius: 999px; padding: 4px 6px;
+  border: 1px solid var(--fg-border); border-radius: 999px; padding: 4px 6px;
 }
-.fg-reply .fg-av { width: 22px; height: 22px; }
-.fg-reply span { color: #b3b3b3; font-size: 12px; }
+.fb-reply .av { width: 22px; height: 22px; font-size: 9px; }
+.fb-reply span { color: var(--fg-dim); font-size: 12px; }
 
-/* multiplayer cursors */
-.fg-cursor { position: absolute; }
-.fg-cursor svg { width: 17px; height: 17px; display: block; }
-.fg-cursor span {
-  position: absolute; left: 13px; top: 15px;
-  color: #fff; font-size: 10.5px; font-weight: 500;
-  padding: 2px 7px; border-radius: 999px; white-space: nowrap;
+/* --- chrome: top bar, floating panels, toolbar pill --- */
+.fb-topbar {
+  position: absolute; top: var(--topbar-h); left: 0; right: 0; height: 44px;
+  background: #fff; border-bottom: 1px solid var(--fg-border);
+  display: flex; align-items: center; gap: 14px; padding-inline: 14px;
+  font-size: 12px; color: var(--fg-text);
 }
-.fg-cursor-a { animation: cursor-a 9s ease-in-out infinite alternate; }
-.fg-cursor-b { animation: cursor-b 11s ease-in-out infinite alternate; }
-@keyframes cursor-a {
-  0% { transform: translate(0, 0); }
-  40% { transform: translate(-70px, 42px); }
-  100% { transform: translate(26px, -20px); }
+.fb-logo { width: 18px; height: 18px; display: grid; place-items: center; }
+.fb-logo svg { width: 11px; height: 16px; }
+.fb-crumb { display: flex; align-items: center; gap: 6px; }
+.fb-crumb span { color: var(--fg-mid); }
+.fb-crumb b { font-weight: 600; }
+.fb-crumb u { color: var(--fg-dim); text-decoration: none; }
+.fb-top-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.fb-avatars { display: flex; }
+.fb-avatars .av {
+  width: 24px; height: 24px; font-size: 9.5px;
+  box-shadow: 0 0 0 2px #fff; margin-left: -6px;
 }
-@keyframes cursor-b {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(54px, -34px); }
-  100% { transform: translate(-30px, 18px); }
+.fb-avatars .av:first-child { margin-left: 0; }
+.fb-share {
+  background: var(--fg-blue); color: #fff; font-size: 12px; font-weight: 500;
+  padding: 5px 12px; border-radius: 6px;
 }
+.fb-zoomv { color: var(--fg-mid); font-size: 12px; }
 
-.fg-zoom {
-  position: absolute; left: calc(var(--pad) + 4px); bottom: 18px;
-  background: #fff; border-radius: 6px; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.14);
-  font-size: 11px; font-weight: 500; color: #555; padding: 5px 10px;
+.fb-panel {
+  position: absolute;
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.11), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  font-size: 11px; color: var(--fg-text);
 }
+.fb-tabs {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid var(--fg-border);
+  font-size: 11.5px; color: var(--fg-dim); font-weight: 500;
+}
+.fb-tabs b { color: var(--fg-text); font-weight: 600; position: relative; }
+.fb-tabs b::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -9px;
+  border-bottom: 2px solid var(--fg-text);
+}
+.fb-tabs i { margin-left: auto; font-style: normal; color: var(--fg-mid); }
+
+.fb-sec { padding: 9px 12px; border-bottom: 1px solid var(--fg-border); }
+.fb-sec:last-child { border-bottom: 0; }
+.fb-sec-h {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 600; color: var(--fg-text); margin-bottom: 8px;
+}
+.fb-sec-h u { color: var(--fg-mid); text-decoration: none; font-weight: 400; }
+.fb-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.fb-field {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 7px; border-radius: 5px;
+  background: #f5f5f5;
+}
+.fb-field s { color: var(--fg-dim); text-decoration: none; font-size: 10px; width: 9px; }
+.fb-field span { color: var(--fg-text); font-size: 11px; }
+.fb-swatch { width: 13px; height: 13px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1); }
+
+.fb-align { display: flex; gap: 3px; margin-bottom: 2px; }
+.fb-align i {
+  width: 22px; height: 22px; border-radius: 4px;
+  display: grid; place-items: center; font-style: normal;
+  color: var(--fg-mid); font-size: 11px;
+}
+.fb-align i.on { background: #f0f0f0; color: var(--fg-text); }
+
+/* layers tree */
+.fb-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px; font-size: 11.5px; color: var(--fg-text);
+  white-space: nowrap;
+}
+.fb-row.on { background: rgba(13, 153, 255, 0.12); }
+.fb-row.dim { color: var(--fg-mid); }
+.fb-row s { text-decoration: none; color: var(--fg-mid); font-size: 9px; width: 8px; }
+.fb-row em { font-style: normal; color: var(--fg-mid); font-size: 10px; width: 11px; text-align: center; }
+.fb-row.comp em { color: var(--fg-purple); }
+.fb-row.comp span { color: var(--fg-purple); }
+
+.fb-toolbar {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 16px;
+  display: flex; align-items: center; gap: 2px;
+  background: #fff; border-radius: 12px; padding: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.fb-tool {
+  width: 32px; height: 30px; border-radius: 8px;
+  display: grid; place-items: center; color: var(--fg-text);
+}
+.fb-tool svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+.fb-tool.on { background: var(--fg-blue); color: #fff; }
+.fb-tool-sep { width: 1px; height: 20px; background: var(--fg-border); margin-inline: 4px; }
 
 /* ==================================================
-   VARIANT 03 — CODE UNDER THE PAPER
+   2C — SPEC  (complex · aesthetic-focused)
+   The handoff sheet: tokens, components, auto-layout,
+   prototype wiring — dense, but in paper/ink/ultramarine.
    ================================================== */
-.layer-code {
-  /* ledger paper: ruled lines + the red margin rule right of the gutter */
+.layer-c {
   background:
-    linear-gradient(to right, transparent 96px, rgba(232, 67, 10, 0.35) 96px, rgba(232, 67, 10, 0.35) 97.5px, transparent 97.5px),
-    repeating-linear-gradient(to bottom, transparent 0 25px, rgba(23, 21, 15, 0.055) 25px 26px),
+    radial-gradient(rgba(23, 21, 15, 0.07) 1px, transparent 1.3px) 0 0 / 22px 22px,
     var(--paper-2);
 }
-.cd-head {
-  position: absolute; top: var(--topbar-h); left: 0; right: 0; height: 34px;
-  display: flex; align-items: center; gap: 14px;
-  padding-inline: 20px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(23, 21, 15, 0.035);
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px; letter-spacing: 0.06em; color: var(--ink-50);
-}
-.cd-head b { color: var(--ink); font-weight: 500; }
-.cd-head i { font-style: normal; color: var(--green); }
-.cd-dots { display: flex; gap: 6px; margin-right: 4px; }
-.cd-dots u { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-30); }
-
-.cd-lines {
-  position: absolute; top: calc(var(--topbar-h) + 40px); left: 0; right: 0; bottom: 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 13px; overflow: hidden;
-}
-.cd-line { display: flex; align-items: center; height: 26px; white-space: pre; }
-.cd-line.hl { background: linear-gradient(to right, rgba(39, 51, 232, 0.09), transparent 72%); }
-.cd-ln {
-  width: 62px; flex: none; text-align: right; padding-right: 16px;
-  font-size: 11px; color: var(--ink-30);
-}
-.cd-line.hl .cd-ln { color: var(--blue); }
-.cd-git { width: 3px; height: 17px; flex: none; margin-right: 16px; border-radius: 2px; }
-.cd-git.add { background: var(--green); }
-.cd-git.mod { background: var(--blue); }
-.cd-code { color: var(--ink-70); }
-.cd-code .k { color: var(--blue); }
-.cd-code .s { color: var(--clay); }
-.cd-code .c { color: var(--ink-50); font-style: italic; }
-.cd-code .n { color: var(--red); }
-.cd-code .t { color: var(--green); }
-.cd-caret {
-  display: inline-block; width: 8px; height: 16px;
-  background: var(--ink); vertical-align: text-bottom; margin-left: 1px;
-  animation: caret 1.1s steps(1) infinite;
-}
-@keyframes caret { 50% { opacity: 0; } }
-
-/* live anchors: dashed leader from element to its source line */
-.cd-marker {
-  position: absolute; display: flex; align-items: center; gap: 10px;
-  transform: translateY(-50%); white-space: nowrap;
-}
-.cd-marker i { display: block; width: 74px; border-top: 1.5px dashed var(--red); }
-.cd-marker b {
-  font-family: var(--font-mono), monospace; font-weight: 400;
-  font-size: 10px; letter-spacing: 0.06em; color: var(--red);
-  background: var(--paper-2); border: 1px solid rgba(232, 67, 10, 0.4);
-  border-radius: 999px; padding: 3px 9px;
-}
-
-/* the analog terminal card */
-.cd-term {
-  position: absolute; right: calc(var(--pad) + 4px); bottom: 42px;
-  width: 372px;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 8px;
-  box-shadow: 5px 5px 0 rgba(23, 21, 15, 0.14);
-  transform: rotate(-0.5deg);
-  font-family: var(--font-mono), monospace;
-  font-size: 12px; line-height: 1.8; color: var(--ink-70);
-  overflow: hidden;
-}
-.cd-term header {
+.fc-frame { position: absolute; background: var(--paper); outline: 1px solid rgba(39, 51, 232, 0.5); }
+.fc-frame > b {
+  position: absolute; left: -1px; top: -24px;
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; border-bottom: 1px solid var(--line);
-  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-50);
-}
-.cd-term header u { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink-30); }
-.cd-term header span { margin-left: auto; }
-.cd-term pre { padding: 12px 16px; font-family: inherit; white-space: pre-wrap; }
-.cd-term .g { color: var(--green); }
-.cd-term .d { color: var(--ink-50); }
-
-.cd-status {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 30px;
-  display: flex; align-items: center; gap: 22px;
-  padding-inline: 20px;
-  border-top: 1px solid var(--line);
-  background: rgba(23, 21, 15, 0.045);
   font-family: var(--font-mono), monospace;
-  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-50);
+  font-size: 9.5px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--blue); white-space: nowrap;
 }
-.cd-status b { color: var(--green); font-weight: 500; }
-.cd-status span:last-child { margin-left: auto; }
+/* frame padding, drawn as a hatched inset */
+.fc-pad {
+  position: absolute; pointer-events: none;
+  background: repeating-linear-gradient(45deg, rgba(39, 51, 232, 0.06) 0 4px, transparent 4px 9px);
+}
+
+.fc-obj { position: absolute; outline: 1px dashed rgba(39, 51, 232, 0.55); }
+.fc-obj > b {
+  position: absolute; left: 0; top: -18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--blue); white-space: nowrap;
+}
+.fc-obj > i {
+  position: absolute; right: 0; top: -18px;
+  font-family: var(--font-mono), monospace; font-style: normal;
+  font-size: 8.5px; letter-spacing: 0.06em;
+  color: var(--ink-50); white-space: nowrap;
+}
+
+/* component + its variant chip */
+.fc-comp { position: absolute; outline: 1.5px dashed var(--red); border-radius: 3px; }
+.fc-comp b {
+  position: absolute; left: -1px; bottom: -21px;
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--red); white-space: nowrap;
+}
+.fc-chip {
+  border: 1px solid rgba(232, 67, 10, 0.45); border-radius: 999px;
+  padding: 1px 6px; color: var(--red); letter-spacing: 0.06em;
+}
+
+/* vertical auto-layout gap */
+.fc-gap { position: absolute; background: rgba(39, 51, 232, 0.09); }
+.fc-gap::before, .fc-gap::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 1px; background: rgba(39, 51, 232, 0.45);
+}
+.fc-gap::before { top: 0; } .fc-gap::after { bottom: 0; }
+.fc-gap b {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.08em; color: var(--blue);
+  background: var(--paper-2); padding: 1px 6px; border-radius: 999px;
+  border: 1px solid rgba(39, 51, 232, 0.3); white-space: nowrap;
+}
+
+/* prototype wiring */
+.fc-noodle { position: absolute; inset: 0; overflow: visible; }
+.fc-noodle path { fill: none; stroke: var(--red); stroke-width: 1.5; }
+.fc-noodle circle { fill: var(--paper); stroke: var(--red); stroke-width: 1.5; }
+.fc-flow {
+  position: absolute; width: 176px;
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 6px; padding: 10px 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-50); line-height: 1.9;
+  box-shadow: 3px 3px 0 rgba(23, 21, 15, 0.08);
+}
+.fc-flow b { display: block; color: var(--ink); font-weight: 500; }
+.fc-flow i { font-style: normal; color: var(--red); }
+
+/* token legend */
+.fc-tokens {
+  position: absolute;
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 6px; padding: 11px 13px;
+  box-shadow: 3px 3px 0 rgba(23, 21, 15, 0.08);
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-70);
+}
+.fc-tokens h6 { font-size: 8.5px; letter-spacing: 0.14em; color: var(--ink-50); font-weight: 400; margin-bottom: 8px; }
+.fc-tokens div { display: flex; align-items: center; gap: 8px; padding-block: 3px; }
+.fc-tokens u { width: 11px; height: 11px; border-radius: 2px; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(23, 21, 15, 0.14); }
+.fc-tokens span { margin-left: auto; color: var(--ink-50); }
+
+.fc-pin {
+  position: absolute; padding: 3px; display: flex;
+  background: var(--paper); border-radius: 16px 16px 16px 3px;
+  box-shadow: 0 2px 10px rgba(23, 21, 15, 0.18);
+}
+.fc-pin .av { width: 22px; height: 22px; font-size: 9px; background: var(--red); }
+.fc-note {
+  position: absolute; width: 232px;
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 3px 10px 10px 10px;
+  box-shadow: 3px 3px 0 rgba(23, 21, 15, 0.08);
+  padding: 10px 12px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px; line-height: 1.45; color: var(--ink-70);
+}
+.fc-note header {
+  display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-50);
+}
+.fc-note header .av { width: 18px; height: 18px; font-size: 8px; background: var(--blue); }
+.fc-note em { color: var(--ink); }
+
+/* measure */
+.fc-measure { position: absolute; border-top: 1px solid var(--red); }
+.fc-measure::before, .fc-measure::after {
+  content: ""; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--red);
+}
+.fc-measure::before { left: 0; } .fc-measure::after { right: 0; }
+.fc-measure b {
+  position: absolute; left: 50%; top: -8px; transform: translate(-50%, -100%);
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px; letter-spacing: 0.08em; color: var(--red);
+  background: var(--paper-2); padding: 0 5px; white-space: nowrap;
+}
 
 /* ============ SWITCHER ============ */
 .switcher {
@@ -548,13 +730,14 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-70);
   background: transparent; border: 0; border-radius: 999px;
-  padding: 9px 16px; cursor: pointer;
+  padding: 9px 15px; cursor: pointer;
   transition: background 0.25s, color 0.25s;
 }
 .switcher button b { font-weight: 500; color: var(--red); margin-right: 6px; }
 .switcher button:hover { background: rgba(23, 21, 15, 0.06); }
 .switcher button.on { background: var(--ink); color: var(--paper); }
 .switcher button.on b { color: var(--red); }
+.switcher .sep { width: 1px; height: 22px; background: var(--line); margin-inline: 3px; }
 .switcher .hint {
   font-size: 10px; color: var(--ink-50);
   border-left: 1px solid var(--line);
@@ -562,7 +745,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .lens-stamp svg, .fg-cursor-a, .fg-cursor-b, .cd-caret { animation: none; }
+  .marquee-track, .lens-stamp svg, .drift-a, .drift-b { animation: none; }
 }
 </style>
 </head>
@@ -574,7 +757,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
       <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
       Damean Rittmann <span class="brand-role">— Product Designer</span>
     </span>
-    <span class="mono topbar-note">Lens explorations <i>✳</i> 01 Redline+ · 02 Figma · 03 Code</span>
+    <span class="mono topbar-note">Lens explorations <i>✳</i> 01 Redline+ · 2A Quiet · 2B Studio · 2C Spec</span>
   </div>
 </header>
 
@@ -592,7 +775,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 
   <div class="marquee" aria-hidden="true"><div class="marquee-track"></div></div>
 
-  <!-- ====== 01 · REDLINE+ ====== -->
+  <!-- ====== 01 · REDLINE+ (parked) ====== -->
   <div class="lens-layer layer-redline active" id="v1" aria-hidden="true">
     <div class="lens-baselines"></div>
     <div class="wrap lens-cols"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -601,13 +784,13 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     <div class="rl-margin" id="marginL"><b></b></div>
     <div class="rl-margin" id="marginR"><b></b></div>
     <div id="rlFrames"></div>
-    <div class="rl-titleblock" id="titleblock">
+    <div class="rl-titleblock">
       <div>Damean Rittmann <i>✳</i> Portfolio 2026</div>
       <div><span>Sheet 01 · Hero / Fold</span><span id="tbScale"></span></div>
       <div><span>Grid 12 col · Gutter 24</span><span>Rev C · 2026-07-22</span></div>
       <div><span>Drawn <i>DR</i> · Checked <i>AI</i></span><span>Fraunces / Archivo</span></div>
     </div>
-    <div class="lens-stamp" aria-hidden="true">
+    <div class="lens-stamp">
       <svg viewBox="0 0 160 160">
         <defs><path id="lensStampCircle" d="M80,80 m-62,0 a62,62 0 1,1 124,0 a62,62 0 1,1 -124,0" /></defs>
         <text class="lens-stamp-text"><textPath href="#lensStampCircle">HUMAN-DESIGNED ✳ AI-ASSISTED ✳ </textPath></text>
@@ -616,89 +799,194 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     </div>
   </div>
 
-  <!-- ====== 02 · FIGMA ====== -->
-  <div class="lens-layer layer-figma" id="v2" aria-hidden="true">
-    <div class="fg-frame" id="fgFrame">
-      <span class="fg-frame-label">
-        <svg viewBox="0 0 12 12"><path d="M3 0v12M9 0v12M0 3h12M0 9h12"/></svg>
-        <span id="fgFrameName">Hero / L — 1440</span>
-      </span>
+  <!-- ====== 2A · QUIET ====== -->
+  <div class="lens-layer layer-a" id="v2a" aria-hidden="true">
+    <div class="fa-frame" id="faFrame"><b id="faFrameName">Hero / L</b></div>
+    <div class="fa-obj" id="faEye"><b>eyebrow</b></div>
+    <div class="fa-obj" id="faLede"><b>lede</b></div>
+    <div class="fa-obj fa-sel" id="faTitle">
+      <b>headline</b>
+      <span class="fa-hand"></span><span class="fa-hand"></span><span class="fa-hand"></span><span class="fa-hand"></span>
+      <span class="fa-dims" id="faDims"></span>
     </div>
-    <div class="fg-al" id="fgAl1"><b></b></div>
-    <div class="fg-al" id="fgAl2"><b></b></div>
-    <div class="fg-obj" id="fgObjEye"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-eyebrow</b></div>
-    <div class="fg-obj" id="fgObjLede"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-lede</b></div>
-    <div class="fg-sel" id="fgSel">
-      <span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span>
-      <span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span><span class="fg-h"></span>
-      <span class="fg-dims" id="fgDims">1128 × 276</span>
+    <div class="fa-gap" id="faGap"><b></b></div>
+    <div class="fa-pin" id="faPin"><span class="av">AK</span></div>
+    <div class="cursor drift-b" id="faCursor">
+      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#2733e8"/></svg>
+      <span style="background:#2733e8">Damean</span>
     </div>
-    <div class="fg-comp" id="fgComp"><b>❖ annotation / circled-word</b></div>
-    <div class="fg-measure" id="fgMeasure"><b>312</b></div>
-    <div class="fg-pin" id="fgPin"><b class="fg-av" style="background:#e8430a">AK</b></div>
-    <div class="fg-comment" id="fgComment">
+  </div>
+
+  <!-- ====== 2B · STUDIO ====== -->
+  <div class="lens-layer layer-b" id="v2b" aria-hidden="true">
+    <div class="fb-frame" id="fbFrame">
+      <b><svg viewBox="0 0 12 12"><path d="M3 0v12M9 0v12M0 3h12M0 9h12"/></svg><span id="fbFrameName">Hero / L</span></b>
+    </div>
+    <div class="fb-al" id="fbAl1"><b></b></div>
+    <div class="fb-al" id="fbAl2"><b></b></div>
+    <div class="fb-obj" id="fbEye"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-eyebrow</b></div>
+    <div class="fb-obj" id="fbLede"><b><svg viewBox="0 0 10 10"><path d="M1.2 1h7.6M5 1v8"/></svg>hero-lede</b></div>
+    <div class="fb-sel" id="fbSel">
+      <span class="fb-h"></span><span class="fb-h"></span><span class="fb-h"></span><span class="fb-h"></span>
+      <span class="fb-h"></span><span class="fb-h"></span><span class="fb-h"></span><span class="fb-h"></span>
+      <span class="fb-dims" id="fbDims"></span>
+    </div>
+    <div class="fb-comp" id="fbComp"><b>❖ annotation / circled-word</b></div>
+    <div class="fb-measure" id="fbMeasure"><b></b></div>
+    <div class="fb-pin" id="fbPin"><span class="av" style="background:#e8430a">AK</span></div>
+    <div class="fb-comment" id="fbComment">
       <header>
-        <b class="fg-av" style="background:#2733e8">DR</b>
+        <span class="av" style="background:#2733e8">DR</span>
         <span>Damean</span><small>2d ago</small>
-        <span class="fg-cmt-icons">
+        <span class="fb-cmt-icons">
           <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2"/><path d="M5.4 8.2l1.8 1.8 3.4-3.6"/></svg>
           <svg viewBox="0 0 16 16"><circle cx="3.5" cy="8" r="0.9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="0.9" fill="currentColor" stroke="none"/><circle cx="12.5" cy="8" r="0.9" fill="currentColor" stroke="none"/></svg>
         </span>
       </header>
       Circle should draw in <em>after</em> the split-text lands — keep the whole intro under 0.9s.
-      <div class="fg-reply"><b class="fg-av" style="background:#e8430a">AK</b><span>Reply…</span></div>
+      <div class="fb-reply"><span class="av" style="background:#e8430a">AK</span><span>Reply…</span></div>
     </div>
-    <div class="fg-cursor fg-cursor-a" id="fgCursorA">
+    <div class="cursor drift-a" id="fbCursorA">
       <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#ff7262"/></svg>
       <span style="background:#ff7262">Ava · viewing</span>
     </div>
-    <div class="fg-cursor fg-cursor-b" id="fgCursorB">
+    <div class="cursor drift-b" id="fbCursorB">
       <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#1bc47d"/></svg>
       <span style="background:#1bc47d">Damean</span>
     </div>
-    <div class="fg-zoom">⌖ 64% · Hero.fig</div>
+
+    <!-- chrome -->
+    <div class="fb-topbar">
+      <span class="fb-logo"><svg viewBox="0 0 12 18"><path fill="#0d99ff" d="M3 18a3 3 0 003-3v-3H3a3 3 0 000 6z"/><path fill="#a259ff" d="M0 9a3 3 0 013-3h3v6H3a3 3 0 01-3-3z"/><path fill="#f24e1e" d="M0 3a3 3 0 013-3h3v6H3a3 3 0 01-3-3z"/><path fill="#ff7262" d="M6 0h3a3 3 0 010 6H6V0z"/><path fill="#1abcfe" d="M12 9a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+      <span class="fb-crumb"><span>Portfolio 2026</span><u>/</u><b>Hero</b><u>▾</u></span>
+      <span class="fb-top-right">
+        <span class="fb-avatars">
+          <span class="av" style="background:#1bc47d">DR</span>
+          <span class="av" style="background:#ff7262">AK</span>
+          <span class="av" style="background:#9747ff">JP</span>
+        </span>
+        <span class="fb-share">Share</span>
+        <span class="fb-zoomv">64% ▾</span>
+      </span>
+    </div>
+
+    <div class="fb-panel" id="fbLayers">
+      <div class="fb-tabs"><b>File</b><span>Assets</span><i>⌄</i></div>
+      <div style="padding:6px 0 8px">
+        <div class="fb-row dim"><s>▾</s><em>▤</em><span>Page 1 · Hero explorations</span></div>
+        <div class="fb-row"><s>▾</s><em>⬚</em><span>Hero / L</span></div>
+        <div class="fb-row" style="padding-left:26px"><s></s><em>T</em><span>hero-eyebrow</span></div>
+        <div class="fb-row on" style="padding-left:26px"><s></s><em>T</em><span>hero-title</span></div>
+        <div class="fb-row comp" style="padding-left:42px"><s></s><em>❖</em><span>circled-word</span></div>
+        <div class="fb-row" style="padding-left:26px"><s></s><em>T</em><span>hero-lede</span></div>
+        <div class="fb-row" style="padding-left:26px"><s></s><em>⬚</em><span>stats-marquee</span></div>
+        <div class="fb-row dim"><s>▸</s><em>⬚</em><span>Work / Index</span></div>
+        <div class="fb-row dim"><s>▸</s><em>⬚</em><span>Case / 01 · Orders</span></div>
+        <div class="fb-row dim"><s>▸</s><em>⬚</em><span>Contact</span></div>
+      </div>
+    </div>
+
+    <div class="fb-panel" id="fbDesign">
+      <div class="fb-tabs"><b>Design</b><span>Prototype</span><span>Inspect</span></div>
+      <div class="fb-sec">
+        <div class="fb-align"><i>⇤</i><i>⇥</i><i class="on">⇔</i><i>⇞</i><i>⇟</i><i>⇕</i></div>
+      </div>
+      <div class="fb-sec">
+        <div class="fb-sec-h">Position</div>
+        <div class="fb-grid2">
+          <span class="fb-field"><s>X</s><span id="fbPX">148</span></span>
+          <span class="fb-field"><s>Y</s><span id="fbPY">236</span></span>
+          <span class="fb-field"><s>W</s><span id="fbPW">862</span></span>
+          <span class="fb-field"><s>H</s><span id="fbPH">235</span></span>
+        </div>
+      </div>
+      <div class="fb-sec">
+        <div class="fb-sec-h">Auto layout <u>⇕</u></div>
+        <div class="fb-grid2">
+          <span class="fb-field"><s>↕</s><span id="fbGap">43</span></span>
+          <span class="fb-field"><s>⊞</s><span>0</span></span>
+        </div>
+      </div>
+      <div class="fb-sec">
+        <div class="fb-sec-h">Appearance</div>
+        <div class="fb-grid2">
+          <span class="fb-field"><s>◐</s><span>100%</span></span>
+          <span class="fb-field"><s>◈</s><span>Pass</span></span>
+        </div>
+      </div>
+      <div class="fb-sec">
+        <div class="fb-sec-h">Fill <u>+</u></div>
+        <span class="fb-field"><span class="fb-swatch" style="background:#17150f"></span><span>17150F</span><span style="margin-left:auto;color:#757575">100%</span></span>
+      </div>
+      <div class="fb-sec">
+        <div class="fb-sec-h">Typography <u>⋯</u></div>
+        <span class="fb-field" style="margin-bottom:5px"><span>Fraunces</span><span style="margin-left:auto;color:#757575">Regular</span></span>
+        <div class="fb-grid2">
+          <span class="fb-field"><s>A</s><span id="fbFS">123</span></span>
+          <span class="fb-field"><s>↕</s><span id="fbLH">0.96</span></span>
+          <span class="fb-field"><s>AV</s><span>-2.5%</span></span>
+          <span class="fb-field"><s>¶</s><span>Auto</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fb-toolbar">
+      <span class="fb-tool on"><svg viewBox="0 0 16 16"><path d="M3 1.5l9.5 5.7-4.2.8L6 13z"/></svg></span>
+      <span class="fb-tool"><svg viewBox="0 0 16 16"><path d="M4.5 1v14M11.5 1v14M1 4.5h14M1 11.5h14"/></svg></span>
+      <span class="fb-tool"><svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/></svg></span>
+      <span class="fb-tool"><svg viewBox="0 0 16 16"><path d="M2 14l1-3.5L10.5 3l2.5 2.5L5.5 13 2 14z"/></svg></span>
+      <span class="fb-tool"><svg viewBox="0 0 16 16"><path d="M3 3h10M8 3v10M5.5 13h5"/></svg></span>
+      <span class="fb-tool-sep"></span>
+      <span class="fb-tool"><svg viewBox="0 0 16 16"><path d="M14 9.5a2 2 0 01-2 2H6l-3.5 2.5v-2.5H4a2 2 0 01-2-2v-5a2 2 0 012-2h8a2 2 0 012 2z"/></svg></span>
+    </div>
   </div>
 
-  <!-- ====== 03 · CODE ====== -->
-  <div class="lens-layer layer-code" id="v3" aria-hidden="true">
-    <div class="cd-head">
-      <span class="cd-dots"><u></u><u></u><u></u></span>
-      <b>hero.tsx</b> <span>·</span> <span>⎇ explore/lens-backgrounds</span>
-      <span>·</span> <span>7f7300b — “fill content width for text on tablet”</span>
-      <i style="margin-left:auto">● prettier ✓</i>
+  <!-- ====== 2C · SPEC ====== -->
+  <div class="lens-layer layer-c" id="v2c" aria-hidden="true">
+    <div class="fc-frame" id="fcFrame"><b>⬚ <span id="fcFrameName">Hero / L</span></b></div>
+    <div class="fc-pad" id="fcPadT"></div>
+    <div class="fc-pad" id="fcPadB"></div>
+    <svg class="fc-noodle" id="fcNoodle"></svg>
+    <div class="fc-gap" id="fcGap1"><b></b></div>
+    <div class="fc-gap" id="fcGap2"><b></b></div>
+    <div class="fc-obj" id="fcEye"><b>hero-eyebrow</b><i>type/mono-eyebrow</i></div>
+    <div class="fc-obj" id="fcTitle"><b>hero-title</b><i>type/display-xl</i></div>
+    <div class="fc-obj" id="fcLede"><b>hero-lede</b><i>type/body-lg</i></div>
+    <div class="fc-comp" id="fcComp"><b>❖ annotation / circled-word <span class="fc-chip">state = drawn</span></b></div>
+    <div class="fc-measure" id="fcMeasure"><b></b></div>
+    <div class="fc-flow" id="fcFlow">
+      <b>On click</b>
+      <span>Navigate to <i>Work / Index</i></span><br />
+      <span>Smart animate · 300ms</span>
     </div>
-    <div class="cd-lines" id="cdLines"></div>
-    <div id="cdMarkers"></div>
-    <div class="cd-term">
-      <header><u></u><u></u><u></u> <span>zsh — portfolio</span></header>
-      <pre>~/portfolio % npm run dev
-<span class="g">▲ Next.js 14.2</span> <span class="d">· local http://localhost:3001</span>
-<span class="g">✓ ready</span> <span class="d">in 1.2s</span>
-<span class="d">○ compiling /(hero) …</span>
-<span class="g">✓ compiled</span> <span class="d">in 214ms</span>
-~/portfolio % <span class="cd-caret"></span></pre>
+    <div class="fc-tokens" id="fcTokens">
+      <h6>Tokens in frame</h6>
+      <div><u style="background:#17150f"></u>color/ink<span>17150F</span></div>
+      <div><u style="background:#2733e8"></u>color/ultramarine<span>2733E8</span></div>
+      <div><u style="background:#e8430a"></u>color/redline<span>E8430A</span></div>
+      <div><u style="background:#f6f3ec"></u>color/paper<span>F6F3EC</span></div>
     </div>
-    <div class="cd-status">
-      <span><b>●</b> main*</span>
-      <span>TSX · UTF-8 · LF</span>
-      <span id="cdLnCol">Ln 18, Col 42</span>
-      <span>Spline Sans Mono · 13px · 100%</span>
+    <div class="fc-pin" id="fcPin"><span class="av">AK</span></div>
+    <div class="fc-note" id="fcNote">
+      <header><span class="av">DR</span>Damean · 2d</header>
+      Circle draws <em>after</em> the split-text lands — whole intro under 0.9s.
     </div>
   </div>
 </section>
 
 <nav class="switcher" aria-label="Background variant">
   <button data-v="1" class="on"><b>01</b>Redline+</button>
-  <button data-v="2"><b>02</b>Figma</button>
-  <button data-v="3"><b>03</b>Code</button>
-  <span class="hint mono">1–3 switch · F reveal</span>
+  <span class="sep"></span>
+  <button data-v="2"><b>2A</b>Quiet</button>
+  <button data-v="3"><b>2B</b>Studio</button>
+  <button data-v="4"><b>2C</b>Spec</button>
+  <span class="hint mono">1–4 switch · F reveal</span>
 </nav>
 
 <script>
 /* ================= shared plumbing ================= */
 const hero = document.getElementById("hero");
-const layers = { 1: v1, 2: v2, 3: v3 };
-let activeV = 1;
+const layers = { 1: v1, 2: v2a, 3: v2b, 4: v2c };
 
 /* marquee content */
 const STATS = [
@@ -727,7 +1015,6 @@ hero.addEventListener("pointerleave", () => hero.classList.remove("on"));
 
 /* variant switching + full reveal */
 function setVariant(v) {
-  activeV = v;
   Object.entries(layers).forEach(([k, el]) => el.classList.toggle("active", +k === v));
   document.querySelectorAll(".switcher button").forEach((b) => b.classList.toggle("on", +b.dataset.v === v));
 }
@@ -735,30 +1022,26 @@ function setReveal(on) { hero.classList.toggle("reveal", on); }
 document.querySelectorAll(".switcher button").forEach((b) =>
   b.addEventListener("click", () => setVariant(+b.dataset.v)));
 addEventListener("keydown", (e) => {
-  if (e.key >= "1" && e.key <= "3") setVariant(+e.key);
+  if (e.key >= "1" && e.key <= "4") setVariant(+e.key);
   if (e.key.toLowerCase() === "f") setReveal(!hero.classList.contains("reveal"));
 });
 window.lens = { setVariant, setReveal };
 
 /* geometry helpers */
 const q = (s, r = document) => r.querySelector(s);
-const rel = (el, hr) => {
-  const r = el.getBoundingClientRect();
+const rel = (elm, hr) => {
+  const r = elm.getBoundingClientRect();
+  return { x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: r.height, r: r.right - hr.left, b: r.bottom - hr.top };
+};
+/* text layers hug their glyphs, like real Figma text objects */
+const relText = (elm, hr) => {
+  const range = document.createRange();
+  range.selectNodeContents(elm);
+  const r = range.getBoundingClientRect();
   return { x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: r.height, r: r.right - hr.left, b: r.bottom - hr.top };
 };
 const el = (cls, html = "") => { const d = document.createElement("div"); d.className = cls; d.innerHTML = html; return d; };
-
-const FRAMES = [
-  { name: "Eyebrow", sel: ".hero-eyebrow", spec: () => specOf(".hero-eyebrow", "Spline Mono"), wAbove: true },
-  { name: "Headline", sel: ".hero-title", spec: () => specOf(".hero-title", "Fraunces"), wAbove: false },
-  { name: "Subheader", sel: ".hero-lede", spec: () => specOf(".hero-lede", "Archivo"), wAbove: false },
-];
-function specOf(sel, fam) {
-  const cs = getComputedStyle(q(sel, hero));
-  const fs = Math.round(parseFloat(cs.fontSize));
-  const lh = (parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)).toFixed(2);
-  return `${fam} · ${fs}/${lh}`;
-}
+const box = (node, r) => Object.assign(node.style, { left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px" });
 
 /* clip every layer above the marquee, like the shipped lens */
 function clipLayers(hr) {
@@ -767,13 +1050,41 @@ function clipLayers(hr) {
   Object.values(layers).forEach((l) => (l.style.bottom = bottom));
 }
 
+/* the hero's measured pieces, shared by every variant */
+function metrics() {
+  const hr = hero.getBoundingClientRect();
+  const wrapEl = q(".hero > .wrap", hero);
+  const wcs = getComputedStyle(wrapEl);
+  const wr = rel(wrapEl, hr);
+  return {
+    hr,
+    eye: relText(q(".hero-eyebrow", hero), hr),
+    title: relText(q(".hero-title", hero), hr),
+    lede: relText(q(".hero-lede", hero), hr),
+    circled: rel(q(".circled", hero), hr),
+    contentL: wr.x + parseFloat(wcs.paddingLeft),
+    contentR: wr.r - parseFloat(wcs.paddingRight),
+    layerB: parseFloat(layers[1].style.bottom) || 0,
+  };
+}
+
 /* ================= 01 · redline+ ================= */
+const FRAMES = [
+  { name: "Eyebrow", sel: ".hero-eyebrow", fam: "Spline Mono", wAbove: true },
+  { name: "Headline", sel: ".hero-title", fam: "Fraunces", wAbove: false },
+  { name: "Subheader", sel: ".hero-lede", fam: "Archivo", wAbove: false },
+];
+function specOf(sel, fam) {
+  const cs = getComputedStyle(q(sel, hero));
+  const fs = Math.round(parseFloat(cs.fontSize));
+  const lh = (parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)).toFixed(2);
+  return `${fam} · ${fs}/${lh}`;
+}
 function place1() {
   const hr = hero.getBoundingClientRect();
   const layer = layers[1];
   const IY = 8, GAP = 14;
 
-  /* column snap lines */
   const lines = [];
   layer.querySelectorAll(".lens-cols i").forEach((b) => {
     const r = b.getBoundingClientRect();
@@ -795,12 +1106,12 @@ function place1() {
   FRAMES.forEach((f) => {
     const r = rel(q(f.sel, hero), hr);
     const y = r.y - IY, h = r.h + IY * 2;
-    boxes.push({ y, h, name: f.name });
+    boxes.push({ y, h });
 
-    const box = el("lens-box");
-    Object.assign(box.style, { left: SX + "px", top: y + "px", width: SW + "px", height: h + "px" });
-    if (f.name === "Headline") box.innerHTML = '<span class="lens-pad-tag">pad-y 8</span>';
-    host.appendChild(box);
+    const bx = el("lens-box");
+    Object.assign(bx.style, { left: SX + "px", top: y + "px", width: SW + "px", height: h + "px" });
+    if (f.name === "Headline") bx.innerHTML = '<span class="lens-pad-tag">pad-y 8</span>';
+    host.appendChild(bx);
 
     const wy = f.wAbove ? y - GAP : y + h + GAP;
     const wdim = el("lens-dim");
@@ -817,12 +1128,11 @@ function place1() {
     Object.assign(vval.style, { left: SX + SW + GAP + "px", top: y + h / 2 + "px" });
     host.appendChild(vval);
 
-    const tag = el("lens-tag", `${f.name}<small>${f.spec()}</small>`);
+    const tag = el("lens-tag", `${f.name}<small>${specOf(f.sel, f.fam)}</small>`);
     Object.assign(tag.style, { left: TAGX + "px", top: y - 1 + "px" });
     host.appendChild(tag);
   });
 
-  /* stack gaps between frames, measured on the left */
   for (let i = 0; i < boxes.length - 1; i++) {
     const a = boxes[i], b = boxes[i + 1];
     const gy = a.y + a.h, gh = b.y - gy;
@@ -836,19 +1146,15 @@ function place1() {
     host.appendChild(gval);
   }
 
-  /* margins between viewport edge and the content columns */
-  const first = layer.querySelector(".lens-cols i").getBoundingClientRect();
-  const last = layer.querySelectorAll(".lens-cols i")[11].getBoundingClientRect();
-  const contentL = first.left - hr.left, contentR = last.right - hr.left;
+  const cols = layer.querySelectorAll(".lens-cols i");
+  const contentL = cols[0].getBoundingClientRect().left - hr.left;
+  const contentR = cols[11].getBoundingClientRect().right - hr.left;
   const mL = q("#marginL"), mR = q("#marginR");
   Object.assign(mL.style, { left: "0px", width: contentL + "px" });
   Object.assign(mR.style, { left: contentR + "px", width: hr.width - contentR + "px" });
   mL.firstElementChild.textContent = `MARGIN · ${Math.round(contentL)}`;
   mR.firstElementChild.textContent = `MARGIN · ${Math.round(hr.width - contentR)}`;
 
-  /* gutter chips in two of the column gaps */
-  host.querySelectorAll(".rl-gutter").forEach((n) => n.remove());
-  const cols = layer.querySelectorAll(".lens-cols i");
   [[2, 3], [8, 9]].forEach(([a, b], i) => {
     const ra = cols[a].getBoundingClientRect(), rb = cols[b].getBoundingClientRect();
     const chip = el("rl-gutter", `GUTTER ${Math.round(rb.left - ra.right)}`);
@@ -859,7 +1165,6 @@ function place1() {
     host.appendChild(chip);
   });
 
-  /* registration marks at content corners */
   const wr = q(".hero > .wrap", hero).getBoundingClientRect();
   [[contentL, wr.top - hr.top - 30], [contentR, wr.top - hr.top - 30],
    [contentL, wr.bottom - hr.top + 30], [contentR, wr.bottom - hr.top + 30]].forEach(([x, y]) => {
@@ -868,178 +1173,156 @@ function place1() {
     host.appendChild(m);
   });
 
-  /* rulers */
   const rt = q("#rulerTop"); rt.innerHTML = "";
   for (let x = 100; x < hr.width; x += 100) {
     const s = document.createElement("span"); s.textContent = x; s.style.left = x + "px"; rt.appendChild(s);
   }
   const rl = q("#rulerLeft"); rl.innerHTML = "";
-  const lh = parseFloat(layers[1].style.bottom || 0);
-  for (let y = 100; y < hr.height - lh; y += 100) {
+  const lb = parseFloat(layers[1].style.bottom) || 0;
+  for (let y = 100; y < hr.height - lb; y += 100) {
     const s = document.createElement("span"); s.textContent = y; s.style.top = y + "px"; rl.appendChild(s);
   }
 
   q("#tbScale").textContent = `Scale 1:1 @ ${Math.round(hr.width)}px`;
 }
 
-/* ================= 02 · figma ================= */
-/* text layers hug their glyphs, like real Figma text objects */
-function relText(elm, hr) {
-  const range = document.createRange();
-  range.selectNodeContents(elm);
-  const r = range.getBoundingClientRect();
-  return { x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: r.height, r: r.right - hr.left, b: r.bottom - hr.top };
+/* ================= 2A · quiet ================= */
+function place2a(m) {
+  const { hr, eye, title, lede, circled } = m;
+
+  const fx = Math.max(28, m.contentL - 60);
+  const fy = Math.max(var0(), eye.y - 64);
+  const fr = Math.min(hr.width - 28, m.contentR + 60);
+  const fb = lede.b + 64;
+  box(q("#faFrame"), { x: fx, y: fy, w: fr - fx, h: fb - fy });
+  q("#faFrameName").textContent = `Hero / L — ${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
+
+  box(q("#faEye"), eye);
+  box(q("#faLede"), lede);
+  box(q("#faTitle"), title);
+  q("#faDims").textContent = `${Math.round(title.w)} × ${Math.round(title.h)}`;
+
+  /* one measure only: the gap under the headline */
+  const gy = title.b, gh = lede.y - gy;
+  const gap = q("#faGap");
+  Object.assign(gap.style, { left: title.x - 30 + "px", top: gy + "px", height: Math.max(0, gh) + "px" });
+  gap.firstElementChild.textContent = Math.round(gh);
+
+  Object.assign(q("#faPin").style, { left: circled.r + 30 + "px", top: circled.y - 30 + "px" });
+  Object.assign(q("#faCursor").style, { left: Math.min(circled.r + 150, fr - 110) + "px", top: lede.y - 14 + "px" });
 }
-function place2() {
-  const hr = hero.getBoundingClientRect();
-  const eye = relText(q(".hero-eyebrow", hero), hr);
-  const title = relText(q(".hero-title", hero), hr);
-  const lede = relText(q(".hero-lede", hero), hr);
-  const circled = rel(q(".circled", hero), hr);
+/* the frame never rides up under the fixed topbar */
+function var0() { return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) + 34; }
 
-  /* the design frame spans the wrap's content area */
-  const wrapEl = q(".hero > .wrap", hero);
-  const wcs = getComputedStyle(wrapEl);
-  const wrRect = rel(wrapEl, hr);
-  const fx = Math.max(24, wrRect.x + parseFloat(wcs.paddingLeft) - 64);
-  const fy = Math.max(44, eye.y - 56);
-  const fr = Math.min(hr.width - 24, wrRect.r - parseFloat(wcs.paddingRight) + 64);
+/* ================= 2B · studio ================= */
+function place2b(m) {
+  const { hr, eye, title, lede, circled } = m;
+  const top = var0() + 30;
+
+  const fx = Math.max(24, m.contentL - 64);
+  const fy = Math.max(top, eye.y - 56);
+  const fr = Math.min(hr.width - 24, m.contentR + 64);
   const fb = lede.b + 56;
-  const frame = q("#fgFrame");
-  Object.assign(frame.style, { left: fx + "px", top: fy + "px", width: fr - fx + "px", height: fb - fy + "px" });
-  q("#fgFrameName").textContent = `Hero / L — ${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
+  box(q("#fbFrame"), { x: fx, y: fy, w: fr - fx, h: fb - fy });
+  q("#fbFrameName").textContent = `Hero / L — ${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
 
-  /* hover outlines + layer names on the unselected text layers */
-  [[eye, "fgObjEye"], [lede, "fgObjLede"]].forEach(([r, id]) => {
-    Object.assign(q("#" + id).style, { left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px" });
-  });
+  box(q("#fbEye"), eye);
+  box(q("#fbLede"), lede);
+  box(q("#fbSel"), title);
+  q("#fbDims").textContent = `${Math.round(title.w)} × ${Math.round(title.h)}`;
 
-  /* selection on the headline */
-  const sel = q("#fgSel");
-  Object.assign(sel.style, { left: title.x + "px", top: title.y + "px", width: title.w + "px", height: title.h + "px" });
-  q("#fgDims").textContent = `${Math.round(title.w)} × ${Math.round(title.h)}`;
-
-  /* auto-layout gaps */
-  [[eye, title, "fgAl1"], [title, lede, "fgAl2"]].forEach(([a, b, id]) => {
-    const bar = q("#" + id);
+  [[eye, title, "#fbAl1"], [title, lede, "#fbAl2"]].forEach(([a, b, sel]) => {
+    const bar = q(sel);
     const gy = a.b, gh = b.y - gy;
     Object.assign(bar.style, { left: title.x + "px", top: gy + "px", width: title.w + "px", height: Math.max(0, gh) + "px" });
     bar.firstElementChild.textContent = Math.round(gh);
   });
 
-  /* component on the circled word */
-  const comp = q("#fgComp");
-  Object.assign(comp.style, {
-    left: circled.x - 10 + "px", top: circled.y - 8 + "px",
-    width: circled.w + 20 + "px", height: circled.h + 16 + "px",
-  });
+  box(q("#fbComp"), { x: circled.x - 10, y: circled.y - 8, w: circled.w + 20, h: circled.h + 16 });
 
-  /* red measure: headline → frame edge */
-  const ms = q("#fgMeasure");
-  Object.assign(ms.style, { left: title.r + "px", top: title.y + title.h / 2 + "px", width: fr - title.r + "px" });
+  const ms = q("#fbMeasure");
+  Object.assign(ms.style, { left: title.r + "px", top: title.y + title.h / 2 + "px", width: Math.max(0, fr - title.r) + "px" });
   ms.firstElementChild.textContent = Math.round(fr - title.r);
 
-  /* comments + cursors live in the open right column */
-  Object.assign(q("#fgPin").style, { left: circled.r + 26 + "px", top: circled.y - 34 + "px" });
-  Object.assign(q("#fgComment").style, { left: Math.min(lede.r + 70, hr.width - 300) + "px", top: lede.y - 26 + "px" });
-  Object.assign(q("#fgCursorA").style, { left: title.r - 130 + "px", top: title.y - 46 + "px" });
-  Object.assign(q("#fgCursorB").style, { left: fx + 130 + "px", top: fb - 34 + "px" });
+  Object.assign(q("#fbPin").style, { left: circled.r + 26 + "px", top: circled.y - 34 + "px" });
+  Object.assign(q("#fbComment").style, { left: Math.min(lede.r + 70, hr.width - 560) + "px", top: lede.y - 26 + "px" });
+  Object.assign(q("#fbCursorA").style, { left: title.r - 130 + "px", top: title.y - 46 + "px" });
+  Object.assign(q("#fbCursorB").style, { left: fx + 130 + "px", top: fb - 30 + "px" });
+
+  /* chrome: panels flank the canvas, clear of the marquee */
+  const panelTop = var0() + 56;
+  const panelBottom = 62;
+  const h = hr.height - m.layerB - panelTop - panelBottom;
+  Object.assign(q("#fbLayers").style, { left: "14px", top: panelTop + "px", width: "212px", height: Math.max(180, h) + "px" });
+  Object.assign(q("#fbDesign").style, { right: "14px", top: panelTop + "px", width: "228px" });
+
+  /* live values in the design panel, read off the real headline */
+  const cs = getComputedStyle(q(".hero-title", hero));
+  q("#fbPX").textContent = Math.round(title.x);
+  q("#fbPY").textContent = Math.round(title.y);
+  q("#fbPW").textContent = Math.round(title.w);
+  q("#fbPH").textContent = Math.round(title.h);
+  q("#fbGap").textContent = Math.round(lede.y - title.b);
+  q("#fbFS").textContent = Math.round(parseFloat(cs.fontSize));
+  q("#fbLH").textContent = (parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)).toFixed(2);
 }
 
-/* ================= 03 · code ================= */
-const CODE = [
-  "{/* hero.tsx — the fold, annotated */}",
-  "export default function Hero() {",
-  "  const rootRef = useRef<HTMLElement>(null);",
-  "",
-  "  useEffect(() => {",
-  "    const tl = gsap.timeline({ defaults: { ease: \"power3.out\" } });",
-  "    tl.from(\".topbar\", { y: -14, autoAlpha: 0, duration: 0.7 })",
-  "      .from(\".hero-eyebrow\", { y: 14, autoAlpha: 0 }, \"-=0.35\")",
-  "      .from(split.lines, { y: 56, stagger: 0.14 }, \"-=0.25\")",
-  "      .to(circle, { drawSVG: \"100%\" }, \"-=0.45\");",
-  "  }, []);",
-  "",
-  "  return (",
-  "    <section className=\"hero\" id=\"overview\">",
-  "      <p className=\"hero-eyebrow mono\">",
-  "        Damean Rittmann ✳ Product Designer ✳ Portfolio 2026",
-  "      </p>",
-  "      <h1 className=\"hero-title\">",
-  "        Complexity,<br />made{\" \"}",
-  "        <span className=\"circled\">legible</span>.",
-  "      </h1>",
-  "      <p className=\"hero-lede\">",
-  "        I’m a product designer who makes",
-  "        <em>complex workflows trustworthy</em>",
-  "        for the experts who use them.",
-  "      </p>",
-  "      <StatsMarquee />",
-  "      <SpecLens />",
-  "    </section>",
-  "  );",
-  "}",
-  "",
-  "/* globals.css — the math under the type */",
-  ".hero-title {",
-  "  font-family: \"Fraunces\", serif;",
-  "  font-size: clamp(3.4rem, 7.4vw + 1rem, 10.5rem);",
-  "  line-height: 0.96;",
-  "  letter-spacing: -0.025em;",
-  "}",
-  ".circled svg path {",
-  "  stroke: var(--red); /* #e8430a */",
-  "  stroke-width: 2.6;",
-  "  vector-effect: non-scaling-stroke;",
-  "}",
-  ".spec-lens {",
-  "  mask-image: radial-gradient(",
-  "    circle var(--lens-r) at var(--mx) var(--my),",
-  "    #000 0 55%, transparent 100%",
-  "  );",
-  "}",
-];
-const H1_LINE = CODE.findIndex((l) => l.includes("hero-title\">")) ;
-const LEDE_LINE = CODE.findIndex((l) => l.includes("hero-lede\">"));
-const GIT = { 6: "mod", 7: "mod", 9: "add", 45: "add", 46: "add", 47: "add", 48: "add" };
+/* ================= 2C · spec ================= */
+function place2c(m) {
+  const { hr, eye, title, lede, circled } = m;
+  const PAD = 40;
 
-function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-function highlight(raw) {
-  let s = esc(raw);
-  const store = [];
-  const stash = (m, cls) => { store.push(`<span class="${cls}">${m}</span>`); return `${store.length - 1}`; };
-  s = s.replace(/\{\/\*.*?\*\/\}|\/\*.*?\*\/|\/\/.*$/g, (m) => stash(m, "c"));
-  s = s.replace(/&quot;[^&]*?&quot;|"[^"]*"|“[^”]*”/g, (m) => stash(m, "s"));
-  s = s.replace(/\b(export|default|function|const|return|useRef|useEffect|from|import)\b/g, '<span class="k">$1</span>');
-  s = s.replace(/(&lt;\/?)([A-Za-z][\w-]*)/g, '$1<span class="t">$2</span>');
-  s = s.replace(/(^|[\s(,:{])(-?\d[\d.]*(?:px|rem|vw|%|s)?)\b/g, '$1<span class="n">$2</span>');
-  s = s.replace(/(\d+)/g, (_, i) => store[+i]);
-  return s;
-}
-function buildCode() {
-  const host = q("#cdLines");
-  host.innerHTML = CODE.map((raw, i) => {
-    const hl = i === H1_LINE || i === H1_LINE + 1 || i === H1_LINE + 2 ? " hl" : "";
-    const git = GIT[i] ? `<span class="cd-git ${GIT[i]}"></span>` : '<span class="cd-git"></span>';
-    const caret = i === H1_LINE + 1 ? '<span class="cd-caret"></span>' : "";
-    return `<div class="cd-line${hl}"><span class="cd-ln">${i + 1}</span>${git}<span class="cd-code">${highlight(raw)}</span>${caret}</div>`;
-  }).join("");
-}
-function place3() {
-  const hr = hero.getBoundingClientRect();
-  const circled = rel(q(".circled", hero), hr);
-  const lede = rel(q(".hero-lede", hero), hr);
-  const host = q("#cdMarkers");
-  host.innerHTML = "";
-  [
-    [circled.r + 40, circled.y + circled.h / 2, `line ${H1_LINE + 1} → h1.hero-title`],
-    [lede.r + 28, lede.y + 12, `line ${LEDE_LINE + 1} → p.hero-lede`],
-  ].forEach(([x, y, label]) => {
-    const m = el("cd-marker", `<i></i><b>${label}</b>`);
-    Object.assign(m.style, { left: x + "px", top: y + "px" });
-    host.appendChild(m);
+  const fx = Math.max(26, m.contentL - PAD);
+  const fy = Math.max(var0() + 30, eye.y - PAD);
+  const fr = Math.min(hr.width - 26, m.contentR + PAD);
+  const fb = lede.b + PAD;
+  box(q("#fcFrame"), { x: fx, y: fy, w: fr - fx, h: fb - fy });
+  q("#fcFrameName").textContent = `Hero / L — ${Math.round(fr - fx)} × ${Math.round(fb - fy)} · pad ${PAD}`;
+
+  /* the frame's own padding, hatched */
+  box(q("#fcPadT"), { x: fx, y: fy, w: fr - fx, h: eye.y - fy });
+  box(q("#fcPadB"), { x: fx, y: lede.b, w: fr - fx, h: fb - lede.b });
+
+  box(q("#fcEye"), eye);
+  box(q("#fcTitle"), title);
+  box(q("#fcLede"), lede);
+  box(q("#fcComp"), { x: circled.x - 9, y: circled.y - 7, w: circled.w + 18, h: circled.h + 14 });
+
+  [[eye, title, "#fcGap1"], [title, lede, "#fcGap2"]].forEach(([a, b, sel]) => {
+    const bar = q(sel);
+    const gy = a.b, gh = b.y - gy;
+    Object.assign(bar.style, { left: fx + "px", top: gy + "px", width: fr - fx + "px", height: Math.max(0, gh) + "px" });
+    bar.firstElementChild.textContent = `⇕ gap ${Math.round(gh)}`;
   });
-  q("#cdLnCol").textContent = `Ln ${H1_LINE + 2}, Col 34`;
+
+  /* short measure on the frame's right padding — tucked, crosses nothing */
+  const ms = q("#fcMeasure");
+  Object.assign(ms.style, { left: m.contentR + "px", top: lede.y + lede.h / 2 + "px", width: Math.max(0, fr - m.contentR) + "px" });
+  ms.firstElementChild.textContent = Math.round(fr - m.contentR);
+
+  /* prototype noodle: circled word → the flow card */
+  const flow = q("#fcFlow");
+  const flowX = Math.min(fr + 26, hr.width - 196);
+  const flowY = title.y - 16;
+  Object.assign(flow.style, { left: flowX + "px", top: flowY + "px" });
+
+  const sx = circled.r + 4, sy = circled.y + circled.h / 2;
+  const ex = flowX - 6, ey = flowY + 30;
+  const svg = q("#fcNoodle");
+  svg.setAttribute("viewBox", `0 0 ${hr.width} ${hr.height}`);
+  svg.innerHTML =
+    `<path d="M${sx} ${sy} C${sx + 90} ${sy} ${ex - 90} ${ey} ${ex} ${ey}" />` +
+    `<circle cx="${sx}" cy="${sy}" r="3.5" />` +
+    `<path d="M${ex - 7} ${ey - 4.5} L${ex} ${ey} L${ex - 7} ${ey + 4.5}" />`;
+
+  /* token legend sits under the frame, clamped clear of the marquee */
+  const tok = q("#fcTokens");
+  const floor = hr.height - m.layerB - 14;
+  Object.assign(tok.style, { left: fx + 18 + "px", top: Math.min(fb + 26, floor - tok.offsetHeight) + "px" });
+
+  /* pin + note read as one thread, off to the right of the lede */
+  Object.assign(q("#fcNote").style, { left: Math.min(lede.r + 46, hr.width - 268) + "px", top: lede.y - 10 + "px" });
+  Object.assign(q("#fcPin").style, { left: Math.min(lede.r + 18, hr.width - 296) + "px", top: lede.y - 36 + "px" });
 }
 
 /* ================= layout lifecycle ================= */
@@ -1047,10 +1330,11 @@ function placeAll() {
   const hr = hero.getBoundingClientRect();
   clipLayers(hr);
   place1();
-  place2();
-  place3();
+  const m = metrics();
+  place2a(m);
+  place2b(m);
+  place2c(m);
 }
-buildCode();
 placeAll();
 if (document.fonts?.ready) document.fonts.ready.then(placeAll);
 addEventListener("load", placeAll);
