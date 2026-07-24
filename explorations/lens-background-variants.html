@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lens Background Exploration — Redline+</title>
+<title>Lens Background Explorations — Redline+ · Figma</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400..620;1,9..144,400..620&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400..620;1,9..144,400..620&family=Inter:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================
-   Lens background exploration — hero recreation + Redline+ lens
-   The drafting sheet: rulers, margins, gutters, frames, dims,
-   type specs, stack gaps, registration marks, title block.
-   F = full reveal.
+   Lens background explorations — hero recreation + 2 lens layers
+   01 Redline+ · the drafting sheet (parked)
+   02 Figma    · an actual Figma file under the paper: Hero
+                 auto-layout frame, framed text layers, padding
+                 and gap numbers, two live cursors.
+   Keys 1/2 switch · F = full reveal.
    ============================================================ */
 :root {
   --paper: #f6f3ec;
@@ -30,6 +32,11 @@
   --font-display: "Fraunces";
   --font-body: "Archivo";
   --font-mono: "Spline Sans Mono";
+
+  /* figma UI colors */
+  --fg-blue: #0d99ff;
+  --fg-pink: #ff24bd;
+  --fg-canvas: #f5f5f5;
 
   --wrap: 1240px;
   --pad: clamp(20px, 4vw, 48px);
@@ -146,7 +153,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .lens-layer {
   position: absolute;
   inset: 0;
-  z-index: 2;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -154,12 +160,15 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   mask-image: radial-gradient(circle var(--lens-r, 220px) at var(--mx, -400px) var(--my, -400px), #000 0 55%, transparent 100%);
 }
 @media (min-width: 1440px) { .lens-layer { --lens-r: 300px; } }
-.hero.on .lens-layer { opacity: 1; }
-.hero.reveal .lens-layer {
+.hero.on .lens-layer.active { opacity: 1; }
+.hero.reveal .lens-layer.active {
   opacity: 1;
   -webkit-mask-image: none;
   mask-image: none;
 }
+/* the redline layer draws over the type; the figma canvas sits under it */
+.layer-redline { z-index: 2; }
+.layer-figma { z-index: 0; }
 
 /* ============ REDLINE+ (the full drafting sheet) ============ */
 .lens-baselines {
@@ -274,25 +283,109 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .lens-stamp-glyph { stroke: var(--blue); stroke-width: 3; fill: none; }
 @keyframes lens-spin { to { transform: rotate(360deg); } }
 
-/* ============ HINT ============ */
-.hint-chip {
+/* ============ 02 · FIGMA ============
+   The file under the paper: canvas gray, a white Hero auto-layout
+   frame, blue-framed text layers, pink padding/gap readouts, and
+   two collaborators' cursors drifting across the canvas. */
+.layer-figma { background: var(--fg-canvas); font-family: "Inter", var(--font-body), sans-serif; }
+
+/* the selected Hero frame */
+.fg-frame { position: absolute; background: #fff; outline: 1.5px solid var(--fg-blue); }
+.fg-frame > b {
+  position: absolute; left: -1px; top: -24px;
+  display: flex; align-items: center; gap: 5px;
+  color: var(--fg-blue); font-size: 12px; font-weight: 500; white-space: nowrap;
+}
+.fg-frame > b svg { width: 10px; height: 10px; stroke: var(--fg-blue); stroke-width: 1.6; fill: none; }
+.fg-h {
+  position: absolute; width: 8px; height: 8px;
+  background: #fff; border: 1.5px solid var(--fg-blue);
+}
+.fg-h.tl { left: -5px; top: -5px; }
+.fg-h.tr { right: -5px; top: -5px; }
+.fg-h.bl { left: -5px; bottom: -5px; }
+.fg-h.br { right: -5px; bottom: -5px; }
+.fg-dims {
+  position: absolute; left: 50%; bottom: -27px; transform: translateX(-50%);
+  background: var(--fg-blue); color: #fff;
+  font-size: 10.5px; font-weight: 500; letter-spacing: 0.02em;
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+}
+
+/* the three text layers, each in its own frame */
+.fg-obj { position: absolute; outline: 1px solid rgba(13, 153, 255, 0.6); }
+.fg-obj > b {
+  position: absolute; left: 0; top: -18px;
+  color: var(--fg-blue); font-size: 10.5px; font-weight: 500; white-space: nowrap;
+}
+
+/* auto-layout padding + gap zones, with their values */
+.fg-pad { position: absolute; background: rgba(255, 36, 189, 0.06); }
+.fg-pad b {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  background: var(--fg-pink); color: #fff;
+  font-size: 10px; font-weight: 500;
+  padding: 1px 6px; border-radius: 3px; white-space: nowrap;
+}
+
+/* collaborators */
+.fg-cursor { position: absolute; }
+.fg-cursor svg { width: 17px; height: 17px; display: block; }
+.fg-cursor span {
+  position: absolute; left: 13px; top: 15px;
+  color: #fff; font-size: 10.5px; font-weight: 500;
+  padding: 2px 7px; border-radius: 999px; white-space: nowrap;
+}
+.fg-cursor.me { animation: cur-me 16s ease-in-out infinite; }
+.fg-cursor.ai { animation: cur-ai 21s ease-in-out infinite; }
+@keyframes cur-me {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-180px, 90px); }
+  50%  { transform: translate(-60px, 210px); }
+  75%  { transform: translate(120px, 130px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes cur-ai {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(140px, -70px); }
+  45%  { transform: translate(300px, 40px); }
+  70%  { transform: translate(90px, 150px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ============ SWITCHER ============ */
+.switcher {
   position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
   z-index: 80;
-  font-family: var(--font-mono), monospace;
-  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ink-50);
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px;
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 8px 16px;
   box-shadow: 0 8px 30px rgba(23, 21, 15, 0.12);
 }
-.hint-chip i { font-style: normal; color: var(--red); }
+.switcher button {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-70);
+  background: transparent; border: 0; border-radius: 999px;
+  padding: 9px 16px; cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.switcher button b { font-weight: 500; color: var(--red); margin-right: 6px; }
+.switcher button:hover { background: rgba(23, 21, 15, 0.06); }
+.switcher button.on { background: var(--ink); color: var(--paper); }
+.switcher button.on b { color: var(--red); }
+.switcher .hint {
+  font-size: 10px; color: var(--ink-50);
+  border-left: 1px solid var(--line);
+  padding-inline: 14px 10px; margin-left: 4px;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .lens-stamp svg { animation: none; }
+  .marquee-track, .lens-stamp svg, .fg-cursor.me, .fg-cursor.ai { animation: none; }
 }
 </style>
 </head>
@@ -304,7 +397,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
       <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
       Damean Rittmann <span class="brand-role">— Product Designer</span>
     </span>
-    <span class="mono topbar-note">Lens exploration <i>✳</i> Redline+</span>
+    <span class="mono topbar-note">Lens explorations <i>✳</i> 01 Redline+ · 02 Figma</span>
   </div>
 </header>
 
@@ -322,7 +415,8 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 
   <div class="marquee" aria-hidden="true"><div class="marquee-track"></div></div>
 
-  <div class="lens-layer" id="lens" aria-hidden="true">
+  <!-- ====== 01 · REDLINE+ ====== -->
+  <div class="lens-layer layer-redline active" id="v1" aria-hidden="true">
     <div class="lens-baselines"></div>
     <div class="wrap lens-cols"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="rl-ruler-top" id="rulerTop"></div>
@@ -344,14 +438,44 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
       </svg>
     </div>
   </div>
+
+  <!-- ====== 02 · FIGMA ====== -->
+  <div class="lens-layer layer-figma" id="v2" aria-hidden="true">
+    <div class="fg-frame" id="fgFrame">
+      <b><svg viewBox="0 0 12 12"><path d="M3 0v12M9 0v12M0 3h12M0 9h12"/></svg>Hero</b>
+      <span class="fg-h tl"></span><span class="fg-h tr"></span><span class="fg-h bl"></span><span class="fg-h br"></span>
+      <span class="fg-dims" id="fgDims"></span>
+    </div>
+    <div class="fg-pad" id="fgPadT"><b></b></div>
+    <div class="fg-pad" id="fgPadB"><b></b></div>
+    <div class="fg-pad" id="fgPadL"><b></b></div>
+    <div class="fg-pad" id="fgPadR"><b></b></div>
+    <div class="fg-pad" id="fgGap1"><b></b></div>
+    <div class="fg-pad" id="fgGap2"><b></b></div>
+    <div class="fg-obj" id="fgEye"><b>eyebrow</b></div>
+    <div class="fg-obj" id="fgTitle"><b>hero-text</b></div>
+    <div class="fg-obj" id="fgLede"><b>subheader</b></div>
+    <div class="fg-cursor me" id="fgCurMe">
+      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#1bc47d"/></svg>
+      <span style="background:#1bc47d">Damean</span>
+    </div>
+    <div class="fg-cursor ai" id="fgCurAi">
+      <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#9747ff"/></svg>
+      <span style="background:#9747ff">AI Agent ✳</span>
+    </div>
+  </div>
 </section>
 
-<span class="hint-chip">Move to reveal · <i>F</i> full reveal</span>
+<nav class="switcher" aria-label="Background variant">
+  <button data-v="1" class="on"><b>01</b>Redline+</button>
+  <button data-v="2"><b>02</b>Figma</button>
+  <span class="hint mono">1–2 switch · F reveal</span>
+</nav>
 
 <script>
 /* ================= shared plumbing ================= */
 const hero = document.getElementById("hero");
-const lens = document.getElementById("lens");
+const layers = { 1: document.getElementById("v1"), 2: document.getElementById("v2") };
 
 /* marquee content */
 const STATS = [
@@ -378,12 +502,19 @@ hero.addEventListener("pointermove", (e) => {
 }, { passive: true });
 hero.addEventListener("pointerleave", () => hero.classList.remove("on"));
 
-/* full reveal */
+/* variant switching + full reveal */
+function setVariant(v) {
+  Object.entries(layers).forEach(([k, el]) => el.classList.toggle("active", +k === v));
+  document.querySelectorAll(".switcher button").forEach((b) => b.classList.toggle("on", +b.dataset.v === v));
+}
 function setReveal(on) { hero.classList.toggle("reveal", on); }
+document.querySelectorAll(".switcher button").forEach((b) =>
+  b.addEventListener("click", () => setVariant(+b.dataset.v)));
 addEventListener("keydown", (e) => {
+  if (e.key === "1" || e.key === "2") setVariant(+e.key);
   if (e.key.toLowerCase() === "f") setReveal(!hero.classList.contains("reveal"));
 });
-window.lens = { setReveal };
+window.lens = { setVariant, setReveal };
 
 /* geometry helpers */
 const q = (s, r = document) => r.querySelector(s);
@@ -393,11 +524,20 @@ const rel = (elm, hr) => {
 };
 const el = (cls, html = "") => { const d = document.createElement("div"); d.className = cls; d.innerHTML = html; return d; };
 
-/* clip the layer above the marquee, like the shipped lens */
-function clipLayer(hr) {
+/* clip both layers above the marquee, like the shipped lens */
+function clipLayers(hr) {
   const mq = q(".marquee", hero).getBoundingClientRect();
-  lens.style.bottom = Math.max(0, hr.bottom - mq.top) + "px";
+  const bottom = Math.max(0, hr.bottom - mq.top) + "px";
+  Object.values(layers).forEach((l) => (l.style.bottom = bottom));
 }
+
+/* text layers hug their glyphs, like real Figma text objects */
+const relText = (elm, hr) => {
+  const range = document.createRange();
+  range.selectNodeContents(elm);
+  const r = range.getBoundingClientRect();
+  return { x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: r.height, r: r.right - hr.left, b: r.bottom - hr.top };
+};
 
 /* ================= redline+ placement ================= */
 const FRAMES = [
@@ -411,13 +551,12 @@ function specOf(sel, fam) {
   const lh = (parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)).toFixed(2);
   return `${fam} · ${fs}/${lh}`;
 }
-function place() {
+function place1() {
   const hr = hero.getBoundingClientRect();
-  clipLayer(hr);
   const IY = 8, GAP = 14;
 
   const lines = [];
-  lens.querySelectorAll(".lens-cols i").forEach((b) => {
+  layers[1].querySelectorAll(".lens-cols i").forEach((b) => {
     const r = b.getBoundingClientRect();
     lines.push(r.left - hr.left, r.right - hr.left);
   });
@@ -477,7 +616,7 @@ function place() {
     host.appendChild(gval);
   }
 
-  const cols = lens.querySelectorAll(".lens-cols i");
+  const cols = layers[1].querySelectorAll(".lens-cols i");
   const contentL = cols[0].getBoundingClientRect().left - hr.left;
   const contentR = cols[11].getBoundingClientRect().right - hr.left;
   const mL = q("#marginL"), mR = q("#marginR");
@@ -509,7 +648,7 @@ function place() {
     const s = document.createElement("span"); s.textContent = x; s.style.left = x + "px"; rt.appendChild(s);
   }
   const rl = q("#rulerLeft"); rl.innerHTML = "";
-  const lb = parseFloat(lens.style.bottom) || 0;
+  const lb = parseFloat(layers[1].style.bottom) || 0;
   for (let y = 100; y < hr.height - lb; y += 100) {
     const s = document.createElement("span"); s.textContent = y; s.style.top = y + "px"; rl.appendChild(s);
   }
@@ -517,11 +656,63 @@ function place() {
   q("#tbScale").textContent = `Scale 1:1 @ ${Math.round(hr.width)}px`;
 }
 
-place();
-if (document.fonts?.ready) document.fonts.ready.then(place);
-addEventListener("load", place);
+/* ================= 02 · figma placement ================= */
+function place2() {
+  const hr = hero.getBoundingClientRect();
+  const eye = relText(q(".hero-eyebrow", hero), hr);
+  const title = relText(q(".hero-title", hero), hr);
+  const lede = relText(q(".hero-lede", hero), hr);
+
+  /* the Hero auto-layout frame: content bounds + its padding */
+  const PX = 64, PY = 56;
+  const minX = Math.min(eye.x, title.x, lede.x);
+  const maxR = Math.max(eye.r, title.r, lede.r);
+  const fx = minX - PX, fy = eye.y - PY, fr = maxR + PX, fb = lede.b + PY;
+
+  const box = (sel, x, y, w, h) =>
+    Object.assign(q(sel).style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
+
+  box("#fgFrame", fx, fy, fr - fx, fb - fy);
+  q("#fgDims").textContent = `${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
+
+  /* each text layer in its own frame */
+  box("#fgEye", eye.x, eye.y, eye.w, eye.h);
+  box("#fgTitle", title.x, title.y, title.w, title.h);
+  box("#fgLede", lede.x, lede.y, lede.w, lede.h);
+
+  /* padding zones with their values */
+  box("#fgPadT", fx, fy, fr - fx, PY);
+  box("#fgPadB", fx, lede.b, fr - fx, PY);
+  box("#fgPadL", fx, eye.y, PX, lede.b - eye.y);
+  box("#fgPadR", maxR, eye.y, PX, lede.b - eye.y);
+  q("#fgPadT b").textContent = PY;
+  q("#fgPadB b").textContent = PY;
+  q("#fgPadL b").textContent = PX;
+  q("#fgPadR b").textContent = PX;
+
+  /* item gaps with their values */
+  const g1 = title.y - eye.b, g2 = lede.y - title.b;
+  box("#fgGap1", minX, eye.b, maxR - minX, Math.max(0, g1));
+  box("#fgGap2", minX, title.b, maxR - minX, Math.max(0, g2));
+  q("#fgGap1 b").textContent = Math.round(g1);
+  q("#fgGap2 b").textContent = Math.round(g2);
+
+  /* cursor anchors: the keyframes drift them from here */
+  Object.assign(q("#fgCurMe").style, { left: maxR - 60 + "px", top: eye.y - 20 + "px" });
+  Object.assign(q("#fgCurAi").style, { left: minX + 120 + "px", top: lede.b - 10 + "px" });
+}
+
+/* ================= layout lifecycle ================= */
+function placeAll() {
+  clipLayers(hero.getBoundingClientRect());
+  place1();
+  place2();
+}
+placeAll();
+if (document.fonts?.ready) document.fonts.ready.then(placeAll);
+addEventListener("load", placeAll);
 let rT;
-addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(place, 150); });
+addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(placeAll, 150); });
 </script>
 </body>
 </html>
