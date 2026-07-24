@@ -788,11 +788,13 @@ function place2() {
   meas("#fgMeasB", cx + 96, fb, 0, edgeB - fb, edgeB - fb);
   q("#fgMeasT b").style.left = "-44px";
 
-  /* the comment sits in the open canvas up and right of the frame */
-  Object.assign(q("#fgComment").style, {
-    left: Math.min(fr + 72, hr.width - 244) + "px",
-    top: cy - 172 + "px",
-  });
+  /* the comment is centered in the open canvas between the frame's
+     right edge and the screen edge, so it isn't crammed against the
+     content with a void to its right on wide screens */
+  const CW = 236;
+  let cLeft = fr + (hr.width - fr - CW) / 2;
+  cLeft = Math.max(fr + 16, Math.min(cLeft, hr.width - CW - 12));
+  Object.assign(q("#fgComment").style, { left: cLeft + "px", top: cy - 172 + "px" });
 
   /* cursor anchors: the keyframes drift them from here */
   Object.assign(q("#fgCurMe").style, { left: maxR - 60 + "px", top: eye.y - 20 + "px" });
