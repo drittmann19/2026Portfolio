@@ -367,8 +367,8 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .fg-comment header small { color: #b3b3b3; font-size: 11px; }
 .fg-comment i { font-style: normal; color: var(--red); }
 
-/* collaborators */
-.fg-cursor { position: absolute; }
+/* collaborators — always float above every other canvas element */
+.fg-cursor { position: absolute; z-index: 5; }
 .fg-cursor svg { width: 17px; height: 17px; display: block; }
 .fg-cursor span {
   position: absolute; left: 13px; top: 15px;
@@ -751,7 +751,7 @@ function place2() {
   const g1 = title.y - eye.b, g2 = lede.y - title.b;
   box("#fgGap1", minX, eye.b, maxR - minX, Math.max(0, g1));
   box("#fgGap2", minX, title.b, maxR - minX, Math.max(0, g2));
-  q("#fgGap1 b").textContent = Math.round(g1);
+  q("#fgGap1 b").style.display = "none"; // no spacing number above the headline
   q("#fgGap2 b").textContent = Math.round(g2);
 
   /* red option-measures: frame edges → canvas edges (screen sides,
@@ -769,21 +769,21 @@ function place2() {
   meas("#fgMeasL", 0, cy, fx, 0, fx);
   meas("#fgMeasR", fr, cy, hr.width - fr, 0, hr.width - fr);
   meas("#fgMeasT", cx, 0, 0, fy, fy);
-  meas("#fgMeasB", cx, fb, 0, edgeB - fb, edgeB - fb);
-  /* keep the top/bottom measure values off the vertical center line
-     so they clear the frame dims pill and padding values there */
+  /* the bottom measure runs right of center so its line and value
+     both clear the frame dims pill */
+  meas("#fgMeasB", cx + 96, fb, 0, edgeB - fb, edgeB - fb);
   q("#fgMeasT b").style.left = "-44px";
-  q("#fgMeasB b").style.left = "52px";
 
-  /* the comment sits in the open canvas right of the frame */
+  /* the comment sits in the open canvas up and right of the frame */
   Object.assign(q("#fgComment").style, {
-    left: Math.min(fr + 48, hr.width - 256) + "px",
-    top: cy - 130 + "px",
+    left: Math.min(fr + 72, hr.width - 244) + "px",
+    top: cy - 172 + "px",
   });
 
   /* cursor anchors: the keyframes drift them from here */
   Object.assign(q("#fgCurMe").style, { left: maxR - 60 + "px", top: eye.y - 20 + "px" });
-  Object.assign(q("#fgCurAi").style, { left: minX + 120 + "px", top: lede.b - 10 + "px" });
+  /* the AI agent lives in the right half of the screen */
+  Object.assign(q("#fgCurAi").style, { left: hr.width * 0.6 + "px", top: cy - 30 + "px" });
 }
 
 /* ================= layout lifecycle ================= */
