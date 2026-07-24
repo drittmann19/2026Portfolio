@@ -319,6 +319,15 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   color: var(--fg-blue); font-size: 10.5px; font-weight: 500; white-space: nowrap;
 }
 
+/* the circle over "legible" is a component — Figma purple + diamond icon */
+.fg-comp { position: absolute; outline: 1.5px solid #9747ff; border-radius: 2px; }
+.fg-comp > b {
+  position: absolute; left: -1.5px; top: -18px;
+  display: flex; align-items: center; gap: 4px;
+  color: #9747ff; font-size: 10.5px; font-weight: 500; white-space: nowrap;
+}
+.fg-comp > b svg { width: 9px; height: 9px; fill: #9747ff; }
+
 /* auto-layout padding + gap zones, with their values */
 .fg-pad { position: absolute; background: rgba(255, 36, 189, 0.06); }
 .fg-pad b {
@@ -494,6 +503,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     <div class="fg-obj" id="fgEye"><b>eyebrow</b></div>
     <div class="fg-obj" id="fgTitle"></div>
     <div class="fg-obj" id="fgLede"><b>subheader</b></div>
+    <div class="fg-comp" id="fgComp"><b><svg viewBox="0 0 12 12"><path d="M6 .5l2 2-2 2-2-2zM11.5 6l-2 2-2-2 2-2zM6 11.5l-2-2 2-2 2 2zM.5 6l2-2 2 2-2 2z"/></svg>circle-mark</b></div>
     <div class="fg-meas h" id="fgMeasL"><b></b></div>
     <div class="fg-meas h" id="fgMeasR"><b></b></div>
     <div class="fg-meas v" id="fgMeasT"><b></b></div>
@@ -732,6 +742,10 @@ function place2() {
   box("#fgEye", SX, eye.y, SW, eye.h);
   box("#fgTitle", SX, title.y, SW, title.h);
   box("#fgLede", SX, lede.y, SW, lede.h);
+
+  /* component frame around the red circle over "legible" */
+  const circ = rel(q(".circled svg", hero), hr);
+  box("#fgComp", circ.x - 3, circ.y - 3, circ.w + 6, circ.h + 6);
 
   /* padding zones with their values */
   box("#fgPadT", fx, fy, fr - fx, PY);
