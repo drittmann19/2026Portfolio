@@ -492,7 +492,7 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     <div class="fg-pad" id="fgGap1"><b></b></div>
     <div class="fg-pad" id="fgGap2"><b></b></div>
     <div class="fg-obj" id="fgEye"><b>eyebrow</b></div>
-    <div class="fg-obj" id="fgTitle"><b>hero-text</b></div>
+    <div class="fg-obj" id="fgTitle"></div>
     <div class="fg-obj" id="fgLede"><b>subheader</b></div>
     <div class="fg-meas h" id="fgMeasL"><b></b></div>
     <div class="fg-meas h" id="fgMeasR"><b></b></div>
@@ -725,10 +725,13 @@ function place2() {
   box("#fgFrame", fx, fy, fr - fx, fb - fy);
   q("#fgDims").textContent = `${Math.round(fr - fx)} × ${Math.round(fb - fy)}`;
 
-  /* each text layer in its own frame */
-  box("#fgEye", eye.x, eye.y, eye.w, eye.h);
-  box("#fgTitle", title.x, title.y, title.w, title.h);
-  box("#fgLede", lede.x, lede.y, lede.w, lede.h);
+  /* each text layer in its own frame — all share the subheader's
+     width (the widest), so the eyebrow and hero-text outlines
+     extend to the same right edge */
+  const SX = minX, SW = maxR - minX;
+  box("#fgEye", SX, eye.y, SW, eye.h);
+  box("#fgTitle", SX, title.y, SW, title.h);
+  box("#fgLede", SX, lede.y, SW, lede.h);
 
   /* padding zones with their values */
   box("#fgPadT", fx, fy, fr - fx, PY);
@@ -739,6 +742,10 @@ function place2() {
   q("#fgPadB b").textContent = PY;
   q("#fgPadL b").textContent = PX;
   q("#fgPadR b").textContent = PX;
+  /* nudge the L/R padding values to the top of their bands so they
+     clear the left/right edge measures (which sit at vertical center) */
+  q("#fgPadL b").style.top = "40px";
+  q("#fgPadR b").style.top = "40px";
 
   /* item gaps with their values */
   const g1 = title.y - eye.b, g2 = lede.y - title.b;
@@ -763,6 +770,10 @@ function place2() {
   meas("#fgMeasR", fr, cy, hr.width - fr, 0, hr.width - fr);
   meas("#fgMeasT", cx, 0, 0, fy, fy);
   meas("#fgMeasB", cx, fb, 0, edgeB - fb, edgeB - fb);
+  /* keep the top/bottom measure values off the vertical center line
+     so they clear the frame dims pill and padding values there */
+  q("#fgMeasT b").style.left = "-44px";
+  q("#fgMeasB b").style.left = "52px";
 
   /* the comment sits in the open canvas right of the frame */
   Object.assign(q("#fgComment").style, {
