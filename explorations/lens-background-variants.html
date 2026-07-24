@@ -328,6 +328,45 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
   padding: 1px 6px; border-radius: 3px; white-space: nowrap;
 }
 
+/* option-hold measurements: frame edges → screen edges */
+.fg-meas { position: absolute; }
+.fg-meas.h { border-top: 1px solid #f24822; }
+.fg-meas.h::before, .fg-meas.h::after {
+  content: ""; position: absolute; top: -4px; width: 1px; height: 9px; background: #f24822;
+}
+.fg-meas.h::before { left: 0; } .fg-meas.h::after { right: 0; }
+.fg-meas.v { border-left: 1px solid #f24822; }
+.fg-meas.v::before, .fg-meas.v::after {
+  content: ""; position: absolute; left: -4px; width: 9px; height: 1px; background: #f24822;
+}
+.fg-meas.v::before { top: 0; } .fg-meas.v::after { bottom: 0; }
+.fg-meas b {
+  position: absolute; transform: translate(-50%, -50%);
+  background: #f24822; color: #fff;
+  font-size: 10px; font-weight: 500;
+  padding: 1px 6px; border-radius: 3px; white-space: nowrap;
+}
+.fg-meas.h b { left: 50%; top: 0; }
+.fg-meas.v b { left: 0; top: 50%; }
+
+/* the comment thread on the canvas */
+.fg-comment {
+  position: absolute; width: 236px;
+  background: #fff; border-radius: 3px 14px 14px 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  padding: 11px 13px; font-size: 12.5px; line-height: 1.45; color: #333;
+}
+.fg-comment header { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.fg-comment .av2 {
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  background: var(--blue); color: #fff;
+  display: grid; place-items: center;
+  font-size: 9.5px; font-weight: 600;
+}
+.fg-comment header span { font-weight: 600; font-size: 12.5px; color: #1e1e1e; }
+.fg-comment header small { color: #b3b3b3; font-size: 11px; }
+.fg-comment i { font-style: normal; color: var(--red); }
+
 /* collaborators */
 .fg-cursor { position: absolute; }
 .fg-cursor svg { width: 17px; height: 17px; display: block; }
@@ -455,6 +494,14 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     <div class="fg-obj" id="fgEye"><b>eyebrow</b></div>
     <div class="fg-obj" id="fgTitle"><b>hero-text</b></div>
     <div class="fg-obj" id="fgLede"><b>subheader</b></div>
+    <div class="fg-meas h" id="fgMeasL"><b></b></div>
+    <div class="fg-meas h" id="fgMeasR"><b></b></div>
+    <div class="fg-meas v" id="fgMeasT"><b></b></div>
+    <div class="fg-meas v" id="fgMeasB"><b></b></div>
+    <div class="fg-comment" id="fgComment">
+      <header><span class="av2">DR</span><span>Damean</span><small>· just now</small></header>
+      Human Designed <i>✳</i> AI-Assisted
+    </div>
     <div class="fg-cursor me" id="fgCurMe">
       <svg viewBox="0 0 24 24"><path d="M4 2l16 9.6-7 1.3-3.8 6.4z" fill="#1bc47d"/></svg>
       <span style="background:#1bc47d">Damean</span>
@@ -663,10 +710,13 @@ function place2() {
   const title = relText(q(".hero-title", hero), hr);
   const lede = relText(q(".hero-lede", hero), hr);
 
-  /* the Hero auto-layout frame: content bounds + its padding */
-  const PX = 64, PY = 56;
+  /* the Hero auto-layout frame: content bounds + its padding.
+     Horizontal padding shrinks on narrow viewports so the frame
+     always sits on the canvas with room for the edge measures. */
   const minX = Math.min(eye.x, title.x, lede.x);
   const maxR = Math.max(eye.r, title.r, lede.r);
+  const PX = Math.min(64, Math.max(12, Math.round(minX - 28)));
+  const PY = 56;
   const fx = minX - PX, fy = eye.y - PY, fr = maxR + PX, fb = lede.b + PY;
 
   const box = (sel, x, y, w, h) =>
@@ -696,6 +746,29 @@ function place2() {
   box("#fgGap2", minX, title.b, maxR - minX, Math.max(0, g2));
   q("#fgGap1 b").textContent = Math.round(g1);
   q("#fgGap2 b").textContent = Math.round(g2);
+
+  /* red option-measures: frame edges → canvas edges (screen sides,
+     marquee top at the bottom). Hidden when the span is too thin. */
+  const edgeB = hr.height - (parseFloat(layers[2].style.bottom) || 0);
+  const cx = fx + (fr - fx) / 2, cy = fy + (fb - fy) / 2;
+  const meas = (sel, x, y, w, h, val) => {
+    const n = q(sel);
+    const on = val >= 6;
+    n.style.display = on ? "block" : "none";
+    if (!on) return;
+    Object.assign(n.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
+    n.firstElementChild.textContent = Math.round(val);
+  };
+  meas("#fgMeasL", 0, cy, fx, 0, fx);
+  meas("#fgMeasR", fr, cy, hr.width - fr, 0, hr.width - fr);
+  meas("#fgMeasT", cx, 0, 0, fy, fy);
+  meas("#fgMeasB", cx, fb, 0, edgeB - fb, edgeB - fb);
+
+  /* the comment sits in the open canvas right of the frame */
+  Object.assign(q("#fgComment").style, {
+    left: Math.min(fr + 48, hr.width - 256) + "px",
+    top: cy - 130 + "px",
+  });
 
   /* cursor anchors: the keyframes drift them from here */
   Object.assign(q("#fgCurMe").style, { left: maxR - 60 + "px", top: eye.y - 20 + "px" });
