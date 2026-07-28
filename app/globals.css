@@ -453,6 +453,22 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
   border: 1.5px dashed var(--red);
   border-radius: 4px;
 }
+/* the 8px vertical padding the box carries around its frame */
+.lens-box::before {
+  content: "";
+  position: absolute;
+  inset: 8px 0;
+  border-block: 1px dotted rgba(232, 67, 10, 0.55);
+}
+.lens-pad-tag {
+  position: absolute;
+  top: -1px;
+  right: 6px;
+  color: var(--red);
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
 .lens-dim {
   position: absolute;
   border-top: 1.5px solid var(--red);
@@ -476,6 +492,14 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
   font-size: 9px;
   letter-spacing: 0.1em;
   white-space: nowrap;
+  line-height: 1.7;
+}
+/* the type spec sitting under each frame name */
+.lens-tag small {
+  display: block;
+  font-size: 8.5px;
+  color: var(--ink-50);
+  letter-spacing: 0.06em;
 }
 .lens-val {
   position: absolute;
@@ -505,6 +529,88 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
 }
 .lens-vdim::before { top: 0; }
 .lens-vdim::after { bottom: 0; }
+
+/* stack gaps read in ultramarine so they don't read as redline dims */
+.lens-vdim.is-gap { border-left-color: var(--blue); }
+.lens-vdim.is-gap::before,
+.lens-vdim.is-gap::after { background: var(--blue); }
+.lens-val.is-gap { color: var(--blue); }
+
+/* hatched margins between the viewport edge and the content columns */
+.rl-margin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(232, 67, 10, 0.07) 0 5px,
+    transparent 5px 11px
+  );
+  border-inline: 1px solid rgba(232, 67, 10, 0.28);
+}
+.rl-margin b {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  color: var(--red);
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+/* rulers along the top and left edges, ticked every 10px, labelled every 100 */
+.rl-ruler-top {
+  position: absolute;
+  top: var(--topbar-h);
+  left: 0;
+  right: 0;
+  height: 20px;
+  border-bottom: 1px solid var(--line);
+  background:
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 10px) left bottom / 100% 6px no-repeat,
+    repeating-linear-gradient(to right, rgba(23, 21, 15, 0.4) 0 1px, transparent 1px 100px) left bottom / 100% 13px no-repeat;
+}
+.rl-ruler-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  border-right: 1px solid var(--line);
+  background:
+    repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 10px) right top / 6px 100% no-repeat,
+    repeating-linear-gradient(to bottom, rgba(23, 21, 15, 0.4) 0 1px, transparent 1px 100px) right top / 13px 100% no-repeat;
+}
+.rl-ruler-top span,
+.rl-ruler-left span {
+  position: absolute;
+  font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-size: 8px;
+  color: var(--ink-50);
+  letter-spacing: 0.04em;
+}
+.rl-ruler-top span { top: 2px; transform: translateX(3px); }
+.rl-ruler-left span {
+  left: 2px;
+  transform: translateY(2px) rotate(-90deg);
+  transform-origin: left top;
+}
+
+/* gutter callouts dropped into two of the column gaps */
+.rl-gutter {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--blue);
+  background: var(--paper);
+  border: 1px solid rgba(39, 51, 232, 0.4);
+  padding: 2px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
 
 /* easter egg: the spinning stamp, buried in the open right space and
    findable only through the lens */
