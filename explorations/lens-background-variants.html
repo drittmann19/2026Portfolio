@@ -265,18 +265,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
 .rl-reg::before { left: 50%; top: 0; bottom: 0; width: 1px; }
 .rl-reg::after { top: 50%; left: 0; right: 0; height: 1px; }
 
-.rl-titleblock {
-  position: absolute; right: calc(var(--pad) + 4px); bottom: 18px;
-  border: 1.5px solid var(--ink);
-  background: var(--paper);
-  font-family: var(--font-mono), monospace;
-  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-70); line-height: 1;
-}
-.rl-titleblock div { padding: 7px 12px; border-top: 1px solid var(--line); display: flex; gap: 18px; justify-content: space-between; }
-.rl-titleblock div:first-child { border-top: 0; color: var(--ink); font-weight: 500; }
-.rl-titleblock i { font-style: normal; color: var(--red); }
-
 .lens-stamp { position: absolute; right: 9%; top: 24%; width: 148px; aspect-ratio: 1; }
 .lens-stamp svg { width: 100%; height: 100%; animation: lens-spin 26s linear infinite; }
 .lens-stamp-text { font-family: var(--font-mono), monospace; font-size: 13px; letter-spacing: 0.36em; fill: var(--ink-70); }
@@ -472,12 +460,6 @@ em { font-style: normal; font-weight: 600; letter-spacing: 0; }
     <div class="rl-margin" id="marginL"><b></b></div>
     <div class="rl-margin" id="marginR"><b></b></div>
     <div id="rlFrames"></div>
-    <div class="rl-titleblock">
-      <div>Damean Rittmann <i>✳</i> Portfolio 2026</div>
-      <div><span>Sheet 01 · Hero / Fold</span><span id="tbScale"></span></div>
-      <div><span>Grid 12 col · Gutter 24</span><span>Rev C · 2026-07-22</span></div>
-      <div><span>Drawn <i>DR</i> · Checked <i>AI</i></span><span>Fraunces / Archivo</span></div>
-    </div>
     <div class="lens-stamp">
       <svg viewBox="0 0 160 160">
         <defs><path id="lensStampCircle" d="M80,80 m-62,0 a62,62 0 1,1 124,0 a62,62 0 1,1 -124,0" /></defs>
@@ -709,8 +691,6 @@ function place1() {
   for (let y = 100; y < hr.height - lb; y += 100) {
     const s = document.createElement("span"); s.textContent = y; s.style.top = y + "px"; rl.appendChild(s);
   }
-
-  q("#tbScale").textContent = `Scale 1:1 @ ${Math.round(hr.width)}px`;
 }
 
 /* ================= 02 · figma placement ================= */
