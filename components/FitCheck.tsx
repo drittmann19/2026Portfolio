@@ -595,6 +595,7 @@ const CSS = `
 .fc-analysis { margin-top: clamp(36px, 6vh, 56px); }
 .fc-summary {
   font-family: var(--font-display), "Georgia", serif;
+  font-weight: 400;
   font-optical-sizing: auto;
   font-size: clamp(1.35rem, 2vw, 1.85rem);
   line-height: 1.35;
@@ -607,6 +608,7 @@ const CSS = `
 .fc-group:last-child { margin-bottom: 0; }
 .fc-collabel {
   font-family: var(--font-mono), monospace;
+  font-weight: 400;
   font-size: 11.5px;
   letter-spacing: 0.07em;
   text-transform: uppercase;
