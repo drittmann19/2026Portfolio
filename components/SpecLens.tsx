@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 const FRAMES = [
   { name: "Eyebrow", key: "eye", selector: ".hero-eyebrow", fam: "Spline Mono", wAbove: true },
   { name: "Headline", key: "title", selector: ".hero-title", fam: "Fraunces", wAbove: false },
-  { name: "Subheader", key: "lede", selector: ".hero-lede", fam: "Archivo", wAbove: false },
+  { name: "Subheader", key: "lede", selector: ".hero-lede", fam: "Newsreader", wAbove: false },
 ] as const;
 
 /* one gap measure between each pair of stacked frames */

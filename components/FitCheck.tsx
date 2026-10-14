@@ -494,7 +494,7 @@ const CSS = `
   resize: vertical;
   background: transparent;
   color: var(--ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-size: 16px;
   line-height: 1.6;
   padding: 12px 20px 16px;
@@ -533,7 +533,7 @@ const CSS = `
   color: var(--paper);
   border: 0;
   border-radius: 999px;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -595,6 +595,7 @@ const CSS = `
 .fc-analysis { margin-top: clamp(36px, 6vh, 56px); }
 .fc-summary {
   font-family: var(--font-display), "Georgia", serif;
+  font-weight: 400;
   font-optical-sizing: auto;
   font-size: clamp(1.35rem, 2vw, 1.85rem);
   line-height: 1.35;
@@ -607,6 +608,7 @@ const CSS = `
 .fc-group:last-child { margin-bottom: 0; }
 .fc-collabel {
   font-family: var(--font-mono), monospace;
+  font-weight: 400;
   font-size: 11.5px;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -648,7 +650,7 @@ const CSS = `
   to { opacity: 1; transform: scale(1); }
 }
 .fc-item-title {
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-weight: 600;
   font-size: 16.5px;
   letter-spacing: -0.01em;
@@ -703,7 +705,7 @@ const CSS = `
 }
 .fc-raw {
   white-space: pre-wrap;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-size: 15px;
   color: var(--ink);
   line-height: 1.6;

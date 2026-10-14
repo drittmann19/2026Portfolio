@@ -65,7 +65,10 @@
   body {
     background-color: var(--paper);
     color: var(--ink);
-    font-family: var(--font-body), "Helvetica Neue", sans-serif;
+    font-family: var(--font-body), Georgia, serif;
+    font-optical-sizing: auto;
+    /* a touch heavier than regular: Newsreader reads light at body sizes */
+    font-weight: 450;
     font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -95,6 +98,7 @@ body::after {
 
 .mono {
   font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-weight: 400;
   font-size: 11.5px;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -109,12 +113,10 @@ body::after {
 main { position: relative; }
 section, footer.contact { position: relative; }
 
-/* Emphasis inherits the surrounding family. Inside body text it reads as a
-   weight change (Archivo semibold); the Fraunces italic treatment is reserved
-   for display-size headings, where its quirks work. */
+/* No emphasis styling in body text. Display headings opt back in with the
+   Fraunces italic in blue (.sec-head h2 em, .contact-title em, .circled). */
 em {
   font-style: normal;
-  font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -355,7 +357,6 @@ body.menu-open { overflow: hidden; }
   color: var(--ink-70);
   max-width: 58ch;
 }
-.hero-lede em { color: var(--ink); }
 
 /* marquee */
 .marquee {
@@ -376,6 +377,7 @@ body.menu-open { overflow: hidden; }
 }
 .marquee-group span {
   font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-weight: 400;
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -466,6 +468,7 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
   right: 6px;
   color: var(--red);
   font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-weight: 400;
   font-size: 8px;
   letter-spacing: 0.08em;
 }
@@ -587,6 +590,7 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
 .rl-ruler-left span {
   position: absolute;
   font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-weight: 400;
   font-size: 8px;
   color: var(--ink-50);
   letter-spacing: 0.04em;
@@ -624,6 +628,7 @@ section > .wrap, footer.contact > .wrap, .marquee { position: relative; z-index:
 .lens-stamp svg { width: 100%; height: 100%; animation: lens-spin 26s linear infinite; }
 .lens-stamp-text {
   font-family: var(--font-mono), "SFMono-Regular", monospace;
+  font-weight: 400;
   font-size: 13px;
   letter-spacing: 0.36em;
   fill: var(--ink-70);
@@ -998,6 +1003,7 @@ body.note-open { overflow: hidden; }
   background: var(--paper);
   color: var(--ink);
   font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   transition: border-color 0.25s, background 0.25s;
 }
@@ -1108,6 +1114,7 @@ body.note-open { overflow: hidden; }
 
 .cs-title {
   font-family: var(--font-display), "Georgia", serif;
+  font-weight: 400;
   font-optical-sizing: auto;
   font-size: clamp(2.5rem, 5.4vw, 4.6rem);
   line-height: 1.03;
@@ -1220,6 +1227,7 @@ body.note-open { overflow: hidden; }
 }
 .cs-metric-big {
   font-family: var(--font-display), "Georgia", serif;
+  font-weight: 400;
   font-optical-sizing: auto;
   font-size: clamp(1.9rem, 3vw, 2.6rem);
   letter-spacing: -0.02em;
