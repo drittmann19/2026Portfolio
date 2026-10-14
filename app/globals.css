@@ -1003,6 +1003,7 @@ body.note-open { overflow: hidden; }
   background: var(--paper);
   color: var(--ink);
   font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   transition: border-color 0.25s, background 0.25s;
 }
