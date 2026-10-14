@@ -494,7 +494,7 @@ const CSS = `
   resize: vertical;
   background: transparent;
   color: var(--ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-size: 16px;
   line-height: 1.6;
   padding: 12px 20px 16px;
@@ -533,7 +533,7 @@ const CSS = `
   color: var(--paper);
   border: 0;
   border-radius: 999px;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -648,7 +648,7 @@ const CSS = `
   to { opacity: 1; transform: scale(1); }
 }
 .fc-item-title {
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-weight: 600;
   font-size: 16.5px;
   letter-spacing: -0.01em;
@@ -703,7 +703,7 @@ const CSS = `
 }
 .fc-raw {
   white-space: pre-wrap;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Georgia, serif;
   font-size: 15px;
   color: var(--ink);
   line-height: 1.6;

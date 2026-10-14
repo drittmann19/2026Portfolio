@@ -65,7 +65,8 @@
   body {
     background-color: var(--paper);
     color: var(--ink);
-    font-family: var(--font-body), "Helvetica Neue", sans-serif;
+    font-family: var(--font-body), Georgia, serif;
+    font-optical-sizing: auto;
     font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -109,12 +110,10 @@ body::after {
 main { position: relative; }
 section, footer.contact { position: relative; }
 
-/* Emphasis inherits the surrounding family. Inside body text it reads as a
-   weight change (Archivo semibold); the Fraunces italic treatment is reserved
-   for display-size headings, where its quirks work. */
+/* Emphasis inherits the surrounding family. Inside body text it is Newsreader's
+   true italic; display headings override it with the Fraunces italic in blue. */
 em {
-  font-style: normal;
-  font-weight: 600;
+  font-style: italic;
   letter-spacing: 0;
 }
 

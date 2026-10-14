@@ -27,8 +27,8 @@ const config: Config = {
         "line-soft": "var(--line-soft)",
       },
       fontFamily: {
-        sans: ["var(--font-body)", "sans-serif"],
-        body: ["var(--font-body)", "sans-serif"],
+        sans: ["var(--font-body)", "serif"],
+        body: ["var(--font-body)", "serif"],
         mono: ["var(--font-mono)", "monospace"],
         display: ["var(--font-display)", "serif"],
       },

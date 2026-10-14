@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Archivo, Spline_Sans_Mono } from "next/font/google";
+import { Fraunces, Newsreader, Spline_Sans_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import SiteNav from "@/components/SiteNav";
@@ -15,9 +15,11 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-const archivo = Archivo({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
   variable: "--font-body",
   display: "swap",
 });
@@ -55,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${archivo.variable} ${splineSansMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${newsreader.variable} ${splineSansMono.variable}`}>
 <body>
         <SiteNav />
         <Rail />
